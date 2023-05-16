@@ -1,0 +1,524 @@
+{% load static %}
+    {% if active == "model" %}
+
+<div class="myinfocontainer relative active" id="my_info_show_able" style="width: 100%;max-width: 100%">
+
+
+    <form method="POST" id="info_tab_submit_fitness_model"
+          action="{% url 'client:update_info_tab' %}" enctype="multipart/form-data">
+        {% csrf_token %}
+    <table class="table" style="color:gray;">
+        <tbody>
+        <tr>
+            <td colspan="2"><h3 class="font_family_check">KEY INFO</h3></td>
+            <td colspan="2">
+                {% if is_authenticated_user %}
+                <a style="background-color: red; padding: 12px; border-radius: 25px; color: white;
+                float: right;margin-right: 70px" class="isAboutInfo"
+                   onclick="toggle_edit_info('isAboutEdit', 'isAboutInfo')">
+                    <i class="material-icons">create</i>
+                </a>
+                <a style="background-color: red; padding: 12px; border-radius: 25px; color: white;
+                float: right;margin-right: 70px" class="isAboutEdit"
+                   onclick="toggle_edit_info('isAboutInfo', 'isAboutEdit')">
+                    <i class="material-icons">cancel</i>
+                </a>
+                {% endif %}
+            </td>
+        </tr>
+        <tr>
+            <td>Name</td>
+            <td colspan="3">
+                <span class="isAboutInfo">{{profile.profile.name}}</span>
+                <span class="isAboutEdit">
+                    <input class="form-control mt-0" placeholder="Profile Name" name="profile_name"
+                            value="{{profile.profile.name}}" >
+                </span>
+            </td>
+        </tr>
+        <tr>
+            <td>Profile URL</td>
+            <td colspan="3">
+                <span class="isAboutInfo">{{profile.profile.profile_url}}</span>
+                <span class="isAboutEdit">
+                    <input class="form-control mt-0" placeholder="Profile URL" name="profile_url"
+                            value="{{profile.profile.profile_url}}" >
+                </span>
+            </td>
+        </tr>
+        <tr>
+            <td>Gender</td>
+            <td colspan="3">
+                <span class="isAboutInfo">{{profile.gender}}</span>
+                <span class="isAboutEdit">
+                    {% if profile.gender == "Male" %}
+                    Male: <input type="radio" checked name="profile_gender" value="Male" ><br>
+                    Female: <input type="radio" name="profile_gender" value="Female"><br>
+                    Other: <input type="radio" name="profile_gender" value="Other"><br>
+                    {% endif  %}
+                    {% if profile.gender == "Female" %}
+                    Male: <input type="radio" name="profile_gender" value="Male" ><br>
+                    Female: <input type="radio" checked name="profile_gender" value="Female"><br>
+                    Other: <input type="radio" name="profile_gender" value="Other"><br>
+                    {% endif %}
+                    {% if profile.gender == "Other" %}
+                    Male: <input type="radio" name="profile_gender" value="Male" ><br>
+                    Female: <input type="radio" checked name="profile_gender" value="Female"><br>
+                    Other: <input type="radio" checked name="profile_gender" value="Other"><br>
+                    {% endif %}
+                    {% if profile.gender == "" %}
+                    Male: <input type="radio" name="profile_gender" value="Male" ><br>
+                    Female: <input type="radio" checked name="profile_gender" value="Female"><br>
+                    Other: <input type="radio" checked name="profile_gender" value="Other"><br>
+                    {% endif %}
+
+                </span>
+            </td>
+        </tr>
+        <tr>
+            <td>Age</td>
+            <td colspan="3">
+                <span class="isAboutInfo">{{profile.profile.age}} Years</span>
+                <span class="isAboutEdit">
+                    <div class="row">
+                        <div class="col-6 p-0">
+                            <input class="form-control mt-0" type="number" placeholder="Age" name="age"
+                            value="{{profile.profile.age}}" required>
+                        </div>
+                        <div class="col-6 pr-0">
+                            <select class="form-control mt-0 value_inpt poppins" disabled style="height: 38px">
+                                <option>Years</option>
+                            </select>
+                        </div>
+                    </div>
+                </span>
+            </td>
+        </tr>
+
+        <tr>
+            <td>Height</td>
+            <td colspan="3">
+                <span class="isAboutInfo">{% if profile.profile.height %}{{profile.profile.height}} {{profile.profile.height_unit}}{% else %}-{% endif %}</span>
+                <span class="isAboutEdit">
+                    <div class="row">
+                        <div class="col-6 p-0">
+                            <input class="form-control mt-0" placeholder="Height" type="number" step="0.01" name="height"
+                            value="{{profile.profile.height}}" required>
+                        </div>
+                        <div class="col-6 pr-0">
+                            <select class="form-control mt-0 value_inpt poppins" name="height_unit" required style="height: 38px">
+                        <option {% if 'Meters' == profile.profile.height_unit %}selected{% endif %}>Meters</option>
+                        <option {% if 'Feet' == profile.profile.height_unit %}selected{% endif %}>Feet</option>
+                    </select>
+                        </div>
+                    </div>
+                </span>
+            </td>
+        </tr>
+        <tr>
+            <td>Weight</td>
+            <td colspan="3">
+                <span class="isAboutInfo">{% if profile.profile.weight %}{{profile.profile.weight}} {{profile.profile.weight_unit}}{% else %}-{% endif %}</span>
+                <span class="isAboutEdit">
+                     <div class="row">
+                        <div class="col-6 p-0">
+                            <input class="form-control mt-0" placeholder="Weight" type="number" step="0.01" name="weight"
+                            value="{{profile.profile.weight}}" required>
+                        </div>
+                        <div class="col-6 pr-0">
+                            <select class="form-control mt-0 value_inpt poppins" name="weight_unit" required style="height: 38px">
+                                <option {% if 'Kilos' == profile.profile.weight_unit %}selected{% endif %}>Kilos</option>
+                                <option {% if 'Pound' == profile.profile.weight_unit %}selected{% endif %}>Pounds</option>
+                            </select>
+                        </div>
+                    </div>
+                </span>
+            </td>
+        </tr>
+         <tr>
+            <td>Body Type</td>
+            <td colspan="3">
+                <span class="isAboutInfo">{{profile.profile.body_type}}</span>
+                <span class="isAboutEdit">
+                     <select class="value_inpt poppins" name="body_type" required >
+                                {% for obj in body_types %}
+                                <option value="{{obj.name}}" {% if obj.name == profile.profile.body_type %}selected{% endif %}>
+                                    {{obj.name}}
+                                </option>
+                                    {% endfor %}
+                        </select>
+                </span>
+            </td>
+        </tr>
+        <tr>
+            <td>Ethnicity</td>
+            <td colspan="3">
+                <span class="isAboutInfo">{{profile.profile.ethnicity}}</span>
+                <span class="isAboutEdit">
+                     <select class="value_inpt poppins"
+                            name="ethnicity" required >
+                                {% for obj in ethnicity %}
+                                <option value="{{obj.name}}" {% if obj.name == profile.profile.ethnicity %}selected{% endif %}>
+                                    {{obj.name}}
+                                </option>
+                                    {% endfor %}
+                            </select>
+                </span>
+            </td>
+        </tr>
+        <tr>
+            <td>Skin Tone</td>
+            <td colspan="3">
+                <span class="isAboutInfo">{{profile.profile.skin_tone}}</span>
+                <span class="isAboutEdit">
+                     <select class="value_inpt poppins"
+                            name="skin_tone" required >
+                                {% for obj in skin_type %}
+                                <option value="{{obj.name}}" {% if obj.name == profile.profile.skin_tone %}selected{% endif %}>
+                                    {{obj.name}}
+                                </option>
+                                    {% endfor %}
+                            </select>
+                </span>
+            </td>
+        </tr>
+         <tr>
+            <td>Eye Color</td>
+            <td colspan="3">
+                <span class="isAboutInfo">{{profile.profile.eye_color}}</span>
+                <span class="isAboutEdit">
+                      <select class="value_inpt poppins"
+                            name="eye_color" required >
+                                {% for obj in eye_color %}
+                                <option value="{{obj.name}}" {% if obj.name == profile.profile.eye_color %}selected{% endif %}>
+                                    {{obj.name}}
+                                </option>
+                                    {% endfor %}
+                            </select>
+                </span>
+            </td>
+        </tr>
+         <tr>
+            <td>Hair Length</td>
+            <td colspan="3">
+                <span class="isAboutInfo">{{profile.profile.hair_length}}</span>
+                <span class="isAboutEdit">
+                     <select class="value_inpt poppins"
+                            name="hair_length" required >
+                                {% for obj in hair_color %}
+                                <option value="{{obj.name}}" {% if obj.name == profile.profile.hair_length %}selected{% endif %}>
+                                    {{obj.name}}
+                                </option>
+                                    {% endfor %}
+                            </select>
+                </span>
+            </td>
+        </tr>
+
+        <tr>
+            <td>Tattoos</td>
+            <td colspan="3">
+                <span class="isAboutInfo">{{profile.profile.tattoos}}</span>
+                <span class="isAboutEdit">
+                       <select class="value_inpt poppins"
+                            name="tattoos" required >
+                                {% for obj in tattoos %}
+                                <option value="{{obj.name}}" {% if obj.name == profile.profile.piercing %}selected{% endif %}>
+                                    {{obj.name}}
+                                </option>
+                                    {% endfor %}
+                            </select>
+                </span>
+            </td>
+        </tr>
+
+        <tr>
+            <td>Piercings</td>
+            <td colspan="3">
+                <span class="isAboutInfo">{{profile.profile.piercing}}</span>
+                <span class="isAboutEdit">
+                     <select class="value_inpt poppins"
+                            name="piercing" required >
+                                {% for obj in tattoos %}
+                                <option value="{{obj.name}}" {% if obj.name == profile.profile.piercing %}selected{% endif %}>
+                                    {{obj.name}}
+                                </option>
+                                    {% endfor %}
+                            </select>
+                </span>
+            </td>
+        </tr>
+
+        <tr>
+            <td>Experience</td>
+            <td colspan="3">
+                <span class="isAboutInfo">
+
+                                {% if 0 == profile.profile.working_with_media %}-{% endif %}
+                                {% if 1 == profile.profile.working_with_media %}No Experience{% endif %}
+                                {% if 2 == profile.profile.working_with_media %}Some Experience{% endif %}
+                                {% if 3 == profile.profile.working_with_media %}Experience{% endif %}
+                                {% if 4 == profile.profile.working_with_media %}Very Experience{% endif %}
+                </span>
+                <span class="isAboutEdit">
+               <select class="value_inpt poppins"
+                            name="working_with_media" required >
+
+                                <option value="0" {% if 0 == profile.profile.working_with_media %}selected{% endif %}>Not selected</option>
+                                <option value="1" {% if 1 == profile.profile.working_with_media %}selected{% endif %}>No Experience</option>
+                                <option value="2" {% if 2 == profile.profile.working_with_media %}selected{% endif %}>Some Experience</option>
+                                <option value="3" {% if 3 == profile.profile.working_with_media %}selected{% endif %}>Experience</option>
+                                <option value="4" {% if 4 == profile.profile.working_with_media %}selected{% endif %}>Very Experience</option>
+
+                            </select>
+                </span>
+            </td>
+        </tr>
+
+        <tr>
+            <td>Languages</td>
+            <td colspan="3">
+                <span class="isAboutInfo">{{profile.profile.languages}}</span>
+                <span class="isAboutEdit">
+                     <select class="value_inpt poppins multiselect" id="profile_section_languages" name="languages" required multiple>
+                                <option  {% if 'English' in profile.languages_list %} selected {% endif %}>English</option>
+                                <option  {% if 'Spanish' in profile.languages_list %} selected {% endif %}>Spanish</option>
+                                <option  {% if 'German' in profile.languages_list %} selected {% endif %}>German</option>
+                                <option  {% if 'French' in profile.languages_list %} selected {% endif %}>French</option>
+                                <option  {% if 'Portuguese' in profile.languages_list %} selected {% endif %}>Portuguese</option>
+                                <option  {% if 'Chinese' in profile.languages_list %} selected {% endif %}>Chinese</option>
+                            </select>
+                </span>
+            </td>
+        </tr>
+
+        <tr>
+            <td>Working With Media</td>
+            <td colspan="3">
+                <span class="isAboutInfo">{{profile.profile.experience}}</span>
+                <span class="isAboutEdit">
+                     <div class="radio">
+                                <label><input type="radio" {% if profile.profile.experience == 'Yes' %} checked {% endif %} value="Yes" name="experience"> Yes</label>
+                              </div>
+                              <div class="radio">
+                                <label><input type="radio" {% if profile.profile.experience == 'No' %} checked {% endif %} {% if profile.profile.experience == '' %} checked {% endif %} value="No" name="experience"> No</label>
+                      </div>
+                </span>
+            </td>
+        </tr>
+
+        <tr>
+            <td>Modeling Interests</td>
+            <td colspan="3">
+                <span class="isAboutInfo">{{profile.profile.modeling_interests}}</span>
+                <span class="isAboutEdit">
+                   <select class="value_inpt poppins multiselect" id="model_info_tab_modeling_interests"
+                            name="modeling_interests" required  multiple="multiple">
+                                {% for obj in modeling_interests %}
+                                <option value="{{obj.name}}" {% if obj.name in profile.modeling_interests_list %}selected{% endif %}>
+                                    {{obj.name}}
+                                </option>
+                                    {% endfor %}
+                            </select>
+                </span>
+            </td>
+        </tr>
+        <tr>
+            <td>Compensation</td>
+            <td colspan="3">
+                <span class="isAboutInfo">{{profile.profile.compensation}}</span>
+                <span class="isAboutEdit">
+                  <select class="value_inpt poppins" name="compensation" required>
+                        <option value="" disabled selected>Select Compensation</option>
+                        {% for obj in compensation %}
+                            <option value="{{obj.name}}" {% if obj.name == profile.profile.compensation %}selected{% endif %}>
+                                {{obj.name}}
+                            </option>
+                        {% endfor %}
+                    </select>
+                </span>
+            </td>
+        </tr>
+
+        <tr>
+            <td>Notes About Compensation</td>
+            <td colspan="3">
+                <span class="isAboutInfo">{{profile.profile.c}}</span>
+                <span class="isAboutEdit">
+                    <input class="form-control mt-0" placeholder="Notes About Compensation" name="compensation_notes"
+                           value="{{profile.profile.c}}">
+                </span>
+            </td>
+        </tr>
+
+        <tr>
+            <td>Activities</td>
+            <td colspan="3">
+                <span class="isAboutInfo">{{profile.profile.interested_in}}</span>
+                <span class="isAboutEdit">
+                   <select class="value_inpt poppins multiselect" id="modal_interested_in"
+                            name="interested_in" required  multiple="multiple">
+                                {% for obj in activities %}
+                                <option value="{{obj.name}}" {% if obj.name in profile.interested_in_list %}selected{% endif %}>
+                                    {{obj.name}}
+                                </option>
+                                    {% endfor %}
+                            </select>
+                </span>
+            </td>
+        </tr>
+        <tr>
+            <td>My Story/About Me</td>
+            <td colspan="3">
+                <span class="isAboutInfo">{{profile.profile.about_us}}</span>
+                <span class="isAboutEdit">
+                    <textarea class="form-control" rows="3" name="about_us"  style="margin-top: 0px;"
+                            required>{{profile.profile.about_us}}</textarea>
+                </span>
+            </td>
+        </tr>
+
+
+        <tr>
+            <td>Product Reviews</td>
+            <td colspan="3">
+                <span class="isAboutInfo">
+                    {% for obj in profile.product_reviews %}
+                        <div>
+                        <div  style="margin-bottom: 10px">
+                            <div class="col-10 p-0 row">
+                                <input class="col-3 form-control mt-0" disabled
+                                       style="margin-right: 2px" placeholder="Product" value="{{obj.name}}">
+                                
+                                <!-- <input class="col-4 form-control mt-0 " disabled
+                                       style="margin-right: 5px" placeholder="Review" value="{{obj.review}}"> -->
+                                <div class="col-3">
+                                    <div class="rating" style="width:90px;">
+                                        <style>
+                                            .material-icons {
+                                                font-size: 11px;
+                                            }
+                                        </style>
+                                        {% if obj.star == 0 %}
+                                            <i class="material-icons">star_outline</i>
+                                            <i class="material-icons">star_outline</i>
+                                            <i class="material-icons">star_outline</i>
+                                            <i class="material-icons">star_outline</i>
+                                            <i class="material-icons">star_outline</i>
+                                            {% endif %}
+                                             {% if obj.star == 1 %}
+                                            <i class="material-icons">star_outline</i>
+                                            <i class="material-icons">star_outline</i>
+                                            <i class="material-icons">star_outline</i>
+                                            <i class="material-icons">star_outline</i>
+                                            <i style="color: blue;" class="material-icons">star</i>
+                                            {% endif %}
+                                             {% if obj.star == 2 %}
+                                            <i class="material-icons">star_outline</i>
+                                            <i class="material-icons">star_outline</i>
+                                            <i class="material-icons">star_outline</i>
+                                            <i style="color: blue;" class="material-icons">star</i>
+                                            <i style="color: blue;" class="material-icons">star</i>
+                                            {% endif %}
+
+                                             {% if obj.star == 3 %}
+                                            <i class="material-icons">star_outline</i>
+                                            <i class="material-icons">star_outline</i>
+                                            <i style="color: blue;" class="material-icons">star</i>
+                                            <i style="color: blue;" class="material-icons">star</i>
+                                            <i style="color: blue;" class="material-icons">star</i>
+                                            {% endif %}
+
+                                             {% if obj.star == 4 %}
+                                            <i class="material-icons">star_outline</i>
+                                            <i style="color: blue;" class="material-icons">star</i>
+                                            <i style="color: blue;" class="material-icons">star</i>
+                                            <i style="color: blue;" class="material-icons">star</i>
+                                            <i style="color: blue;" class="material-icons">star</i>
+                                            {% endif %}
+                                             {% if obj.star == 5 %}
+                                            <i style="color: blue;" class="material-icons">star</i>
+                                            <i style="color: blue;" class="material-icons">star</i>
+                                            <i style="color: blue;" class="material-icons">star</i>
+                                            <i style="color: blue;" class="material-icons">star</i>
+                                            <i style="color: blue;" class="material-icons">star</i>
+                                            {% endif %}
+                                </div>
+                                
+                                </div>
+                                <div class="col-12">
+                                    <p>{{obj.review}}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </span>
+                <span class="isAboutEdit">
+                  {% if profile.product_reviews %}
+                        {% for obj in profile.product_reviews %}
+                            <div class="productReviewsMain">
+                            <div class="row productReviewsMainItem" id style="margin-bottom: 10px">
+                                <div class="col-10 p-0 row">
+                                    <input class="col-3 form-control mt-0 product_review_name_multiple_field"
+                                           style="margin-right: 2px" placeholder="Product" value="{{obj.name}}">
+                                    <input class="col-4 form-control mt-0 product_review_multiple_field"
+                                           style="margin-right: 5px" placeholder="Review" value="{{obj.review}}">
+                                    <div class="col-3">
+                                        <div class="rating" style="width:90px;">
+                                        <input id="star5{{forloop.counter}}" name="star1" type="radio" value="5" class="radio-btn hide" onchange="updateRatingValue({{forloop.counter}}, 5)"/>
+                                        <label for="star5{{forloop.counter}}" >☆</label>
+                                        <input id="star4{{forloop.counter}}" name="star1" type="radio" value="4" class="radio-btn hide" onchange="updateRatingValue({{forloop.counter}}, 4)"/>
+                                        <label for="star4{{forloop.counter}}" >☆</label>
+                                        <input id="star3{{forloop.counter}}" name="star1" type="radio" value="3" class="radio-btn hide" onchange="updateRatingValue({{forloop.counter}}, 3)"/>
+                                        <label for="star3{{forloop.counter}}" >☆</label>
+                                        <input id="star2{{forloop.counter}}" name="star1" type="radio" value="2" class="radio-btn hide" onchange="updateRatingValue({{forloop.counter}}, 2)"/>
+                                        <label for="star2{{forloop.counter}}" >☆</label>
+                                        <input id="star1{{forloop.counter}}" name="star1" type="radio" value="1" class="radio-btn hide" onchange="updateRatingValue({{forloop.counter}}, 1)"/>
+                                        <label for="star1{{forloop.counter}}" >☆</label>
+                                        <div class="clear"></div>
+                                    </div>
+                                    </div>
+                                    <div class="col-1">
+                                      <input value="{{obj.star}}" class="productReviewRatingValue productReviewRatingValue{{forloop.counter}}" type="number" style="width: 30px;visibility: hidden">
+                                    </div>
+                                </div>
+
+                                <div class="col-2 p-0 text-right">
+                                    <a style="background-color: red; padding: 6px; border-radius: 25px; color: white; float: right;"
+                                    onclick="removeProductReview()">
+                                        <i class="material-icons">delete</i>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    {% else %}
+                        <div class="productReviewsMain">
+                    </div>
+                    {% endif %}
+                     <button type="button" class="update_btn poppins" onclick="addNewProductReview()" style="width: auto;padding: 5px 11px;margin-top: 13px;">Add New Product Review</button>
+                </span>
+            </td>
+        </tr>
+
+
+
+          <tr>
+            <td colspan="3">
+                <span class="isAboutInfo"></span>
+                <span class="isAboutEdit">
+                    <button type="submit" class="update_btn poppins">Update Info</button>
+                </span>
+            </td>
+        </tr>
+
+        </tbody>
+    </table>
+        <input id="productNameReviewValue" name="productNameReviewValue" style="visibility: hidden">
+        <input id="productReviewValue" name="productReviewValue" style="visibility: hidden">
+        <input id="productReviewStarValue" name="productReviewStarValue" style="visibility: hidden">
+    </form>
+</div>
+
+{% endif %}

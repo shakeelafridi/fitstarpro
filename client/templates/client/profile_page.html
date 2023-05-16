@@ -1,0 +1,1565 @@
+{% extends 'client/base.html' %}
+
+{% load static %}
+
+{% block title %}Profile Page{% endblock title %}
+
+{% block css %}
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/bootstrap.tagsinput/0.4.2/bootstrap-tagsinput.css" />
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+<link rel="stylesheet" href="{% static 'css/profilepage/profile_style.css' %}">
+<link rel="stylesheet" href="{% static 'css/profilepage/profile_my_info.css' %}">
+
+<style>
+    #header {
+        background-color: #f2f4f9;
+    }
+    .bootstrap-tagsinput {
+        line-height: 30px;
+        width: 100%;
+        background: #f2f4f9;
+    }
+    .bootstrap-tagsinput .tag {
+        margin-right: 2px;
+        color: white;
+    }
+    .bootstrap-tagsinput .label-info {
+        background-color: #5bc0de;
+    }
+    .bootstrap-tagsinput .label {
+        display: inline;
+        padding: .2em .6em .3em;
+        font-size: 75%;
+        font-weight: 700;
+        line-height: 1;
+        color: #fff;
+        text-align: center;
+        white-space: nowrap;
+        vertical-align: baseline;
+        border-radius: .25em;
+    }
+</style>
+{% endblock %}
+
+
+{% block body %}
+
+<section id="profile_sec">
+    <div class="profile_top_container" style="height: auto;">
+        <div class="card img_card"
+             style="background-image: url('{% if profile.profile.profile_image %}{{profile.profile.profile_image.url}}{% else %}{% static 'css/profilepage/aboutusgirl.png' %}{% endif %}')">
+
+        </div>
+        <div class="card center_card" style="padding-left: 10px;padding-right: 10px;">
+            <h3 class="role_name poppins fs_gray">
+                {% if profile.user.active_user_role.name == "Fitness Model" %}Modal{% endif %}
+                {% if profile.user.active_user_role.name == "Fitness Professional" %}Professional{% endif %}
+                {% if profile.user.active_user_role.name == "Fitness Center" %}Fitness Center{% endif %}
+            </h3>
+            <h1 class="profile_name poppins mt_25" id="ProfileName">
+                {% if profile.user.active_user_role.name == "Fitness Model" %}
+                {% if profile.profile.name %}
+                {{profile.profile.name}}
+                {% else %} YOUR NAME
+                {% endif %}
+                {% endif %}
+                {% if profile.user.active_user_role.name == "Fitness Professional" %}
+                {% if profile.profile.name %}
+                {{profile.profile.name}}
+                {% else %} YOUR NAME
+                {% endif %}
+                {% endif %}
+                {% if profile.user.active_user_role.name == "Fitness Center" %}
+                {% if profile.profile.name %}
+                {{profile.profile.name}}
+                {% else %} YOUR CENTER NAME
+                {% endif %}
+                {% endif %}
+            </h1>
+            <div class="star_rating_box mt_25 fs_red">
+                {% if profile.profile.reviews == 0 %}
+                <i class="material-icons">star_outline</i>
+                <i class="material-icons">star_outline</i>
+                <i class="material-icons">star_outline</i>
+                <i class="material-icons">star_outline</i>
+                <i class="material-icons">star_outline</i>
+                {% endif %}
+                 {% if profile.profile.reviews == 1 %}
+                <i class="material-icons">star</i>
+                <i class="material-icons">star_outline</i>
+                <i class="material-icons">star_outline</i>
+                <i class="material-icons">star_outline</i>
+                <i class="material-icons">star_outline</i>
+                {% endif %}
+                 {% if profile.profile.reviews == 2 %}
+                <i class="material-icons">star</i>
+                <i class="material-icons">star</i>
+                <i class="material-icons">star_outline</i>
+                <i class="material-icons">star_outline</i>
+                <i class="material-icons">star_outline</i>
+                {% endif %}
+
+                 {% if profile.profile.reviews == 3 %}
+                <i class="material-icons">star</i>
+                <i class="material-icons">star</i>
+                <i class="material-icons">star</i>
+                <i class="material-icons">star_outline</i>
+                <i class="material-icons">star_outline</i>
+                {% endif %}
+
+                 {% if profile.profile.reviews == 4 %}
+                <i class="material-icons">star</i>
+                <i class="material-icons">star</i>
+                <i class="material-icons">star</i>
+                <i class="material-icons">star</i>
+                <i class="material-icons">star_outline</i>
+                {% endif %}
+                 {% if profile.profile.reviews == 5 %}
+                <i class="material-icons">star</i>
+                <i class="material-icons">star</i>
+                <i class="material-icons">star</i>
+                <i class="material-icons">star</i>
+                <i class="material-icons">star</i>
+                {% endif %}
+            </div>
+            <p class="reviews poppins fs_gray">
+                ({{profile.profile.reviews}})Reviews
+            </p>
+            <div class="location mt_10">
+                <i class="material-icons fs_red ">location_on</i>
+                <p class="address poppins m-0">{{profile.user.time_zone_info}}</p>
+            </div>
+            <div class="social_links mt_35">
+                <a href="{% url 'client:profile_page' %}?profile_id={{profile.profile.id}}">
+                <i class="material-icons fs_gray">share</i></a>
+                {% if profile.profile.blog_link %}
+                <a href="{{profile.profile.blog_link}}" target="_blank" >
+                <i class="material-icons fs_gray">rss_feed</i></a>
+                {% endif %}
+
+            </div>
+        </div>
+        <div class="card profile_detail_card " id="EditDetails">
+            {% if user.is_authenticated %}
+            <div class="edit_ico" onclick="EditSideDetails()">
+                <i class="material-icons">create</i>
+            </div>
+            {% endif %}
+            <div class="show_able content" id="ShowAbleContent">
+                {% if profile.user.active_user_role.name == "Fitness Center" %}
+                <div class="detail_bar">
+                    <h3 class="title poppins">Open Since:
+                        <span class="data edit_able_data">
+                                {% if profile.profile.open_since %}
+                                    {{profile.profile.open_since}}
+                                {% else %} -
+                                {% endif %}
+                            </span>
+                        <span class="data constant_data">years</span>
+                    </h3>
+                </div>
+                <div class="detail_bar">
+                    <h3 class="title poppins">Fitness Center Type:
+                        <span class="data edit_able_data">
+                                {% if profile.profile.fitness_center_type %}
+                                    {{profile.profile.fitness_center_type.name}}
+                                {% else %} -
+                                {% endif %}
+                            </span>
+                        <span class="data constant_data"></span>
+                    </h3>
+                </div>
+                <div class="detail_bar">
+                    <h3 class="title poppins">Membership Plans:
+                        <span class="data edit_able_data">
+                                {% if profile.profile.member_ship_plans %}
+                                    {{profile.profile.member_ship_plans.name}}
+                                {% else %} -
+                                {% endif %}
+                            </span>
+                        <span class="data constant_data"></span>
+                    </h3>
+                </div>
+                {% endif %}
+
+                {% if profile.user.active_user_role.name == "Fitness Professional" or profile.user.active_user_role.name == "Fitness Model" %}
+                <div class="detail_bar">
+                    <h3 class="title poppins">Name:
+                        <span class="data edit_able_data">
+                                {% if profile.profile.name %}
+                                    {{profile.profile.name}}
+                                {% else %} -
+                                {% endif %}
+                            </span>
+                    </h3>
+                    </div>
+                    <div class="detail_bar">
+                        <h3 class="title poppins">Age:
+                            <span class="data edit_able_data">
+                                    {% if profile.profile.age %}
+                                        {{profile.profile.age}} Years
+                                    {% else %} -
+                                    {% endif %}
+                                </span>
+                            <span class="data constant_data"></span>
+                        </h3>
+                    </div>
+                    <div class="detail_bar">
+                        <h3 class="title poppins">Height:
+                            <span class="data edit_able_data">
+                                    {% if profile.profile.height %}
+                                        {{profile.profile.height}} ft
+                                    {% else %} -
+                                    {% endif %}
+                                </span>
+                            <span class="data constant_data"></span>
+                        </h3>
+                    </div>
+                    <div class="detail_bar">
+                        <h3 class="title poppins">Weight:
+                            <span class="data edit_able_data">
+                                    {% if profile.profile.weight %}
+                                        {{profile.profile.weight}} Pounds
+                                    {% else %} -
+                                    {% endif %}
+                                </span>
+                            <span class="data constant_data"></span>
+                        </h3>
+                    </div>
+                    {% if profile.user.active_user_role.name == "Fitness Professional" %}
+                    <div class="detail_bar">
+                        <h3 class="title poppins">Training Rates:
+                            <span class="data edit_able_data">
+                                    {% if profile.profile.training_rates %}
+                                        $ {{profile.profile.training_rates}}
+                                    {% else %} -
+                                    {% endif %}
+                                </span>
+                            <span class="data constant_data"></span>
+                        </h3>
+                    </div>
+                    {% endif %}
+                    {% if profile.user.active_user_role.name == "Fitness Model" %}
+                    <div class="detail_bar">
+                        <h3 class="title poppins">Compensation:
+                            <span class="data edit_able_data">
+                                    {% if profile.profile.compensation %}
+                                        {{profile.profile.compensation}}
+                                    {% else %} -
+                                    {% endif %}
+                                </span>
+                            <span class="data constant_data"></span>
+                        </h3>
+                    </div>
+                    {% endif %}
+                    <div class="detail_bar">
+                        <h3 class="title poppins">Experience:
+                            <span class="data edit_able_data">
+                                    {% if profile.profile.experience %}
+                                        {{profile.profile.experience}} Years
+                                    {% else %} -
+                                    {% endif %}
+                                </span>
+                            <span class="data constant_data"></span>
+                        </h3>
+                    </div>
+                    <div class="detail_bar">
+                        <h3 class="title poppins">Languages:
+                            <span class="data edit_able_data">
+                                    {% if profile.profile.languages %}
+                                        {{profile.profile.languages}}
+                                    {% else %} -
+                                    {% endif %}
+                                </span>
+                            <span class="data constant_data"></span>
+                        </h3>
+                    </div>
+                    <div class="detail_bar">
+                        <h3 class="title poppins">Body Types:
+                            <span class="data edit_able_data">
+                                    {% if profile.profile.training_rates %}
+                                        {{profile.profile.body_type}}
+                                    {% else %} -
+                                    {% endif %}
+                                </span>
+                            <span class="data constant_data"></span>
+                        </h3>
+                    </div>
+                {% endif %}
+
+            </div>
+            <div class="edit_able">
+                {% if profile.user.active_user_role.name == "Fitness Center" %}
+                <form method="POST" action="{% url 'client:top_bar_info_update' %}">
+                    {% csrf_token %}
+
+                    <div class="field poppins name">
+                        <input class="value_inpt poppins" name="name" type="text" placeholder="Fitness Center Name"
+                               id="InputName" value="{% if profile.profile.name %}{{profile.profile.name}}{% endif %}"
+                               required>
+                    </div>
+                    <div class="field poppins training_rate relative">
+                        <i class="material-icons input_inner_ico">attach_money</i>
+                        <input class="value_inpt poppins" name="open_since" type="number" placeholder="Open Since"
+                               id="TrainingRateInput"
+                               value="{% if profile.profile.open_since %}{{profile.profile.open_since}}{% endif %}"
+                               required>
+                    </div>
+
+                    <div class="field poppins age">
+                        <select class="value_inpt poppins" name="fitness_center" required>
+                            <option disabled selected>Select Fitness Center</option>
+                            {% for obj in profile.fitness_center_type %}
+
+                            <option value="{{obj.id}}"
+                                    {% if profile.profile.fitness_center_type %}
+                                    {% ifequal profile.profile.fitness_center_type.id obj.id %} selected {% endifequal %}
+                                    {% endif %}
+                            >{{obj.name}}
+                            </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <div class="field poppins age">
+                        <select class="value_inpt poppins" name="membership_type" required>
+                            <option disabled selected>Select Membership Type</option>
+
+                            {% for obj in profile.member_ship_type %}
+
+                            <option value="{{obj.id}}"
+                                    {% if profile.profile.member_ship_plans %}
+                                    {% ifequal profile.profile.member_ship_plans.id obj.id %} selected {% endifequal %}
+                                    {% endif %}>
+                                {{obj.name}}
+                            </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <div class="field poppins age">
+
+                        <button class="update_btn" type="submit">update
+                        </button>
+                    </div>
+                </form>
+                {% endif %}
+
+                {% if profile.user.active_user_role.name == "Fitness Professional" or profile.user.active_user_role.name == "Fitness Model" %}
+                <form method="POST" action="{% url 'client:top_bar_info_update' %}">
+                    {% csrf_token %}
+
+                    <div class="field poppins name">
+                        <input class="value_inpt poppins" name="name" type="text" placeholder="Name"
+                               value="{% if profile.profile.name %}{{profile.profile.name}}{% endif %}"
+                               required>
+                    </div>
+                    <div class="field poppins training_rate relative">
+                        <i class="material-icons input_inner_ico">attach_money</i>
+                        <input class="value_inpt poppins" name="age" type="number" placeholder="Age"
+                               value="{% if profile.profile.age %}{{profile.profile.age}}{% endif %}"
+                               required>
+                    </div>
+                    <div class="field poppins training_rate relative">
+                        <i class="material-icons input_inner_ico">attach_money</i>
+                        <input class="value_inpt poppins" name="height" type="number" placeholder="Height"
+                               value="{% if profile.profile.height %}{{profile.profile.height}}{% endif %}"
+                               required>
+                    </div>
+                    <div class="field poppins training_rate relative">
+                        <i class="material-icons input_inner_ico">attach_money</i>
+                        <input class="value_inpt poppins" name="weight" type="number" placeholder="Weight"
+                               value="{% if profile.profile.weight %}{{profile.profile.weight}}{% endif %}"
+                               required>
+                    </div>
+                    <div class="field poppins training_rate relative">
+                        <i class="material-icons input_inner_ico">attach_money</i>
+                        <input class="value_inpt poppins" name="experience" type="number" placeholder="Experience"
+                               value="{% if profile.profile.experience %}{{profile.profile.experience}}{% endif %}"
+                               required>
+                    </div>
+
+                    {% if profile.user.active_user_role.name == "Fitness Professional" %}
+                    <div class="field poppins training_rate relative">
+                        <i class="material-icons input_inner_ico">attach_money</i>
+                        <input class="value_inpt poppins" name="training_rates" type="number"
+                               placeholder="Training Rates"
+                               value="{% if profile.profile.training_rates %}{{profile.profile.training_rates}}{% endif %}"
+                               required>
+                    </div>
+                    {% endif %}
+
+                    {% if profile.user.active_user_role.name == "Fitness Model" %}
+                    <div class="field poppins training_rate relative">
+                        <i class="material-icons input_inner_ico">attach_money</i>
+                        <input class="value_inpt poppins" name="compensation" type="number" placeholder="Compensation"
+                               value="{% if profile.profile.compensation %}{{profile.profile.compensation}}{% endif %}"
+                               required>
+                    </div>
+                    {% endif %}
+                    <div class="field poppins training_rate relative">
+                        <i class="material-icons input_inner_ico">attach_money</i>
+                        <input class="value_inpt poppins" name="languages" type="text" placeholder="Languages"
+                               value="{% if profile.profile.languages %}{{profile.profile.languages}}{% endif %}"
+                               required>
+                    </div>
+                    <div class="field poppins training_rate relative">
+                        <i class="material-icons input_inner_ico">attach_money</i>
+                        <input class="value_inpt poppins" name="body_type" type="text" placeholder="Body Type"
+                               value="{% if profile.profile.body_type %}{{profile.profile.body_type}}{% endif %}"
+                               required>
+                    </div>
+
+                    <div class="field poppins age">
+
+                        <button class="update_btn" type="submit">update
+                        </button>
+                    </div>
+                </form>
+                {% endif %}
+
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="profile_details_header">
+    <div class="profile_header_container">
+        <button class="tabButton active" onclick="UpdateNavTab('MyInfo_Tab' , 'section_my_info')" id="MyInfo_Tab"
+                href="#">My Info
+        </button>
+        <button class="tabButton" onclick="UpdateNavTab('AboutMe_Tab' , 'AboutMe_Section')" id="AboutMe_Tab"
+                href="#">About Me
+        </button>
+        <button class="tabButton" onclick="UpdateNavTab('PortFolio_Tab' , 'PortFolio_Section');randerMyFunction()"
+                id="PortFolio_Tab"
+                href="#">Portfolio
+        </button>
+        <button class="tabButton" onclick="UpdateNavTab('Ads_Tab' , 'Ads_Section')" id="Ads_Tab"
+                href="#">ads
+        </button>
+        <button class="tabButton " onclick="UpdateNavTab('ContactMe_Tab' , 'ContactMe_Section')"
+                id="ContactMe_Tab" >Contact me
+        </button>
+    </div>
+</section>
+<section id="Profile_complete_details">
+    <section class="profile_detail_content active container" id="section_my_info">
+        <div class="container-fluid">
+            <div class="myinfocontainer relative active" id="my_info_show_able" style="width: 100%;max-width: 100%">
+                {% if profile.user.active_user_role.name == "Fitness Center" %}
+                <div class="row">
+                    <div class="col-sm-6 col-12">
+                        <h3 class="title poppins">Specialties:
+                            <span class="data edit_able_data">{{profile.profile.specialities}}</span>
+                        </h3>
+                    </div>
+                    <div class="col-sm-6 col-12">
+                        <h3 class="title poppins">Language:
+                            <span class="data edit_able_data">{{profile.profile.languages}}</span>
+                        </h3>
+                    </div>
+                    <div class="col-sm-6 col-12">
+                        <h3 class="title poppins">Hours of Operation:
+                            <span class="data edit_able_data">{{profile.profile.hours_of_operation}}</span>
+                        </h3>
+                    </div>
+                    <div class="col-sm-6 col-12">
+                        <h3 class="title poppins">Awards & Accomplishment:
+                            <span class="data edit_able_data">{{profile.profile.awards}}</span>
+                        </h3>
+                    </div>
+
+                    <div class="col-sm-6 col-12">
+                        <h3 class="title poppins">Our Fitness Pros:</h3>
+                        {% for obj in pros %}
+                        <img src="{{obj.image.url}}" style="width: 50px; height: 50px;margin-right: 10px">
+                        {% endfor %}
+                    </div>
+
+                    {% if user.is_authenticated %}
+                    <div class="col-12">
+                        <div class="edit_ico" id="myInfoeditbtn" style="margin-right: 70px"
+                             onclick="Show_Edit_Details('my_info_show_able' ,'my_info_editable' );initTagsInput()">
+                            <i class="material-icons">create</i>
+                        </div>
+                    </div>
+                    {% endif %}
+                </div>
+                {% endif %}
+
+                {% if profile.user.active_user_role.name == "Fitness Professional" %}
+                <div class="row">
+                    <div class="col-sm-6 col-12">
+                        <h3 class="title poppins">Business Name:
+                            <span class="data edit_able_data">{{profile.profile.business_name}}</span>
+                        </h3>
+                    </div>
+                    <div class="col-sm-6 col-12">
+                        <h3 class="title poppins">Degree/Diplomas:
+                            <span class="data edit_able_data">{{profile.profile.degree}}</span>
+                        </h3>
+                    </div>
+                    <div class="col-sm-6 col-12">
+                        <h3 class="title poppins">Client Preferences:
+                            <span class="data edit_able_data">{{profile.profile.client_preferences}}</span>
+                        </h3>
+                    </div>
+                    <div class="col-sm-6 col-12">
+                        <h3 class="title poppins">Certifications:
+                            <span class="data edit_able_data">{{profile.profile.certifications}}</span>
+                        </h3>
+                    </div>
+
+                    <div class="col-sm-6 col-12">
+                        <h3 class="title poppins">Availability for in-home training:
+                            <span class="data edit_able_data">
+                               {% if profile.profile.availability_for_in_home_training == 1 %}Yes{% endif %}
+                               {% if profile.profile.availability_for_in_home_training == 2 %}No{% endif %}
+                               {% if profile.profile.availability_for_in_home_training == 0 %}-{% endif %}
+                           </span>
+                        </h3>
+                    </div>
+
+                    <div class="col-sm-6 col-12">
+                        <h3 class="title poppins">Specialities:
+                            <span class="data edit_able_data">
+                               {{ profile.profile.specialities }}
+                           </span>
+                        </h3>
+                    </div>
+
+                    <div class="col-sm-6 col-12">
+                        <h3 class="title poppins">Fitness Awards:
+                            <span class="data edit_able_data">
+                               {{ profile.profile.fitness_awards }}
+                           </span>
+                        </h3>
+                    </div>
+
+                    <div class="col-sm-6 col-12">
+                        <h3 class="title poppins">Activities:
+                            <span class="data edit_able_data">
+                               {{ profile.profile.activities }}
+                           </span>
+                        </h3>
+                    </div>
+
+                    <div class="col-sm-6 col-12">
+                        <h3 class="title poppins">Sponsor Brands:
+                            <span class="data edit_able_data">
+                               {{ profile.profile.sponsor_brands }}
+                           </span>
+                        </h3>
+                    </div>
+
+                    <div class="col-sm-6 col-12">
+                        <h3 class="title poppins">Diet type:
+                            <span class="data edit_able_data">
+                               {{ profile.profile.diet_type }}
+                           </span>
+                        </h3>
+                    </div>
+
+                    <div class="col-12">
+                        <div class="edit_ico" id="myInfoeditbtn" style="margin-right: 70px"
+                             onclick="Show_Edit_Details('my_info_show_able' ,'my_info_editable' )">
+                            <i class="material-icons">create</i>
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+
+                {% if profile.user.active_user_role.name == "Fitness Model" %}
+                <div class="row">
+                    <div class="col-sm-6 col-12">
+                        <h3 class="title poppins">Ethnicity:
+                            <span class="data edit_able_data">{{profile.profile.ethnicity}}</span>
+                        </h3>
+                    </div>
+                    <div class="col-sm-6 col-12">
+                        <h3 class="title poppins">Tattoos:
+                            <span class="data edit_able_data">{{profile.profile.tattoos}}</span>
+                        </h3>
+                    </div>
+                    <div class="col-sm-6 col-12">
+                        <h3 class="title poppins">Skin Tone:
+                            <span class="data edit_able_data">{{profile.profile.skin_tone}}</span>
+                        </h3>
+                    </div>
+
+                    <div class="col-sm-6 col-12">
+                        <h3 class="title poppins">Piercing
+                            <span class="data edit_able_data">
+                               {% if profile.profile.piercing == 1 %}Yes{% endif %}
+                               {% if profile.profile.piercing == 2 %}No{% endif %}
+                               {% if profile.profile.piercing == 0 %}-{% endif %}
+                           </span>
+                        </h3>
+                    </div>
+
+                    <div class="col-sm-6 col-12">
+                        <h3 class="title poppins">Eye Color:
+                            <span class="data edit_able_data">
+                               {{ profile.profile.eye_color }}
+                           </span>
+                        </h3>
+                    </div>
+
+                    <div class="col-sm-6 col-12">
+                        <h3 class="title poppins">Interested In:
+                            <span class="data edit_able_data">
+                               {{ profile.profile.interested_in }}
+                           </span>
+                        </h3>
+                    </div>
+
+                    <div class="col-sm-6 col-12">
+                        <h3 class="title poppins">Hair Length:
+                            <span class="data edit_able_data">
+                               {% if profile.profile.hair_length == 1 %}Long{% endif %}
+                               {% if profile.profile.hair_length == 2 %}Short{% endif %}
+                               {% if profile.profile.hair_length == 3 %}Medium{% endif %}
+                               {% if profile.profile.hair_length == 0 %}-{% endif %}
+                           </span>
+                        </h3>
+                    </div>
+
+                    <div class="col-sm-6 col-12">
+                        <h3 class="title poppins">Modelling Interests:
+                            <span class="data edit_able_data">
+                               {{ profile.profile.modeling_interests }}
+                           </span>
+                        </h3>
+                    </div>
+
+                    <div class="col-sm-6 col-12">
+                        <h3 class="title poppins">Working With Media:
+                            <span class="data edit_able_data">
+                               {% if profile.profile.working_with_media == 1 %}Yes{% endif %}
+                               {% if profile.profile.working_with_media == 2 %}No{% endif %}
+                               {% if profile.profile.working_with_media == 0 %}-{% endif %}
+                           </span>
+                        </h3>
+                    </div>
+
+                    {% if user.is_authenticated %}
+
+                    <div class="col-12">
+                        <div class="edit_ico" id="myInfoeditbtn" style="margin-right: 70px"
+                             onclick="Show_Edit_Details('my_info_show_able' ,'my_info_editable' )">
+                            <i class="material-icons">create</i>
+                        </div>
+                    </div>
+
+                    {% endif %}
+                </div>
+                {% endif %}
+
+            </div>
+
+            <div class="my_info_edit_container " id="my_info_editable">
+                <h3>Edit Your Info Tab Information</h3>
+                {% if profile.user.active_user_role.name == "Fitness Center" %}
+                <form method="POST" action="{% url 'client:update_info_tab' %}" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="row">
+
+                        <div class="col-sm-6 col-12">
+                            <input type="text" class="form-control" id="tagsInput12" style="width: 100%" required placeholder="Specialities"
+                                   name="specialities" value="{{profile.profile.specialities}}" data-role="tagsinput" />
+                        </div>
+                        <div class="col-sm-6 col-12">
+
+                            <input type="text" class="form-control" placeholder="Languages" style="width: 100%" required
+                                   name="languages" value="{{profile.profile.languages}}" data-role="tagsinput" />
+
+                        </div>
+                        <div class="col-sm-6 col-12">
+                            <input class="form-control" placeholder="Hours Of Operation" name="hours_of_operation"
+                                   value="{{profile.profile.hours_of_operation}}" required>
+                        </div>
+                        <div class="col-sm-6 col-12">
+                            <input class="form-control" placeholder="Awards & Accomplishment" name="awards"
+                                   value="{{profile.profile.awards}}" required  >
+                        </div>
+                        <div class="col-sm-6 col-12">
+                            <input type="file" class="form-control" placeholder="Profile Image" name="profile_image">
+                        </div>
+                        <div class="col-sm-6 col-12">
+                            <input type="file" class="form-control" placeholder="Our Fitness Pros" multiple
+                                   name="fitnesspros">
+                        </div>
+                        <div class="col-sm-12 col-12 text-right mt-3">
+                            <button class="update_btn poppins" type="submit">Update
+                            </button>
+                            <button class="update_btn poppins" type="button"
+                                    onclick="Show_Edit_Details('my_info_show_able' ,'my_info_editable' )">Cancel
+                            </button>
+                        </div>
+                    </div>
+                </form>
+                {% endif %}
+
+                {% if profile.user.active_user_role.name == "Fitness Professional" %}
+
+                <form method="POST" action="{% url 'client:update_info_tab' %}" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="row">
+
+                        <div class="col-sm-6 col-12">
+                            <input class="form-control" placeholder="Business Name" name="business_name"
+                                   data-role="tagsinput"
+                                   value="{{profile.profile.business_name}}" required>
+                        </div>
+                        <div class="col-sm-6 col-12">
+                            <input class="form-control" placeholder="Comma Separated Degrees/Diploma" name="degree"
+                                   data-role="tagsinput"
+                                   value="{{profile.profile.degree}}" required>
+                        </div>
+                        <div class="col-sm-6 col-12">
+                            <input class="form-control" placeholder="Comma Separated Client Preferences"
+                                   name="client_preferences"
+                                   value="{{profile.profile.client_preferences}}" required>
+                        </div>
+                        <div class="col-sm-6 col-12">
+                            <input class="form-control" placeholder="Comma Separated Certifications"
+                                   name="certifications"
+                                   value="{{profile.profile.certifications}}" required>
+                        </div>
+                        <div class="col-sm-6 col-12">
+                            <select class="form-control" name="availability_for_in_home_training" required>
+                                <option value="0" disabled selected>Available for in-home training?</option>
+                                <option value="1" selected {% if profile.profile.availability_for_in_home_training == 1 %}selected{% endif %}>Yes, available
+                                </option>
+                                <option value="2" selected {% if profile.profile.availability_for_in_home_training == 2 %}selected{% endif %}>No, Join my place
+                                </option>
+
+                            </select>
+                        </div>
+                        <div class="col-sm-6 col-12">
+                            <input class="form-control" placeholder="Comma Separated Specialities" name="specialities"
+                                   value="{{profile.profile.specialities}}" required>
+                        </div>
+                        <div class="col-sm-6 col-12">
+                            <input class="form-control" placeholder="Comma Separated Awards" name="fitness_awards"
+                                   value="{{profile.profile.fitness_awards}}" required>
+                        </div>
+                        <div class="col-sm-6 col-12">
+                            <input class="form-control" placeholder="Comma Separated Activities" name="activities"
+                                   value="{{profile.profile.activities}}" required>
+                        </div>
+                        <div class="col-sm-6 col-12">
+                            <input class="form-control" placeholder="Comma Separated Sponsor Brands"
+                                   name="sponsor_brands"
+                                   value="{{profile.profile.sponsor_brands}}" required>
+                        </div>
+                        <div class="col-sm-6 col-12">
+                            <input class="form-control" placeholder="Comma Separated Diet Types" name="diet_type"
+                                   value="{{profile.profile.diet_type}}" required>
+                        </div>
+                        <div class="col-sm-6 col-12">
+                            <input type="file" class="form-control" placeholder="Select Profile Image" multiple
+                                   name="profile_image">
+                        </div>
+
+                        <div class="col-sm-12 col-12 text-right mt-3">
+                            <button class="update_btn poppins" type="submit">Update
+                            </button>
+                            <button class="update_btn poppins" type="button"
+                                    onclick="Show_Edit_Details('my_info_show_able' ,'my_info_editable' )">Cancel
+                            </button>
+                        </div>
+                    </div>
+                </form>
+                {% endif %}
+
+                {% if profile.user.active_user_role.name == "Fitness Model" %}
+
+                <form method="POST" action="{% url 'client:update_info_tab' %}" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="row">
+
+                        <div class="col-sm-6 col-12">
+                            <input class="form-control" placeholder="Modelling Interests" name="modeling_interests"
+                                   value="{{profile.profile.modeling_interests}}" required>
+                        </div>
+                        <div class="col-sm-6 col-12">
+                            <input class="form-control" placeholder="Eye Color" name="eye_color"
+                                   value="{{profile.profile.eye_color}}" required>
+                        </div>
+                        <div class="col-sm-6 col-12">
+                            <input class="form-control" placeholder="Type Ethnicity" name="ethnicity"
+                                   value="{{profile.profile.ethnicity}}" required>
+                        </div>
+                        <div class="col-sm-6 col-12">
+                            <input class="form-control" placeholder="Type Tattoos" name="tattoos"
+                                   value="{{profile.profile.tattoos}}" required>
+                        </div>
+                        <div class="col-sm-6 col-12">
+                            <select class="form-control" name="piercing" required>
+                                <option value="0" disabled selected>Select Piercing</option>
+                                <option value="1" selected {% if profile.profile.piercing == 1 %}selected{% endif %}>
+                                    Yes
+                                </option>
+                                <option value="2" selected {% if profile.profile.piercing == 2 %}selected{% endif %}>No
+                                </option>
+
+                            </select>
+                        </div>
+                        <div class="col-sm-6 col-12">
+                            <select class="form-control" name="hair_length" required>
+                                <option value="0" disabled selected>Select Hair Length</option>
+                                <option value="1" selected {% if profile.profile.hair_length == 1 %}selected{% endif %}>
+                                    Long Hair
+                                </option>
+                                <option value="2" selected {% if profile.profile.hair_length == 2 %}selected{% endif %}>
+                                    Short Hair
+                                </option>
+                                <option value="3" selected {% if profile.profile.hair_length == 3 %}selected{% endif %}>
+                                    Medium Hair
+                                </option>
+
+                            </select>
+                        </div>
+                        <div class="col-sm-6 col-12">
+                            <input type="file" class="form-control" placeholder="Select Profile Image" multiple
+                                   name="profile_image">
+                        </div>
+
+                        <div class="col-sm-12 col-12 text-right mt-3">
+                            <button class="update_btn poppins" type="submit">Update
+                            </button>
+                            <button class="update_btn poppins" type="button"
+                                    onclick="Show_Edit_Details('my_info_show_able' ,'my_info_editable' )">Cancel
+                            </button>
+                        </div>
+                    </div>
+                </form>
+                {% endif %}
+
+
+            </div>
+        </div>
+    </section>
+
+    <section class="profile_detail_content " id="AboutMe_Section">
+        <div class="container">
+            <div class="profile_c_container about_me_container relative" style="width: 100%;max-width: 100%">
+                <div class="active" id="show_able_aboutme_content">
+    {% if user.is_authenticated %}
+                    <div class="edit_ico " style="margin-right: 70px;top: 0;"
+                         onclick="Show_Edit_Details('show_able_aboutme_content' ,'edit_able_aboutme_content' )">
+                        <i class="material-icons">create</i>
+                    </div>
+                    {% endif %}
+                    <p class="poppins" style="font-size: 16px; font-weight: lighter; color: #353232;">
+                        <span class="tag_line poppins">About Me/My Training Methods and Styles: </span>{{profile.profile.about_us}}
+                    </p>
+                    {% if profile.profile.video_code %}
+                    <div>
+                           <video src="{{profile.profile.video_code}}" controls class="blogImage" style="width: 100%;">
+                    Your browser does not support the video tag.
+                </video>
+                    </div>
+                    {% endif %}
+                    <form method="POST" action="{% url 'client:about_rating_submit' %}">
+                        {% csrf_token %}
+                        <div style="margin-top: 30px;">Rate This Profile</div>
+
+                        <style>
+                            .txt-center {
+                              text-align: center;
+                            }
+                            .hide {
+                              display: none;
+                            }
+
+                            .clear {
+                              float: none;
+                              clear: both;
+                            }
+
+                            .rating {
+                                width: 120px;
+                                unicode-bidi: bidi-override;
+                                direction: rtl;
+                                text-align: center;
+                                position: relative;
+                            }
+
+                            .rating > label {
+                                float: right;
+                                display: inline;
+                                padding: 0;
+                                margin: 0;
+                                position: relative;
+                                width: 1.1em;
+                                cursor: pointer;
+                                color: #000;
+                            }
+
+                            .rating > label:hover,
+                            .rating > label:hover ~ label,
+                            .rating > input.radio-btn:checked ~ label {
+                                color: transparent;
+                            }
+
+                            .rating > label:hover:before,
+                            .rating > label:hover ~ label:before,
+                            .rating > input.radio-btn:checked ~ label:before,
+                            .rating > input.radio-btn:checked ~ label:before {
+                                content: "\2605";
+                                position: absolute;
+                                left: 0;
+                                color: #FFD700;
+                            }
+
+                        </style>
+
+                         <div class="rating">
+                            <input id="star5" name="star" type="radio" value="5" class="radio-btn hide" />
+                            <label for="star5" >☆</label>
+                            <input id="star4" name="star" type="radio" value="4" class="radio-btn hide" />
+                            <label for="star4" >☆</label>
+                            <input id="star3" name="star" type="radio" value="3" class="radio-btn hide" />
+                            <label for="star3" >☆</label>
+                            <input id="star2" name="star" type="radio" value="2" class="radio-btn hide" />
+                            <label for="star2" >☆</label>
+                            <input id="star1" name="star" type="radio" value="1" class="radio-btn hide" />
+                            <label for="star1" >☆</label>
+                            <div class="clear"></div>
+                        </div>
+
+                        <div class="field poppins">
+                            <button class="update_btn mt_10" type="submit">Post</button>
+                        </div>
+                        </form>
+
+                </div>
+                <form id="edit_able_aboutme_content" method="POST" action="{% url 'client:about_info_update' %}">
+                    {% csrf_token %}
+
+                    <textarea class="content poppins" name="about_us" id="about_detail"
+                              rows="8"
+                              placeholder="About Your Self" required>{{profile.profile.about_us}}</textarea>
+
+                    <input type="text" class="form-control content poppins mt_25" name="video_code" id="videocode"
+                           placeholder="Enter Your Video Code" value="{{profile.profile.video_code}}">
+
+                    <div class="field poppins age edit ">
+                        <button class="update_btn mt_10" type="submit">update</button>
+                        <button class="update_btn mt_10" type="button"
+                                onclick="Show_Edit_Details('show_able_aboutme_content' ,'edit_able_aboutme_content' )">
+                            cancel
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+        </div>
+    </section>
+
+
+    <section class="profile_detail_content mt_25" id="PortFolio_Section">
+        <div class="portfolio_container">
+            <div id="portfolio_show_able_content" class="active relative">
+                {% if user.is_authenticated %}
+                <div class="edit_ico" style="top: 0;right: 50px;"
+                     onclick="Show_Edit_Details('portfolio_show_able_content','portfolio_edit_able_content' )">
+                    <i class="material-icons">create</i>
+                </div>
+                {% endif %}
+                <div class="heading mt_35">
+                    <h2 class="delirium portfolio_heading fs_d_gray">Success stories</h2>
+                </div>
+                {% if profile.success_stories %}
+                <div class="slider_container mt_35">
+                    <div class="thingsSlider" id="wrapper">
+                            {% for obj in profile.success_stories %}
+                                <div class="items">
+                                    <img src="{{obj.before}}" style="float: left" class="thingsSliderImg">
+                                    <img src="{{obj.after}}" style="float: right" class="thingsSliderImg">
+                                    <p>{{obj.description}}</p>
+                                </div>
+                            {% endfor %}
+                    </div>
+
+                </div>
+                {% else %}
+                <div>No Success Stories Added Yet!</div>
+                {% endif %}
+
+                <div class="heading mt_35">
+                    <h2 class="delirium portfolio_heading fs_d_gray">Gallery</h2>
+                </div>
+
+                {% if profile.gallery %}
+
+                <div class="gallery_imgs_container">
+                    {% for obj in profile.gallery %}
+                    <div class="gallery_img_card" style="background-image: url('{{obj.image.url}}');"></div>
+                    {% endfor %}
+                </div>
+                {% else %}
+                <div>No Images Added Yet!</div>
+                {% endif %}
+            </div>
+            <div id="portfolio_edit_able_content" class="">
+                <form method="POST" action="{% url 'client:portfolio_update' %}" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="upload_file_field">
+                        <input type="file" class="form-control" name="img_name" id="image_input" required>
+                        <label for="image_input" class="poppins file_upload_label"
+                               style="margin-top: 7px;">Browse</label>
+                        <span class="poppins file_name" id="file_uploaded_name">No File Choosen</span>
+                    </div>
+                      <div class="upload_file_field mt_10">
+                        <input type="file" class="form-control" name="img_name1" id="image_input1" required>
+                        <label for="image_input1" class="poppins file_upload_label"
+                               style="margin-top: 7px;">Browse</label>
+                        <span class="poppins file_name" id="file_uploaded_name1">No File Choosen</span>
+                    </div>
+                    <div class="description mt_10">
+                        <textarea class="form-control" required placeholder="Description for Success Story..."
+                                  name="description"
+                                  id="description"></textarea>
+                    </div>
+                    <div class="field description mt_10">
+                        <input class="form-control" type="text" name="instagram_link" placeholder="Instagram Link">
+
+                    </div>
+                    <div class="field poppins age edit ">
+                        <button class="update_btn mt_10"
+                                type="submit">
+                            update
+                        </button>
+                        <button class="update_btn mt_10" type="button"
+                                onclick="Show_Edit_Details('portfolio_show_able_content','portfolio_edit_able_content');randerMyFunction()">
+                            cancel
+                        </button>
+                    </div>
+
+                </form>
+
+
+                <hr>
+                <div>
+                    <h2>Update Gallery Images</h2>
+                    <br>
+                    <form method="POST" action="{% url 'client:portfolio_update_gallery' %}"
+                          enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <div class="upload_file_field">
+                            <input type="file" class="form-control" name="img_name" id="image_input2" required multiple>
+                            <label for="image_input2" class="poppins file_upload_label"
+                                   style="margin-top: 7px;">Browse</label>
+                            <span class="poppins file_name" id="file_uploaded_name2">No File Choosen</span>
+                        </div>
+                        <div class="field poppins age edit ">
+                            <button class="update_btn mt_10"
+                                    type="submit">
+                                update
+                            </button>
+                            <button class="update_btn mt_10" type="button"
+                                    onclick="Show_Edit_Details('portfolio_show_able_content','portfolio_edit_able_content');randerMyFunction()">
+                                cancel
+                            </button>
+                        </div>
+                    </form>
+                    <div class="row">
+                        {% for obj in profile.gallery %}
+                        <div class="col-sm-3 col-12 mt-5">
+                            <div class="card img_card"
+                                 style="background-image: url('{{obj.image.url}}');min-height: 200px;">
+                                <div class="edit_ico" style="z-index: 1;width: 40px;height: 40px;">
+                                    <form method="POST" action="{% url 'client:delete_portfolio_gallery_image' %}">
+                                        {% csrf_token %}
+                                        <input type="hidden" name="id" value="{{obj.id}}">
+                                        <button type="submit" style="background: none; border: none;"><i
+                                                class="material-icons" style="font-size: 25px">delete</i></button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <section class="profile_detail_content mt_35" id="Ads_Section">
+        <div class="container">
+            <div class="active relative" id="adss_show_able_content" style="width: 100%;max-width: 100%">
+                {% if user.is_authenticated %}
+                {% if profile.ads_info %} {% else %}
+                <div class="edit_ico" style="top: 0;right: 50px;"
+                                 onclick="Show_Edit_Details('adss_show_able_content','adss_edit_able_content' )">
+                                <i class="material-icons">create</i>
+                            </div>
+                {% endif %}
+                {% endif %}
+                <div class="row">
+                    {% if profile.ads_info %}
+                    {% for obj in profile.ads_info %}
+                    <div class="col-sm-4 col-12">
+                        <div class="ad_card" style="background-image: url('{{obj.ad_info.image.url}}');">
+                            {% if user.is_authenticated %}
+                            <div class="edit_ico" style="top: 0;right: 50px;"
+                                 onclick="Show_Edit_Details('adss_show_able_content','adss_edit_able_content' )">
+                                <i class="material-icons">create</i>
+                            </div>
+                            {% endif %}
+                            <div class="ads_card_banner poppins">
+                                <h3 style="color: #ffffff">{{obj.ad_info.session_name}} <span class="ad_price right">{{obj.ad_info.price}}$</span>
+                                </h3>
+                                <p style="color: #ffffff">{{obj.ad_info.activity}}<span class="see_desc right" data-toggle="modal" data-target="#myModal{{obj.id}}">See Description</span>
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="modal fade" id="myModal{{obj.id}}">
+                            <div class="modal-dialog modal-lg">
+                                <div class="modal-content">
+
+                                    <!-- Modal Header -->
+                                    <div class="modal-header">
+                                        <h4 class="modal-title poppins">Modal Heading</h4>
+                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                    </div>
+
+                                    <!-- Modal body -->
+                                    <div class="modal-body">
+                                        <div class="row">
+
+                                            <div class="col-sm-6 col-12">
+                                                <input class="form-control" placeholder="Session Name" disabled value="{{obj.ad_info.session_name}}" name="session_name">
+                                            </div>
+                                            <div class="col-sm-6 col-12">
+                                                <input class="form-control" placeholder="Activities" value="{{obj.ad_info.activity}}" name="activities" disabled>
+                                            </div>
+                                            <div class="col-sm-6 col-12">
+
+                                                <select class="form-control" name="intensity_level" disabled {{obj.ad_info.intensity_level}}>
+                                                    <option value="0" disabled selected>Select Intensity Level</option>
+                                                    <option value="1" selected>High</option>
+                                                    <option value="2" selected>Medium</option>
+                                                    <option value="3" selected>Low</option>
+
+                                                </select>
+                                            </div>
+                                            <div class="col-sm-6 col-12">
+                                                <select class="form-control" name="days" disabled {{obj.ad_info.days}}>
+                                                    <option value="0" disabled selected>Select Days</option>
+                                                    <option value="1" selected>1 Day</option>
+                                                    <option value="2" selected>3 Day</option>
+                                                    <option value="3" selected>1 Week</option>
+                                                    <option value="4" selected>1 Month</option>
+                                                    <option value="5" selected>3 Month</option>
+
+                                                </select>
+                                            </div>
+                                            <div class="col-sm-6 col-12">
+                                                <input class="form-control" placeholder="Time" disabled name="time" value="{{obj.ad_info.time}}">
+                                            </div>
+                                            <div class="col-sm-6 col-12">
+                                                <input class="form-control" placeholder="Location" disabled name="location" value="{{obj.ad_info.location}}">
+                                            </div>
+                                            <div class="col-sm-6 col-12">
+                                                <input class="form-control" placeholder="Description" disabled name="description" value="{{obj.ad_info.description}}">
+                                            </div>
+                                            <div class="col-sm-6 col-12">
+                                                <input class="form-control" placeholder="Price" name="price" disabled type="number" value="{{obj.ad_info.price}}">
+                                            </div>
+                                            <div class="col-sm-6 col-12">
+                                                <input class="form-control" placeholder="Spots Available" disabled name="spots_available" value="{{obj.ad_info.spots_available}}">
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+                                    <!-- Modal footer -->
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+
+
+
+                    </div>
+                    {% endfor %}
+                    {% else %}
+                    <div style="text-align: center">No Information is available</div>
+                    {% endif %}
+                </div>
+            </div>
+            <div id="adss_edit_able_content">
+                <form method="POST" action="{% url 'client:ads_info_tab_update' %}" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="row">
+
+                        <div class="col-sm-6 col-12">
+                            <input class="form-control" placeholder="Session Name" name="session_name"
+                                   required>
+                        </div>
+                        <div class="col-sm-6 col-12">
+                            <input class="form-control" placeholder="Activities" name="activities"
+                                   required>
+                        </div>
+                        <div class="col-sm-6 col-12">
+
+                            <select class="form-control" name="intensity_level" required>
+                                <option value="0" disabled selected>Select Intensity Level</option>
+                                <option value="1" selected>High</option>
+                                <option value="2" selected>Medium</option>
+                                <option value="3" selected>Low</option>
+
+                            </select>
+                        </div>
+                        <div class="col-sm-6 col-12">
+                            <select class="form-control" name="days" required>
+                                <option value="0" disabled selected>Select Days</option>
+                                <option value="1" selected>1 Day</option>
+                                <option value="2" selected>3 Day</option>
+                                <option value="3" selected>1 Week</option>
+                                <option value="4" selected>1 Month</option>
+                                <option value="5" selected>3 Month</option>
+
+                            </select>
+                        </div>
+                        <div class="col-sm-6 col-12">
+                            <input class="form-control" placeholder="Time" name="time"
+                                   required>
+                        </div>
+                        <div class="col-sm-6 col-12">
+                            <input class="form-control" placeholder="Location" name="location"
+                                   required>
+                        </div>
+                        <div class="col-sm-6 col-12">
+                            <input class="form-control" placeholder="Description" name="description"
+                                   required>
+                        </div>
+                        <div class="col-sm-6 col-12">
+                            <input class="form-control" placeholder="Price" name="price" type="number"
+                                   required>
+                        </div>
+                        <div class="col-sm-6 col-12">
+                            <input class="form-control" placeholder="Spots Available" name="spots_available"
+                                   required>
+                        </div>
+                        <div class="col-sm-6 col-12">
+                            <input type="file" class="form-control" placeholder="Select Photo" name="image" required>
+                        </div>
+
+                        <div class="col-sm-12 col-12 text-right mt-3">
+                            <button class="update_btn poppins" type="submit">Update
+                            </button>
+                            <button class="update_btn poppins" type="button"
+                                    onclick="Show_Edit_Details('adss_show_able_content' ,'adss_edit_able_content' )">Cancel
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <section class="profile_detail_content" id="ContactMe_Section">
+        <div class="container-fluid" style="margin-top: 40px">
+            <div class="active relative" id="contact_info_show_able">
+                <div class=" relative mt_35">
+                    <div class="row">
+                        {% if user.is_authenticated %}
+                        <div class="col-sm-12 col-12">
+                            <div class="edit_ico" style="margin-right: 70px"
+                                 onclick="Show_Edit_Details('contact_info_show_able' ,'contact_info_editable' )">
+                                <i class="material-icons">create</i>
+                            </div>
+                        </div>
+                        {% endif %}
+                        <div class="col-sm-4 col-12">
+                            <div class="address_panel poppins">
+                                <div class="address_bar ">
+                                    <i class="material-icons fs_red">location_on</i>
+                                    <h3>{{profile.profile.user.time_zone_info}}</h3>
+                                </div>
+                                <div class="address_bar ">
+                                    <i class="material-icons fs_red">location_on</i>
+                                    <h3>{{profile.profile.address}}</h3>
+                                </div>
+                                <div class="address_bar ">
+                                    <i class="material-icons fs_red">call</i>
+                                    <h3>{{profile.profile.phone_number}}</h3>
+                                </div>
+                                <div class="address_bar ">
+                                    {% if profile.profile.facebook %}<a href="{{profile.profile.facebook}}"><i
+                                        class="fa fa-facebook fa_icon_class" style="padding: 8px 12px;"></i></a>{% endif %}
+                                    {% if profile.profile.instagram %}<a href="{{profile.profile.instagram}}"><i
+                                        class="fa fa-instagram fa_icon_class" style="padding: 8px 12px;"></i></a>{% endif %}
+                                    {% if profile.profile.youtube %}<a href="{{profile.profile.youtube}}"><i
+                                        class="fa fa-youtube fa_icon_class" style="padding: 8px 12px;"></i></a>{% endif %}
+                                    {% if profile.profile.twitter %}<a href="{{profile.profile.twitter}}"><i
+                                        class="fa fa-twitter fa_icon_class" style="padding: 8px 12px;"></i></a>{% endif %}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-8 col-12">
+                            <div class="">
+                                <div class="row">
+                                    <div class="col-sm-3 col-12 field poppins ">
+                                        <input class="form-control poppins m-0" type="text" placeholder="Name" required>
+                                    </div>
+
+
+                                    <div class="col-sm-3 col-12 field poppins ">
+                                        <input class="form-control poppins m-0" type="email" placeholder="Email"
+                                               required>
+                                    </div>
+
+
+                                    <div class="col-sm-3 col-12 field poppins ">
+                                        <input class="form-control poppins m-0" type="text" placeholder="Subject"
+                                               required>
+                                    </div>
+
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-sm-6 col-12 field poppins ">
+                                        <textarea class="form-control textarea m-0" rows="5" name="hello" id=""
+                                                  placeholder="Description"></textarea>
+                                    </div>
+                                    <div class="col-sm-3 col-12 field poppins">
+                                        <button class="update_btn mt_10" style="position: absolute;bottom: 0;">Contact
+                                            Me
+                                        </button>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="contact_info_editable">
+                <form method="POST" action="{% url 'client:update_contact_info_tab' %}" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="row">
+
+
+                        <div class="col-sm-6 col-12">
+                            <div class="col-12">
+                                <input class="form-control" placeholder="Name of Gym-Studio mostly used"
+                                       value="{{profile.profile.gym_used}}"
+                                       name="gym_used" required>
+                            </div>
+                            <div class="col-12">
+                                <input class="form-control" placeholder="Address" name="address"
+                                       value="{{profile.profile.address}}" required>
+                            </div>
+                            <div class="col-12">
+                                <input class="form-control" placeholder="Phone Number" name="phone_number"
+                                       value="{{profile.profile.phone_number}}" required>
+                            </div>
+                            <div class="col-12">
+                                <input class="form-control" placeholder="Website if any"
+                                       value="{{profile.profile.website}}" name="website">
+                            </div>
+                            <div class="col-12">
+                                <input class="form-control" placeholder="Blog Link" name="blog_link"
+                                       value="{{profile.profile.blog_link}}">
+                            </div>
+                        </div>
+                        <div class="col-sm-6 col-12">
+                            <div class="col-12">
+                                <input class="form-control" placeholder="Facebook" name="facebook"
+                                       value="{{profile.profile.facebook}}">
+                            </div>
+                            <div class="col-12">
+                                <input class="form-control" placeholder="Instagram" name="instagram"
+                                       value="{{profile.profile.instagram}}">
+                            </div>
+                            <div class="col-12">
+                                <input class="form-control" placeholder="Twitter" name="twitter"
+                                       value="{{profile.profile.twitter}}">
+                            </div>
+                            <div class="col-12">
+                                <input class="form-control" placeholder="Youtube" name="youtube"
+                                       value="{{profile.profile.youtube}}">
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-12 text-right mt-3">
+                            <button class="update_btn poppins" type="submit">Update
+                            </button>
+                            <button class="update_btn poppins" type="button"
+                                    onclick="Show_Edit_Details('contact_info_show_able' ,'contact_info_editable' )">
+                                Cancel
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+
+    </section>
+
+
+</section>
+
+
+
+
+<section id="faltu" style="min-height: 10vh;"></section>
+
+
+<style>
+    h1, h2, h3, h4, h5, h6 {
+        color: #000000;
+    }
+    .card{
+        border: none;
+    }
+    .card.center_card .social_links i{
+        font-size: 30px;
+    }
+    section#section_my_info #my_info_show_able.active, section#section_my_info #my_info_editable.edit{
+        grid-template-columns: auto!important;
+    }
+
+    .thingsSliderImg{
+        width: 48% !important;
+        margin-bottom: 10px!important;
+    }
+    .form-control{
+        /*padding: 15px 30px;*/
+        margin-top: 25px;
+        border: none;
+        background-color: #F2F4F9;
+        border-radius: 10px;
+        font-family: 'Poppins', sans-serif;
+    }
+    @media only screen and (max-width: 600px) {
+        .profile_top_container{
+            width: 100%;
+        }
+        .edit_ico_profile{
+            transform: none;
+        }
+
+        .thingsSliderImg{
+            width: 100% !important;
+        }
+    }
+
+    .fa_icon_class {
+        background: #f2f4f9;
+        border-radius: 50%;
+    }
+    .stars {
+        display: inline-block;
+    }
+
+    .stars input {
+        display: none;
+    }
+
+    .stars label {
+        float: right;
+        padding: 2px;
+        font-size: 24px;
+        color: #444;
+        transition: all .2s;
+    }
+
+    .stars label:before {
+        content: '\2605';
+    }
+
+    .stars input:checked ~ label:before {
+        color: #FF1A1A;
+        transition: all .25s;
+    }
+
+    .stars label:hover {
+        transform: scale(1.3);
+    }
+
+
+
+
+
+</style>
+
+
+{% endblock %}
+
+
+{% block js %}
+
+<script src="{% static 'js/profilepage/profile_top_script.js' %}"></script>
+<script src="{% static 'js/profilepage/my_info_script.js' %}"></script>
+<script src="{% static 'js/profilepage/profile_main_scripts.js' %}"></script>
+    <script src="https://cdn.jsdelivr.net/bootstrap.tagsinput/0.4.2/bootstrap-tagsinput.min.js"></script>
+<script type="text/javascript">
+    var x = window.matchMedia("(max-width: 700px)");
+    myFunction(x);
+    x.addListener(randerMyFunction);
+    function randerMyFunction() {
+        setTimeout( () => {
+            $('.slick-next').click();
+        }, 10);
+     }    function myFunction(x) {
+           if (x.matches) { // If media query matches
+               $( document ).ready(function() {
+                   $('.thingsSlider').slick({
+                       slidesToShow: 1,
+                       slidesToScroll: 1,
+                       autoplay: false,
+                       arrows: true,
+                       centerMode: true,
+                   });
+                   $('.autoplay').slick({
+                       slidesToShow: 1,
+                       slidesToScroll: 1,
+                       autoplay: true,
+                       autoplaySpeed: 2000,
+                       arrows: false,
+                   });
+               });
+           } else {
+               $( document ).ready(function() {
+                   $('.thingsSlider').slick({
+                       slidesToShow: 1,
+                       slidesToScroll: 1,
+                       autoplay: false,
+                       arrows: true,
+                       centerMode: true,
+                   });
+                   $('.autoplay').slick({
+                       slidesToShow: 1,
+                       slidesToScroll: 1,
+                       autoplay: true,
+                       autoplaySpeed: 2000,
+                       arrows: false,
+                   });
+               });
+           }
+    }
+
+
+
+
+
+</script>
+
+
+{% endblock js %}

@@ -1,0 +1,53 @@
+{% extends 'client/accounts/form_base.html' %}
+
+{% load static %}
+
+{% block title %}Sign In{% endblock title %}
+
+{% block css %}
+
+<style>
+		.input-group{
+			margin-top: 25px;
+		}
+
+
+</style>
+{% endblock css %}
+
+{% block body %}
+<section id="">
+    <div class="container1">
+        <div class="side-image">
+            <img src="{% static 'images/accounts/log.png' %}" alt="Girl doing exercise">
+        </div>
+        <div class="form">
+            <a href="/"><img src="{% static 'images/accounts/logo.png' %}" alt="Fitstar Pro Logo"></a>
+            <h1>Sign In</h1>
+            <form method="POST" action="{% url 'client:login' %}" onclick="handleFunction('action_login', document.getElementById('username').value, document.getElementById('password').value); return false;">
+                {% csrf_token %}
+
+                <div class="input-field" >
+                    <input type="text" placeholder="Email" name="username" required>
+                </div>
+                <div class="input-field">
+                    <input type="password" placeholder="Password" onmouseover="this.type='text'" onmouseout="this.type='password'" name="password" >
+                    <span onmouseover="this.type='text'" onmouseout="this.type='password'" style="float: right;
+                        margin-top: -33px;
+                        margin-right: 10px;
+                        position: relative;
+                        z-index: 2;" class="fa fa-fw fa-eye field-icon "></span>
+                </div>
+                <div class="input-group col" id="check-field">
+                    
+                    <div class="input-field row-field fr">
+                        <a href="/accounts/forgot_password">Forgot Password?</a>
+                    </div>
+                </div>
+                <button class="btnNext">Sign In</button>
+            </form>
+        </div>
+    </div>
+</section>
+
+{% endblock body %}

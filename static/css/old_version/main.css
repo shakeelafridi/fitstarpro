@@ -1,0 +1,403 @@
+body {
+  margin: 0;
+  padding: 0;
+}
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: "Britannic";
+  color: #fff;
+  margin: 0;
+}
+a {
+  text-decoration: none;
+  cursor: pointer;
+}
+p {
+  color: #8d8f92;
+}
+.container {
+  margin: 0 auto;
+  max-width: 1150px;
+  width: 100%;
+  padding: 0;
+}
+ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.placeholder {
+  text-align: left;
+  font: normal normal normal 20px/30px Poppins;
+  letter-spacing: 0px;
+  color: #231f20;
+}
+#header {
+  width: 100%;
+  padding-top: 15px;
+}
+.logo {
+  display: inline-block;
+  width: 28%;
+}
+.logo img {
+  width: 300px;
+}
+.menu {
+  display: inline-block;
+  width: 71%;
+  vertical-align: middle;
+}
+.navbar {
+  z-index: 999;
+  padding: 0;
+}
+.menu ul,
+.menu a {
+  width: 100%;
+  text-align: right;
+  font: normal normal normal 19px Poppins;
+  color: #939391;
+}
+.menu ul li {
+  display: inline-block;
+  padding: 0 0 0 20px;
+}
+/* .menu ul li:hover{
+        border-bottom: 2px solid #FF1A1A;
+    } */
+.menu ul li .btnLogin,
+.menu ul li .btnJoin {
+  background: #5a5a5a 0% 0% no-repeat padding-box;
+  border-radius: 30px;
+  padding: 6px 23px;
+  color: #fff;
+}
+.ham {
+  display: none;
+}
+#banner {
+  background: #f2f4f9 0% 0% no-repeat padding-box;
+}
+.leftSide {
+  display: inline-block;
+  width: 72%;
+  vertical-align: middle;
+}
+.leftSide h1 {
+  font: normal normal bold 5.5vw Britannic;
+  color: #5a5a5a;
+}
+.rightSide {
+  display: inline-block;
+  width: 27%;
+  text-align: right;
+}
+.row {
+  margin: 0;
+}
+.rightSide img {
+  margin-top: 15px;
+  width: 100%;
+  height: 530px;
+}
+#secondarySection {
+  width: 100%;
+  background: #ff1a1a 0% 0% no-repeat padding-box;
+}
+#secondarySection a {
+  text-align: center;
+  color: #fff;
+  border-right: 1px solid #ffffff;
+  border-bottom: 1px solid #ffffff;
+  font-family: DELIRIUM NCV;
+  font-size: 4.7vw;
+}
+#secondarySection a:hover {
+  text-decoration: none;
+  /*background: #5A5A5A 0% 0% no-repeat; */
+}
+#secondarySection .border {
+  border: 2px solid #ffffff;
+  padding: 0px 45px;
+  margin: 0px 45px;
+  text-align: center;
+}
+#whoWeAre {
+  margin: 4% 0 3%;
+}
+.whoLeftSide {
+  display: inline-block;
+  width: 50%;
+}
+.whoLeftSide img {
+  width: 30vw;
+}
+.whoRightSide {
+  display: inline-block;
+  width: 41%;
+  vertical-align: middle;
+  /* padding-left: 80px; */
+}
+.whoRightSide h2 {
+  font: normal normal normal 7.3vw DELIRIUM NCV;
+  color: #5a5a5a;
+}
+.whoRightSide h3 {
+  font: normal normal normal 7.3vw DELIRIUM NEON NCV;
+  color: #ff1a1a;
+}
+.whoRightSide p {
+  text-align: left;
+  font: normal normal normal 16px Poppins;
+  color: #000000;
+}
+.whoRightSide a {
+  text-align: left;
+  font: normal normal 600 20px Poppins;
+  color: #000000;
+}
+.slider {
+  display: inline-block;
+  width: 30%;
+}
+.items {
+  /*width: 30%;*/
+  margin: 10px 50px;
+}
+.items img {
+  /*width: 350px;*/
+  /*height: 250px;*/
+  border-radius: 10px;
+}
+#wrapper {
+  width: 100%;
+  margin: 0 auto;
+}
+#wrapper img {
+  width: 99%;
+}
+.firstpart,
+.secondpart,
+.thirdpart,
+.forthpart {
+  display: inline-block;
+  padding-left: 4%;
+  width: 22%;
+  vertical-align: top;
+  color: #000;
+}
+.slick-next:before,
+.slick-prev:before {
+  color: #ff1a1a !important;
+  font-size: 34px !important;
+  z-index: 1000;
+}
+.slick-prev {
+  left: 38px !important;
+  z-index: 1 !important;
+}
+.slick-next {
+  right: 53px !important;
+}
+#ambassadors h2,
+#sponsors h2 {
+  font: var(--unnamed-font-style-normal) normal
+    var(--unnamed-font-weight-normal) 100px/110px DELIRIUM NCV;
+  letter-spacing: var(--unnamed-character-spacing-0);
+  text-align: center;
+  font: normal normal normal 7vw DELIRIUM NCV;
+  color: #5a5a5a;
+  padding-bottom: 30px;
+}
+#sponsors {
+  background-color: #f2f4f9;
+}
+/* #wrapper1 img {
+  width: 100%;
+  height: 100px;
+} */
+footer p {
+  text-align: left;
+  font: normal 20px/30px Poppins;
+  color: #000;
+  opacity: 1;
+}
+footer img {
+  width: 100%;
+}
+.secondpart h2,
+.thirdpart h2,
+.forthpart h2 {
+  color: #000;
+  font: normal normal 600 20px/30px Poppins;
+  margin: 5% 0;
+}
+.firstpart {
+  width: 28%;
+  padding: 0;
+}
+footer ul li {
+  padding: 2px 0;
+}
+footer ul li a {
+  color: #000;
+  font: normal normal normal 14px Poppins;
+}
+footer ul li a:hover {
+  color: #ff1a1a;
+  border-bottom: 2px solid #ff1a1a;
+  text-decoration: none;
+}
+.thirdpart i {
+  padding: 6px 0;
+  width: 100%;
+}
+.thirdpart i:hover {
+  color: #ff1a1a;
+}
+.fa-phone:before,
+.fa-envelope:before {
+  padding-right: 7%;
+  color: #ff1a1a;
+}
+.forthpart {
+  text-align: center;
+}
+.forthpart i {
+  text-align: center;
+  padding: 7px 10px;
+  background-color: #5a5a5a;
+  border-radius: 50px;
+  color: #fff;
+}
+.forthpart i:hover {
+  background-color: #fff;
+  color: #ff1a1a;
+}
+.forthpart p {
+  text-align: center;
+  padding: 8% 0;
+}
+.forthpart p i {
+  padding: 0 11%;
+  padding: 7px 4%;
+  margin: 0 8%;
+  background-color: #5a5a5a;
+  border-radius: 50px;
+  color: #fff;
+}
+.forthpart p i:hover {
+  background-color: #fff;
+  color: #ff1a1a;
+}
+.firstHeader {
+  background-color: #f2f4f9;
+}
+.secondFooter p {
+  display: inline-block;
+  width: 33%;
+  font: normal normal normal 16px/25px Poppins;
+  vertical-align: middle;
+  font-size: 14px;
+}
+.secondFooter ul {
+  display: inline-block;
+  width: 39%;
+  vertical-align: middle;
+}
+.secondFooter li {
+  display: inline-block;
+  width: 32%;
+  text-align: center;
+}
+.secondFooter li a {
+  font: normal normal medium 16px/25px Poppins;
+  color: #ff1a1a;
+  font-size: 14px;
+  padding-left: 83px;
+  /* text-align: left; */
+  display: contents;
+}
+.secondFooter img {
+  display: inline-block;
+  width: 27%;
+  vertical-align: middle;
+}
+
+/*About Us CSS*/
+
+.mainHeading {
+  position: relative;
+}
+.mainHeading h2 {
+  text-align: center;
+  font: normal normal bold 196px/350px Britannic;
+  /*letter-spacing: 29.4px;*/
+  color: #e3e5ea;
+}
+.secondoryHeading {
+  position: absolute;
+  width: 99%;
+  margin: 0 auto;
+  top: 150px;
+}
+.secondoryHeading h2 {
+  font: normal normal bold 50px/56px Britannic;
+  color: #5a5a5a;
+  letter-spacing: 0px;
+  /*border-bottom: 2px solid #5A5A5A;*/
+  margin: 0 auto;
+  /*width: 30%;*/
+}
+.secondoryHeading h2 span {
+  color: #ff1a1a;
+}
+.heroUnderLine {
+  width: 150px;
+  height: 4px;
+  background-color: #5a5a5a;
+  margin: 0 auto;
+}
+
+/* Contact Us Page css */
+.fname {
+  display: inline-block;
+  width: 41%;
+}
+.email {
+  display: inline-block;
+  width: 40%;
+}
+.fname input,
+.email input {
+  background: #f2f4f9 0% 0% no-repeat padding-box;
+  border-radius: 10px;
+  border: none;
+  padding: 13px 10px;
+  width: 80%;
+}
+.fname input::placeholder,
+.email input::placeholder {
+  text-align: left;
+  font: normal normal normal 20px/30px Poppins;
+  letter-spacing: 0px;
+  color: #231f20;
+}
+
+.btn-custom {
+  background-color: #5a5a5a;
+  border-radius: 30px;
+  padding: 6px 41px;
+  color: #ffffff;
+  text-decoration: none;
+  font-family: Poppins;
+  margin-top: 10px;
+}
+.slick-track {
+  float: left !important;
+}

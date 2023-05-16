@@ -1,0 +1,180 @@
+@media only screen and (max-width: 999px) {
+  /* .menu{
+		width: 100%;
+    } */
+  .logo img {
+    width: 200px;
+  }
+  .menu ul li {
+    padding: 0 1.5px;
+  }
+  .menu ul li .btnLogin,
+  .menu ul li .btnJoin {
+    padding: 8px 30px;
+  }
+  .menu ul li a {
+    font-size: 12px;
+  }
+  .leftSide h1 {
+    font: normal normal bold 55px Britannic;
+  }
+  #secondarySection a {
+    font: normal normal normal 58px/68px DELIRIUM NCV;
+    padding: 0px 28px;
+  }
+  .whoRightSide {
+    width: 100%;
+  }
+  .whoLeftSide {
+    width: 100%;
+    text-align: center;
+  }
+  .whoRightSide h2,
+  .whoRightSide h3,
+  .whoRightSide p {
+    text-align: center;
+  }
+  .container {
+    padding: 0 15px;
+  }
+  .forthpart p i {
+    margin: 0 5%;
+  }
+  footer p {
+    font: normal 14px/19px Poppins;
+  }
+  footer ul li {
+    padding: 2px 0;
+  }
+  footer ul li a {
+    font: normal normal normal 14px/29px Poppins;
+  }
+  .forthpart p {
+    padding: 3% 0;
+  }
+  .secondFooter img {
+    /*display: none;*/
+    /*width: 0%;*/
+    width: 100%;
+  }
+  .secondFooter p {
+    width: 32%;
+  }
+  .secondFooter ul {
+    width: 61%;
+  }
+  /*About Us page*/
+  .mainHeading h2 {
+    font: normal normal bold 164px/218px Britannic;
+    letter-spacing: 5.4px;
+  }
+  .secondoryHeading h2 {
+    width: 38%;
+    font: normal normal bold 50px/56px Britannic;
+  }
+}
+
+@media only screen and (max-width: 767px) {
+  .ham {
+    display: block;
+  }
+  .ham {
+    position: absolute;
+    z-index: 1000;
+    top: 20px;
+    right: 20px;
+    width: 36px;
+    height: 36px;
+    border: none;
+    cursor: pointer;
+    background-color: transparent;
+    /* show the menu image */
+    background-image: url("https://ljc-dev.github.io/testing0/ham.svg");
+    background-size: 100%;
+  }
+  .showClose {
+    background-image: url("https://ljc-dev.github.io/testing0/ham-close.svg");
+  }
+  .navbar {
+    position: absolute;
+    top: 0;
+    left: 0;
+    background: black;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+    color: white;
+    transform: translateY(-100%);
+    transition: transform 0.2s ease;
+  }
+  .showNav {
+    transform: translateY(0);
+  }
+  .menu ul li {
+    width: 100%;
+    text-align: center;
+    margin: 3% auto;
+  }
+  .leftSide {
+    width: 100%;
+  }
+  .leftSide h1 {
+    font: normal normal bold 42px Britannic;
+    text-align: center;
+  }
+  .rightSide {
+    width: 100%;
+  }
+  #secondarySection .border {
+    padding: 0px 26px;
+  }
+  .whoLeftSide img {
+    width: 287px;
+  }
+  .whoRightSide h2 {
+    margin-top: 20px;
+    font: normal normal normal 80px/110px DELIRIUM NCV;
+  }
+  .whoRightSide h3 {
+    font: normal normal normal 80px/80px DELIRIUM NEON NCV;
+  }
+  #ambassadors h2,
+  #sponsors h2 {
+    font: normal normal normal 70px/90px DELIRIUM NCV;
+  }
+  .firstpart,
+  .secondpart,
+  .thirdpart,
+  .forthpart {
+    width: 100%;
+  }
+  #secondarySection {
+    text-align: center;
+  }
+  #secondarySection a {
+    width: 100%;
+  }
+  footer ul li a {
+    font: normal normal normal 14px/19px Poppins;
+  }
+  .thirdpart i {
+    padding: 2% 0;
+  }
+  .secondFooter p {
+    width: 100%;
+  }
+  .secondFooter ul {
+    width: 100%;
+  }
+  /*About Us*/
+  .mainHeading h2 {
+    font: normal normal bold 50px/140px Britannic;
+  }
+  .secondoryHeading {
+    top: 43px;
+  }
+  .secondoryHeading h2 {
+    width: 100%;
+    font: normal normal bold 28px/56px Britannic;
+  }
+}

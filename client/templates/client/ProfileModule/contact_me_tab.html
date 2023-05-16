@@ -1,0 +1,392 @@
+{% load static %}
+{% if messages %}
+<div class="msg-box" style="display:none">
+    {% for msg in messages %}
+        <div class="msg {{ msg.tags }}">
+            {% if msg == 'about_tab' %}
+                <p>{{ msg }}</p>
+            {% endif %}
+        </div>
+    {% endfor %}
+</div>
+{% endif %}
+
+
+    <section class="profile_detail_content {% if active_profile == 'contact_tab' %}active{% endif %}" id="ContactMe_Section">
+        <div class="container-fluid" style="margin-top: 40px">
+            <div class="active relative" id="contact_info_show_able" style="padding-bottom: 65px;">
+                <div class=" relative mt_35">
+                   
+                        
+
+                    <div class="row">
+                        <div class="col-lg-4">
+                            <div class="address_panel poppins">
+                                <p style="color: black; font-size:large; margin-left:36px;">{{profile.profile.gym_used}}</p>
+                                <div class="address_bar ">
+                                    <i class="material-icons fs_red" style="margin-top: -20px;">location_on</i>
+                                    <p style="color: black; font-size:large">{{profile.profile.address}}</p>
+                                    
+                                </div>
+                                {% if profile.profile.gym_used2 %}
+                                <p style="color: black; font-size:large; margin-left:36px;">{{profile.profile.gym_used2}}</p>
+                                {% endif %}
+                                {% if profile.profile.address2 %}
+                                <div class="address_bar ">
+                                    <i class="material-icons fs_red" style="margin-top: -20px;">location_on</i>
+                                    <p style="color: black; font-size:large">{{profile.profile.address2}}</p>
+                                </div>
+                                {% endif %}
+                                {% if profile.profile.gym_used3 %}
+                                <p style="color: black; font-size:large; margin-left:36px;">{{profile.profile.gym_used3}}</p>
+                                {% endif %}
+                                {% if profile.profile.address3 %}
+                                <div class="address_bar ">
+                                    <i class="material-icons fs_red" style="margin-top: -20px;">location_on</i>
+                                    <p style="color: black; font-size:large">{{profile.profile.address3}}</p>
+                                </div>
+                                {% endif %}
+                                <div class="address_bar ">
+                                    <i class="material-icons fs_red" style="margin-top: -20px;">call</i>
+                                    <p style="color: black; font-size:large">{{profile.profile.phone_number}}</p>
+                                </div>
+                                
+                            </div>
+                        </div>
+
+                        <div class="col-lg-8">
+
+                            {% if map %}
+                                <div style="width: 100%; max-height:100%;">{{map|safe}}</div>
+                            {% endif %}
+                            
+                        </div>
+                        <div class="col-lg-4">
+                            <div class="address_bar ">
+                                {% if profile.profile.facebook %}<a href="{{profile.profile.facebook}}">
+                                    <img style="margin: 5px;" src="/static/images/facebook.png" alt="Share on Facebook"/></a>{% endif %}
+                                {% if profile.profile.instagram %}<a href="{{profile.profile.instagram}}">
+                                    <img style="margin: 5px;" src="/static/images/instagram.png" alt="Share on Facebook"/></a>{% endif %}
+                                {% if profile.profile.youtube %}<a href="{{profile.profile.youtube}}">
+                                    <img style="margin: 5px;" src="/static/images/youtube.png" alt="Share on Facebook"/></a>{% endif %}
+                                {% if profile.profile.twitter %}<a href="{{profile.profile.twitter}}">
+                                    <img style="margin: 5px;" src="/static/images/twitter.png" alt="Share on Facebook"/></a>{% endif %}
+                                {% if profile.profile.vimeo_link %}<a href="{{profile.profile.vimeo_link}}">
+                                    <img style="margin: 5px;" src="/static/images/vimeo.png" alt="Share on Facebook"/></a>{% endif %}
+                                {% if profile.profile.other_link %}<a href="{{profile.profile.other_link}}">
+                                    <img style="margin: 5px;" src="/static/images/other_videos.png" alt="Share on Facebook"/></a>{% endif %}
+                            </div>
+                            <form style="width: 100%;" method="POST" action="{% url 'client:about_rating_submit' %}">
+                                {% csrf_token %}
+                                <div>Rate This Profile</div>
+        
+                                <style>
+                                    .txt-center {
+                                      text-align: center;
+                                    }
+                                    .hide {
+                                      display: none;
+                                    }
+        
+                                    .clear {
+                                      float: none;
+                                      clear: both;
+                                    }
+        
+                                    .rating {
+                                        width: 120px;
+                                        unicode-bidi: bidi-override;
+                                        direction: rtl;
+                                        text-align: center;
+                                        position: relative;
+                                    }
+        
+                                    .rating > label {
+                                        float: right;
+                                        display: inline;
+                                        padding: 0;
+                                        margin: 0;
+                                        position: relative;
+                                        width: 1.1em;
+                                        cursor: pointer;
+                                        color: #000;
+                                    }
+        
+                                    .rating > label:hover,
+                                    .rating > label:hover ~ label,
+                                    .rating > input.radio-btn:checked ~ label {
+                                        color: transparent;
+                                    }
+        
+                                    .rating > label:hover:before,
+                                    .rating > label:hover ~ label:before,
+                                    .rating > input.radio-btn:checked ~ label:before,
+                                    .rating > input.radio-btn:checked ~ label:before {
+                                        content: "\2605";
+                                        position: absolute;
+                                        left: 0;
+                                        color: #FFD700;
+                                    }
+        
+                                </style>
+        
+                                 <div class="rating" style="width:90px;">
+                                    <input id="star5" name="star" type="radio" value="5" class="radio-btn hide" />
+                                    <label for="star5" >☆</label>
+                                    <input id="star4" name="star" type="radio" value="4" class="radio-btn hide" />
+                                    <label for="star4" >☆</label>
+                                    <input id="star3" name="star" type="radio" value="3" class="radio-btn hide" />
+                                    <label for="star3" >☆</label>
+                                    <input id="star2" name="star" type="radio" value="2" class="radio-btn hide" />
+                                    <label for="star2" >☆</label>
+                                    <input id="star1" name="star" type="radio" value="1" class="radio-btn hide" />
+                                    <label for="star1" >☆</label>
+                                    <div class="clear"></div>
+                                </div>
+                                <div class="col-sm-12 col-12 field poppins " style="padding:0px;">
+                                    <textarea class="form-control textarea m-0" rows="5" name="comment" id="comment"
+                                              placeholder="Comment"></textarea>
+                                </div>
+                                <input type="hidden" name="id" value="{{profile.user.id}}"/>
+                                <div class="field poppins">
+                                    <button class="update_btn mt_10" type="submit">Post</button>
+                                </div>
+                                </form>
+                        </div>
+                        <div class="col-lg-8" style="margin-top: 20px;background-color: #f5f4f4; padding-top: 10px; padding-bottom:10px;border-radius: 10px;">
+                            <h3>Get in touch with us</h3><br<br>
+                            <form  method="POST" action="{% url 'client:user_contact_us' %}" onsubmit="return validateRecaptcha();">
+                            {% csrf_token %}
+                                <div class="col-sm-12 col-12"><br><br>
+                            <div class="">
+                                <div class="row">
+                                    <div class="col-sm-6 col-12 field poppins ">
+                                        <input class="form-control poppins m-0" value="{{profile.user.user.email}}" name="profile_user_email" type="hidden">
+                                        <input class="form-control poppins m-0" name="name" type="text" placeholder="Name" required>
+                                    </div>
+
+
+                                    <div class="col-sm-6 col-12 field poppins ">
+                                        <input class="form-control poppins m-0" name="email" type="email" placeholder="Email"
+                                               required>
+                                    </div>
+
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-sm col-12 field poppins ">
+                                        <input class="form-control poppins m-0" name="subject" type="text" placeholder="Subject"
+                                               required>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-sm col-12 field poppins ">
+                                        <textarea class="form-control textarea m-0" rows="5" name="description" id="description"
+                                                  placeholder="Description"></textarea>
+                                    </div>
+
+                                </div>
+                                <div class="row">
+                                     <div class="col-sm-12 col-12 field poppins">
+                                        <div class="g-recaptcha" data-sitekey="6LdL8AUaAAAAAPlNDKd8dRPu9PsbBft6hinwwDmg"></div>
+
+                                    </div>
+                                </div>
+                                <div class="clear"></div>
+                                <div class="row" style="padding-left:15px;">
+                                    <button class="update_btn mt_10">Contact
+                                            Me
+                                        </button>
+                                </div>
+
+                            </div>
+                        </div>
+                            </form>
+                        </div>
+                        {% if is_authenticated_user %}
+                            <div  class="row">
+                                <div class="edit_ico" style="margin-right: 70px"
+                                     onclick="Show_Edit_Details('contact_info_show_able' ,'contact_info_editable' )">
+                                    <i class="material-icons">create</i>
+                                </div>
+                            </div>
+                        {% endif %}
+                    </div>
+                    </div>
+            </div>
+            
+            <div id="contact_info_editable">
+                <form  method="POST" action="{% url 'client:update_contact_info_tab' %}" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="row" >
+
+
+                        <div class="col-sm-6 col-12">
+                            {% if profile.user.active_user_role.name == "Fitness Model" %}
+                                <div class="col-12" style="margin-top: 20px;">
+                                    <label class="form-label-heading">Address</label>
+                                    <input class="form-control mt-0" placeholder="Address" name="address"
+                                           id="contact_tab_address1"
+                                           value="{{profile.profile.address}}" required>
+                                </div>
+
+                            {% else %}
+                            <div class="col-12" style="margin-top: 20px;">
+                                <label class="form-label-heading">Gym Name 1</label>
+                                <input class="form-control mt-0" placeholder="Gym Name 1" name="gym"
+                                       value="{{profile.profile.gym_used}}" required>
+
+                            </div>
+                            <div class="col-12" style="margin-top: 20px;">
+                                <label class="form-label-heading">Address 1</label>
+                                <input class="form-control mt-0" placeholder="Address 1" name="address"
+                                       id="contact_tab_address1"
+                                       value="{{profile.profile.address}}" required>
+
+                            </div>
+
+                            <div class="col-12" style="margin-top: 20px;">
+                                <label class="form-label-heading">Gym Name 2 (Optional)</label>
+                                <input class="form-control mt-0" placeholder="Gym Name 2" name="gym2"
+                                       value="{{profile.profile.gym_used2}}">
+
+                            </div>
+                            <div class="col-12" style="margin-top: 20px;">
+                                <label class="form-label-heading">Address 2 (Optional)</label>
+                                <input class="form-control mt-0" placeholder="Address" name="address2"
+                                       id="contact_tab_address2"
+                                       value="{{profile.profile.address2}}">
+                            </div>
+
+
+                            <div class="col-12" style="margin-top: 20px;">
+                                <label class="form-label-heading">Gym Name 3 (Optional)</label>
+                                <input class="form-control mt-0" placeholder="Gym Name 3" name="gym3"
+                                       value="{{profile.profile.gym_used3}}">
+
+                            </div>
+                            <div class="col-12" style="margin-top: 20px;">
+                                <label class="form-label-heading">Address 3 (Optional)</label>
+                                <input class="form-control mt-0" placeholder="Address" name="address3"
+                                       id="contact_tab_address3"
+                                       value="{{profile.profile.address3}}">
+                            </div>
+                            {% endif %}
+                            <div class="col-12" style="margin-top: 20px;">
+                                <label class="form-label-heading">Phone No.</label>
+                                <input class="form-control mt-0" placeholder="Phone Number" name="phone_number"
+                                       value="{{profile.profile.phone_number}}" required>
+                            </div>
+                            <div class="col-12" style="margin-top: 20px;">
+                                <label class="form-label-heading">Blog Link if any</label>
+                                <input class="form-control mt-0" placeholder="Blog Link" name="blog_link"
+                                       value="{{profile.profile.blog_link}}">
+                            </div>
+                            <script>
+                            $(document).ready(function(){
+                                var autocomplete;
+                                autocomplete = new google.maps.places.Autocomplete((document.getElementById('contact_tab_address1')),{
+                                    types: ['geocode'],    
+                                });
+                                google.maps.event.addListener(autocomplete, 'place_changed', function(){
+                                    var near_place = autocomplete.getPlace();
+                                });
+                            });
+                            $(document).ready(function(){
+                                var autocomplete;
+                                autocomplete = new google.maps.places.Autocomplete((document.getElementById('contact_tab_address2')),{
+                                    types: ['geocode'],    
+                                });
+                                google.maps.event.addListener(autocomplete, 'place_changed', function(){
+                                    var near_place = autocomplete.getPlace();
+                                });
+                            });
+                            $(document).ready(function(){
+                                var autocomplete;
+                                autocomplete = new google.maps.places.Autocomplete((document.getElementById('contact_tab_address3')),{
+                                    types: ['geocode'],    
+                                });
+                                google.maps.event.addListener(autocomplete, 'place_changed', function(){
+                                    var near_place = autocomplete.getPlace();
+                                });
+                            });
+                        </script>
+                        </div>
+                    
+                        <div class="col-sm-6 col-12">
+                            <div class="col-12" style="margin-top: 20px;">
+                                <label class="form-label-heading">Facebook Link</label>
+                                <input class="form-control mt-0" placeholder="Facebook" name="facebook"
+                                       value="{{profile.profile.facebook}}">
+                            </div>
+                            <div class="col-12" style="margin-top: 20px;">
+                                <label class="form-label-heading">Instagram Link</label>
+                                <input class="form-control mt-0" placeholder="Instagram" name="instagram"
+                                       value="{{profile.profile.instagram}}">
+                            </div>
+                            <div class="col-12" style="margin-top: 20px;">
+                                <label class="form-label-heading">Twitter Link</label>
+                                <input class="form-control mt-0" placeholder="Twitter" name="twitter"
+                                       value="{{profile.profile.twitter}}">
+                            </div>
+                            <div class="col-12" style="margin-top: 20px;">
+                                <label class="form-label-heading">Youtube Link</label>
+                                <input class="form-control mt-0" placeholder="Youtube" name="youtube"
+                                       value="{{profile.profile.youtube}}">
+                            </div>
+                            <div class="col-12" style="margin-top: 20px;">
+                                <label class="form-label-heading">Website Link if any</label>
+                                <input class="form-control mt-0" placeholder="Website if any"
+                                       value="{{profile.profile.website}}" name="website">
+                            </div>
+                            <div class="col-12" style="margin-top: 20px;">
+                                <label class="form-label-heading">Booking Link if any</label>
+                                <input class="form-control mt-0" placeholder="Booking if any"
+                                       value="{{profile.profile.booking_link}}" name="booking">
+                            </div>
+                            <div class="col-12" style="margin-top: 20px;">
+                                <label class="form-label-heading">Link for Live Portal</label>
+                                <input class="form-control mt-0" placeholder="Portal Link if any"
+                                       value="{{profile.profile.portal_link}}" name="portal_link">
+                            </div>
+                            <div class="col-12" style="margin-top: 20px;">
+                                <label class="form-label-heading">Vimeo Link</label>
+                                <input class="form-control mt-0" placeholder="Vimeo" name="vimeo"
+                                       value="{{profile.profile.vimeo_link}}">
+                            </div>
+                            <div class="col-12" style="margin-top: 20px;">
+                                <label class="form-label-heading">Other Link</label>
+                                <input class="form-control mt-0" placeholder="Other" name="other"
+                                       value="{{profile.profile.other_link}}">
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-12 text-right mt-3">
+                            <button class="update_btn poppins" type="submit">Update
+                            </button>
+                            <button class="update_btn poppins" type="button"
+                                    onclick="Show_Edit_Details('contact_info_show_able' ,'contact_info_editable' )">
+                                Cancel
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+
+    </section>
+<script src="https://www.google.com/recaptcha/api.js" async defer></script>
+
+<script>
+
+    function validateRecaptcha() {
+        var response = grecaptcha.getResponse();
+        if (response.length === 0) {
+            alert("You need to fill the captcha");
+            return false;
+        } else {
+            return true;
+        }
+    }
+</script>

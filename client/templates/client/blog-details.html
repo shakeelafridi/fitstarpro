@@ -1,0 +1,134 @@
+{% extends 'client/base.html' %}
+
+{% load static %}
+
+{% block title %}Blog{% endblock %}
+{% block header %}
+<img src="{% static 'images/blog-logo.png' %}" alt="Logo"
+          />
+{% endblock %}
+{% block body %}
+
+
+<section class="mt-5  mb-5">
+    <div class="container">
+        <div class="row" style="margin-bottom: 50px">
+            <div class="col-sm-4 col-12">
+                <h5 class="blog-heading">{{blog.category.name}}<span style="color: #969393;font-size: 20px"> | {{blog.created_at}}</span></h5>
+                <div class="clearfix mt-3">
+                    <img src="{{blog.author_profile_pic.url}}"
+                         style="width: 70px;height: 70px;border-radius: 50px;float: left">
+                    <div style="padding-left: 20px">
+                        <span style="margin-top: 10px;position: absolute;margin-left: 20px;">{{blog.author}}</span><br>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-8 col-12 blog-main">
+                <h3 class="blog-heading">{{blog.title}}</h3>
+                {% if not is_authenticated_user %}
+                <div style="margin-top: 10px; cursor:pointer;">
+                    <form action="/blog_heart_counter/" method="POST">
+                        {% csrf_token %}
+                        <input type="text" hidden value="{{blog.id}}" name="blog_id"/>
+                        <input type="text" hidden value="{{hearts}}"/>
+                        
+                        {% if hearts >= 1 %}
+                        <button style="background-color: white; border: 1px solid white;" type="submit"><i id="heart-icon" style="color: red; font-size: 15px;" class="fa fa-heart"></i></button>
+                        <span style="font-size: 10px;">{{hearts}}</span>
+                        {% else %}
+                        <button style="background-color: white; border: 1px solid white;" type="submit"><i id="heart-icon" class="fa fa-heart" style="font-size: 15px; color: gray;"></i></button>
+                        {% endif %}
+                    </form>
+                </div>
+                {% endif %}
+                <p style="color: #969393;font-size: 15px">{{blog.short_description}}</p>
+                <div style="margin-top: 10px; cursor:pointer;">
+
+                    <a href="https://twitter.com/intent/tweet?original_referer=https%3A%2F%2Fdeveloper.twitter.com%2F&ref_src=twsrc%5Etfw&text={{blog.title}}%20%7C%20{{blog.author}}&tw_p=tweetbutton&url=https://fitstar.pro/blog-details?blog_id={{blog.id}}"><img src="/static/images/twitter.png"/></a>
+
+                    <img style="margin-right: 10px; height: 30px; width: 30px;" src="/static/images/facebook.png" alt="Share on Facebook"
+                         onclick="window.open('https://www.facebook.com/sharer/sharer.php?u='+encodeURIComponent('https://fitstar.pro/blog-details?blog_id={{blog.id}}{% if active == 'center' %}/center/{% if profile.profile.profile_url %}{{profile.profile.profile_url}}{% else %}{{profile.profile.id}}{% endif %}{% endif %}{% if active == 'pro' %}/pro/{% if profile.profile.profile_url %}{{profile.profile.profile_url}}{% else %}{{profile.profile.id}}{% endif %}{% endif %}{% if active == 'model' %}/model/{% if profile.profile.profile_url %}{{profile.profile.profile_url}}{% else %}{{profile.profile.id}}{% endif %}{% endif %}'),'facebook-share-dialog','width=626,height=436'); return false;" />
+                    <img src="/static/images/linkedin.png" style=" height: 30px; width: 30px;" alt="Share on Linkedin"
+                         onclick="window.open('https://www.linkedin.com/shareArticle?mini=true&url='+encodeURIComponent('https://fitstar.pro/blog-details?blog_id={{blog.id}}{% if active == 'center' %}/center/{% if profile.profile.profile_url %}{{profile.profile.profile_url}}{% else %}{{profile.profile.id}}{% endif %}{% endif %}{% if active == 'pro' %}/pro/{% if profile.profile.profile_url %}{{profile.profile.profile_url}}{% else %}{{profile.profile.id}}{% endif %}{% endif %}{% if active == 'model' %}/model/{% if profile.profile.profile_url %}{{profile.profile.profile_url}}{% else %}{{profile.profile.id}}{% endif %}{% endif %}'),'facebook-share-dialog','width=626,height=436'); return false;" />
+                    <!-- <img src="/static/images/twitter.png" style=" height: 30px; width: 30px;" alt="Share on Twitter"
+                         onclick="window.open('https://twitter.com/home?status='+encodeURIComponent('https://fitstar.pro{% if active == 'center' %}/center/{% if profile.profile.profile_url %}{{profile.profile.profile_url}}{% else %}{{profile.profile.id}}{% endif %}{% endif %}{% if active == 'pro' %}/pro/{% if profile.profile.profile_url %}{{profile.profile.profile_url}}{% else %}{{profile.profile.id}}{% endif %}{% endif %}{% if active == 'model' %}/model/{% if profile.profile.profile_url %}{{profile.profile.profile_url}}{% else %}{{profile.profile.id}}{% endif %}{% endif %}'),'facebook-share-dialog','width=626,height=436'); return false;" /> -->
+
+                    <img src="/static/images/pinterest.png" style="height: 32px" alt="Share on Twitter"
+                    onclick="window.open('https://www.pinterest.com/pin/create/button/?url=https://fitstar.pro/blog-details?blog_id={{blog.id}}');" />
+   
+                </div>
+               
+            </div>
+            
+        </div>
+
+
+    </div>
+
+    <div class="container-fluid">
+
+        <div class="row">
+            {% if blog.second_featured_image %}
+                <div class="col-sm-6 col-12">
+                    <img src="{{blog.featured_image.url}}" class="blogImage" style="width: 100%;">
+                </div>
+                <div class="col-sm-6 col-12">
+                    <img src="{{blog.second_featured_image.url}}" class="blogImage" style="width: 100%;">
+                </div>
+            {% elif blog.video_link %}
+                <div class="col-sm-6 col-12">
+                    <img src="{{blog.featured_image.url}}" class="blogImage" style="width: 100%;">
+                </div>
+                <div class="col-sm-6 col-12">
+                        <iframe style="width: 100%; height:100%" class="embed-responsive-item" src="{{blog.video_link}}" allowfullscreen></iframe>
+                </div>
+            {% else %}
+                <div class="col-lg-12 col-12">
+                    <img src="{{blog.featured_image.url}}" class="blogImage" style="width: 100%;">
+                </div>
+            {% endif %}
+        </div>
+
+
+        <div class="row">
+            <div class="col-12 mt-5">
+                <p class="poppins" style="color: #5b5858; word-break: break-all;">{{blog.details|safe}}</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<style>
+    .blog-main{
+        font-family: Poppins;
+    }
+    .blog-heading{
+        color: #000000;
+        font-family: Poppins;
+    }
+    #secondarySection a{
+        font-size: 50px;
+    }
+    .blogImage{
+        height: 400px;
+        margin-top: 10px;
+    }
+    @media only screen and (max-width: 600px) {
+        .blogImage{
+            height: 250px;
+        }
+    }
+
+    #header {
+        background: #f2f4f9;
+    }
+</style>
+
+{% endblock %}
+
+{% block js %}
+<script type="text/javascript">
+
+</script>
+{% endblock %}

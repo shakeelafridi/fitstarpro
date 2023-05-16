@@ -1,0 +1,19 @@
+{% load static %}
+<style>
+    .form-label-heading {
+        font-family: 'Poppins', sans-serif;
+        margin-bottom: 5px;
+    }
+    .giving_margin {
+        margin-bottom: 50px;
+    }
+
+</style>
+<section class="profile_detail_content container
+    {% if active_profile == 'info_tab' %}active{% endif %}" id="section_my_info">
+    <div class="container-fluid">
+        {% include 'client/ProfileModule/my_info_tab_fitness_center.html' %}
+        {% include 'client/ProfileModule/my_info_tab_fitness_professional.html' %}
+        {% include 'client/ProfileModule/my_info_tab_fitness_model.html' %}
+    </div>
+</section>

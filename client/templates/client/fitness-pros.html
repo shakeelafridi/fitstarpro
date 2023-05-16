@@ -1,0 +1,303 @@
+{% extends 'client/base.html' %}
+{% load static %}
+{% block title %}Fitness Professionals{% endblock %}
+{% block header %}
+<img src="{% static 'images/logo.png' %}" alt="Logo"
+          />
+{% endblock %}
+
+{% block body %}
+<style>
+    .pagination {
+        display: inline-block
+    }
+    .pagination li {
+      color: black;
+      float: left;
+      padding: 8px 16px;
+      text-decoration: none;
+      transition: background-color .3s;
+      border: 1px solid #ddd;
+      margin: 0 4px;
+    }
+
+    .pagination li.active {
+      background-color: #ff1a1a;
+      color: white;
+      border: 1px solid #ff1a1a;
+    }
+
+    .pagination li:hover:not(.active) {background-color: #ddd;}
+</style>
+<section id="banner">
+    <div class="container">
+        <div class="mainHeading">
+            <h2 class="mainHeadingbG">FITNESS PROS</h2>
+            <div class="secondoryHeading">
+                <h2 class="mainHeadingText">Fitness <span>Pros</span></h2>
+                <div class="heroUnderLine"></div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<section id="secondarySection">
+    <div class="">
+        <div class="row">
+            <a href="" class="col-sm-4 mobile-pading-12 blogMenu" style="background-color: #5A5A5A">fitness pros</a>
+            <a href="{% url 'client:fitness_center' %}" class="col-sm-4 mobile-pading-12 blogMenu">fitness centers</a>
+            <a href="{% url 'client:fitness_models' %}" class="col-sm-4 mobile-pading-12 blogMenu" style="border: none">fitness models</a>
+        </div>
+    </div>
+</section>
+
+
+
+<section class="mt-5">
+    <div class="container-fluid">
+        <form>
+        <div class="row padingMobile">
+            <div class="col-sm-1 col-12"></div>
+            <div class="col-sm-3 col-12">
+                <input name="name" value="{{name}}" type="text" id="name" class="form-control" placeholder="Name"/>
+            </div>
+            <div class="col-sm-3 col-12">
+                <select class="form-control" name="speciality" id="speciality">
+                    <option value="0">Select Speciality</option>
+                    {% for obj in specialities %}
+                        <option value="{{obj.name}}" {% if obj.name == speciality %}selected{% endif %}>{{obj.name}}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="col-sm-3 col-12">
+                <input name="location" value="{{location}}" id="location" type="text" class="form-control"  placeholder="Location"/>
+            </div>
+            <script>
+                $(document).ready(function(){
+                    var autocomplete;
+                    autocomplete = new google.maps.places.Autocomplete((document.getElementById('location')),{
+                        types: ['geocode'],
+                    });
+                    google.maps.event.addListener(autocomplete, 'place_changed', function(){
+                        var near_place = autocomplete.getPlace();
+                    });
+                });
+            </script>
+            <div class="col-sm-2 col-12 text-center">
+                <button class="btn-custom" type="submit" onclick="submit_button_form();">Search</button>
+            </div>
+        </div>
+            </form>
+    </div>
+</section>
+
+
+
+<section class="mt-5 pt-5 mb-5" style="background: #F1F4F8;">
+    <div class="container">
+        <div class="row">
+            <div class="col-12 table-responsive">
+                <table class="table table-striped" id="dataTable">
+                    <thead>
+                        <tr>
+                            <th>Fitness Pro</th>
+                            <th>Name</th>
+                            <th>1:1 Rate</th>
+                            <th>Speciality</th>
+                            <th>Language</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {% for obj in fitness_pros %}
+                    <tr onclick="/pro/{% if obj.profile_url %}{{obj.profile_url}}{% else %}{{obj.id}}{% endif %}">
+                        <td>
+                            <a href="/pro/{% if obj.profile_url %}{{obj.profile_url}}{% else %}{{obj.id}}{% endif %}"><img src="{% if obj.profile_image %}{{obj.profile_image.url}}{% else %}{% static 'images/pro.jpg' %}{% endif %}" style="width: 100px"></a>
+                        </td>
+                        <td>{% if obj.name %}{{obj.name}}{% else %}{{obj.user.user.first_name}}{% endif %} </td>
+                        <td>{{obj.training_rates}}</td>
+                        <td>{{obj.specialities}}</td>
+                        <td>{{obj.languages}}</td>
+                    </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+            {% if fitness_pros.has_other_pages %}
+            <div class="text-center" style="width: 100%">
+              <ul class="pagination">
+                {% if fitness_pros.has_previous %}
+
+                  <li><a href="?{% url_replace request 'page' fitness_pros.previous_page_number %}">&laquo;</a></li>
+                {% else %}
+                  <li class="disabled"><span>&laquo;</span></li>
+                {% endif %}
+                {% for i in fitness_pros.paginator.page_range %}
+                  {% if fitness_pros.number == i %}
+                    <li class="active"><span>{{ i }} <span class="sr-only">(current)</span></span></li>
+                  {% else %}
+                    <li><a href="?{% url_replace request 'page' i %}">{{ i }}</a></li>
+                  {% endif %}
+                {% endfor %}
+                {% if fitness_pros.has_next %}
+                  <li><a href="?{% url_replace request 'page' fitness_pros.next_page_number %}">&raquo;</a></li>
+                {% else %}
+                  <li class="disabled"><span>&raquo;</span></li>
+                {% endif %}
+              </ul>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</section>
+
+
+
+<section id="ambassadors" class="mt-5">
+    <div class="container">
+        <h2>Top Fitness Pros</h2>
+        <div class="things" id="wrapper">
+            {% for obj in top_fitness %}
+                <div class="items">
+                    <div class="ad_card" style="background-image: url('{% if obj.profile_image %}{{obj.profile_image}}{% else %}{% static 'images/pro.jpg' %}{% endif %}')">
+                        <div class="ads_card_banner poppins">
+                            <a href="{{obj.url}}">
+                            <h4 style="color: #ffffff;font-family: 'Poppins'; font-size: 15px;">{{obj.name}}</h4>
+                        </a>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<style>
+    .mainHeadingbG{
+        font: normal normal bold 153px/350px Britannic!important;
+    }
+    .form-control{
+        border: none;
+        border-radius: 10px;
+        font-family: 'Poppins', sans-serif;
+        background: #F2F4F9!important;
+        height: 45px;
+    }
+    .table td, .table th {
+        vertical-align: middle;
+        font-family: Poppins;
+    }
+    .table-striped tbody tr:nth-of-type(odd) {
+        background-color: rgb(255 255 255);
+    }
+    .ad_card{
+        width: 100%;
+        height: 340px;
+        margin: 40px auto;
+        position: relative;
+        background-image: url(../../../static/images/main.png);
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        border-radius: 10px;
+    }
+    .ads_card_banner{
+        position: absolute;
+        width: 100%;
+        height: 70px;
+        border-radius: 0 0 8px 8px;
+        bottom: 0;
+        left: 0;
+        background-color: #FF1A1A;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        padding: 0 10px;
+        color: white;
+    }
+    .items:focus{
+        outline: none;
+    }
+    .blogMenu:hover{
+        background-color: #5A5A5A;
+    }
+    @media only screen and (max-width: 600px) {
+        .mainHeadingbG{
+            font: normal normal bold 38px/250px Britannic!important;
+        }
+        .mainHeadingText{
+            font: normal normal bold 22px/56px Britannic!important;
+        }
+        .secondoryHeading {
+            top: 98px;
+        }
+        .padingMobile{
+            padding-left: 20px!important;
+            padding-right: 20px!important;
+        }
+        .form-control{
+            margin-top: 10px;
+        }
+        .mobile-pading-12{
+            padding-top: 12px!important;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block js %}
+<script type="text/javascript">
+    function submit_button_form(){
+        name = $('name').val();
+        speciality = $('speciality').val();
+        location = $('location').val();
+
+        url = '/fitness_pros?name=' + name + '&location=' + location + '&speciality=' + speciality;
+        window.location.href = url;
+    }
+
+    var x = window.matchMedia("(max-width: 700px)")
+    myFunction(x)
+    x.addListener(myFunction)
+
+    function myFunction(x) {
+        if (x.matches) { // If media query matches
+            $( document ).ready(function() {
+                $('.things').slick({
+                    slidesToShow: 1,
+                    slidesToScroll: 1,
+                    autoplay: false,
+                    arrows: true,
+                    centerMode: true,
+                });
+                $('.autoplay').slick({
+                    slidesToShow: 2,
+                    slidesToScroll: 1,
+                    autoplay: true,
+                    autoplaySpeed: 2000,
+                    arrows: false,
+                });
+            });
+        } else {
+            $( document ).ready(function() {
+                $('.things').slick({
+                    slidesToShow: 3,
+                    slidesToScroll: 1,
+                    autoplay: false,
+                    arrows: true,
+                    centerMode: true,
+                });
+                $('.autoplay').slick({
+                    slidesToShow: 5,
+                    slidesToScroll: 1,
+                    autoplay: true,
+                    autoplaySpeed: 2000,
+                    arrows: false,
+                });
+            });
+        }
+    }
+</script>
+{% endblock %}

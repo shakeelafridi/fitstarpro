@@ -1,0 +1,1082 @@
+{% load static %}
+<style>
+    .form-label-heading {
+        font-family: 'Poppins', sans-serif;
+        margin-bottom: 5px;
+    }
+    .giving_margin {
+        margin-bottom: 50px;
+    }
+</style>
+    <section class="profile_detail_content container 
+    {% if active_profile == 'info_tab' %}active{% endif %}" id="section_my_info">
+        <div class="container-fluid">
+            <div class="myinfocontainer relative active" id="my_info_show_able" style="width: 100%;max-width: 100%">
+                {% if active == "center" %}
+
+
+                <table class="table" style="color:gray;">
+                    <tbody>
+                        <tr>
+                            <td colspan="2"><h3>BUSINESS</h3></td>
+                            <td colspan="2">
+                                {% if is_authenticated_user %}
+                            <a href="#pro-form" style="background-color: red; padding: 12px; border-radius: 25px; color: white; float: right;" onclick="EditMainClickAboveTab()" id="edited_click_on_main_profile_above">
+                                <i class="material-icons">create</i>
+                            </a>
+                            {% endif %}
+                            </td>
+                        </tr>
+                      <tr>
+                        <td>Open Since</td>
+                        <td style="color: gray;" colspan="3">{{profile.profile.open_since}}</td>
+                      </tr>
+                      <tr>
+                        <td>Fitness Center Name</td>
+                        <td  colspan="3">
+                            {% if profile.profile.fitness_center_type %}
+                                {{profile.profile.name}}
+                            {% else %} -
+                            {% endif %}
+                        
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>Fitness Center Type</td>
+                        <td  colspan="3">
+                            {% if profile.profile.fitness_center_type %}
+                                {{profile.profile.fitness_center_type.name}}
+                            {% else %} -
+                            {% endif %}
+                        
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>Languages</td>
+                        <td  colspan="3">{{profile.profile.languages}}</td>
+                      </tr>
+                      <tr>
+                        <td>Specialities</td>
+                        <td  colspan="3">{{profile.profile.specialities}}</td>
+                      </tr>
+                      <tr>
+                        <td>Hours Of Operations</td>
+                        <td  colspan="3">{{profile.profile.hours_of_operation}}</td>
+                      </tr>
+                      <tr>
+                        <td>Membership Plans</td>
+                        <td  colspan="3">{{profile.profile.member_ship_plans}}</td>
+                      </tr>
+                      <tr>
+                        <td>Accomplishments </td>
+                        <td  colspan="3">{{profile.profile.awards  }}</td>
+                      </tr>
+                      <tr>
+                        <td>Profile URL </td>
+                        <td  colspan="3">{{profile.profile.profile_url  }}</td>
+                      </tr>
+                      <tr>
+                        <td>Our Story/About Us</td>
+                        <td  colspan="3">{{profile.profile.about_us  }}</td>
+                      </tr>
+                      <tr>
+                        <td>Product Review</td>
+                        <td  colspan="3">
+                            {% if profile.profile.brands == '0' %}
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            {% endif %}
+
+                            {% if profile.profile.brands == '1' %}
+                            <i style="color: gold;" class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            {% endif %}
+                            {% if profile.profile.brands == '2' %}
+                            <i style="color: gold;" class="fa fa-star"></i>
+                            <i style="color: gold;" class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            {% endif %}
+                            {% if profile.profile.brands == '3' %}
+                            <i style="color: gold;" class="fa fa-star"></i>
+                            <i style="color: gold;" class="fa fa-star"></i>
+                            <i style="color: gold;" class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            {% endif %}
+                            {% if profile.profile.brands == '4' %}
+                            <i style="color: gold;" class="fa fa-star"></i>
+                            <i style="color: gold;" class="fa fa-star"></i>
+                            <i style="color: gold;" class="fa fa-star"></i>
+                            <i style="color: gold;" class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            {% endif %}
+                            {% if profile.profile.brands >= '5' %}
+                                <i style="color: gold;" class="fa fa-star"></i>
+                                <i style="color: gold;" class="fa fa-star"></i>
+                                <i style="color: gold;" class="fa fa-star"></i>
+                                <i style="color: gold;" class="fa fa-star"></i>
+                                <i style="color: gold;" class="fa fa-star"></i>
+                            {% endif %}
+                        </td>
+                      </tr>
+                    </tbody>
+                 </table>
+
+                 
+
+                <div class="row">
+
+
+                    <div class="col-sm-6 col-12">
+                        <h3 class="title poppins">Our Fitness Pros:</h3>
+                        {% for obj in profile.profile.fitness_pros.all %}
+                        <a href="/pro/{% if obj.profile_url %}{{obj.profile_url}}{% else %}{{obj.id}}{% endif %}">
+                        <img src="{% if obj.profile_image %}{{obj.profile_image.url}}{% else %}{% static 'css/profilepage/aboutusgirl.png' %}{% endif %}"
+                             style="width: 50px; height: 50px;margin-right: 10px"></a>
+                        {% endfor %}
+                    </div>
+
+                    {% if is_authenticated_user %}
+                    <div class="col-12">
+                        <div class="edit_ico" id="myInfoeditbtn" style="margin-right: 70px"
+                             onclick="Show_Edit_Details('my_info_show_able' ,'my_info_editable' );">
+                            <i class="material-icons">create</i>
+                        </div>
+                    </div>
+                    {% endif %}
+                </div>
+                {% endif %}
+
+                {% if active == "pro" %}
+                <table class="table" style="color:gray;">
+                    <tbody>
+                        <tr>
+                            <td colspan="2"><h3>BUSINESS</h3></td>
+                            <td colspan="2">
+                                {% if is_authenticated_user %}
+                                <a style="background-color: red; padding: 12px; border-radius: 25px; color: white; float: right;" id="myInfoeditbtn" style="margin-right: 70px" onclick="Show_Edit_Details('my_info_show_able' ,'my_info_editable' )">
+                                    <i class="material-icons">create</i>
+                                </a>
+                                {% endif %}
+                            </td>
+                        </tr>
+                      <tr>
+                        <td>Business Name</td>
+                        <td colspan="3">{{profile.profile.business_name}}</td>
+                      </tr>
+                      <tr>
+                        <td>Client Preference</td>
+                        <td colspan="3">{{profile.profile.client_preferences}}</td>
+                      </tr>
+                      <tr>
+                        <td>Availability for in-home training</td>
+                        <td colspan="3">
+                            {% if profile.profile.availability_for_in_home_training == 1 %}Yes{% endif %}
+                            {% if profile.profile.availability_for_in_home_training == 2 %}No{% endif %}
+                            {% if profile.profile.availability_for_in_home_training == 0 %}-{% endif %}
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>Availability for on-line-live training</td>
+                        <td colspan="3">
+                            {% if profile.profile.availability_for_on_line_training == 1 %}Yes{% endif %}
+                            {% if profile.profile.availability_for_on_line_training == 2 %}No{% endif %}
+                            {% if profile.profile.availability_for_on_line_training == 0 %}-{% endif %}
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>Training Rates </td>
+                        <td colspan="3">{{profile.profile.training_rates}}</td>
+                      </tr>
+                      <tr>
+                        <td>Note About Training Rates</td>
+                        <td colspan="3">{{profile.profile.note_about_training_rates}}</td>
+                      </tr>
+                      <tr>
+                        <td colspan="4"><h3>QUALIFICATIONS</h3></td>
+                      </tr>
+                    <tr>
+                        <td>Degrees/Diplomas</td>
+                        <td colspan="3">{{profile.profile.degree}}</td>
+                      </tr>
+                      <tr>
+                        <td>Professions</td>
+                        <td  colspan="3">{{profile.profile.profession}}</td>
+                      </tr>
+                      <tr>
+                        <td>Experience</td>
+                        <td  colspan="3">{{profile.profile.experience}} Years</td>
+                      </tr>
+                      <tr>
+                        <td>Certifications/Trainings </td></p><br>
+                        <td  colspan="3">{{profile.profile.certifications}}</td>
+                      </tr>
+                      <tr>
+                        <td>Specialties</td>
+                        <td  colspan="3">{{profile.profile.specialities}}</td>
+                      </tr>
+                      <tr>
+                        <td>Languages</td>
+                        <td colspan="3">{{profile.profile.languages}}</td>
+                      </tr>
+                      <tr>
+                        <td>Training Methods and Styles</td>
+                        <td colspan="3">{{profile.profile.training_methods_and_styles}}</td>
+                      </tr>
+                      <tr>
+                        <td>Fitness Awards</td>
+                        <td colspan="3">{{profile.profile.fitness_awards}}</td>
+                      </tr>
+                      <tr>
+                        <td>Sponsor Brands </td>
+                        <td >{{profile.profile.sponsor_names}}</td>
+                      </tr>
+                      <tr>
+                        <td colspan="2"><h3>PERSONAL</h3></td>
+                        <td colspan="2">
+                            {% if is_authenticated_user %}
+                            
+                            <a href="#pro-form" style="background-color: red; padding: 12px; border-radius: 25px; color: white; float: right;" onclick="EditMainClickAboveTab()" id="edited_click_on_main_profile_above">
+                                <i class="material-icons">create</i>
+                            </a>
+                            {% endif %}
+                        </td>
+
+                      </tr>
+                      <tr>
+                          <td>Profile URL</td>
+                          <td>{{profile.profile.profile_url}}</td>
+                      </tr>
+                      <tr>
+                        <td>Age</td>
+                        <td  colspan="3">{{profile.profile.age}}</td>
+                      </tr>
+                      <tr>
+                        <td>Height</td>
+                        <td  colspan="3">{{profile.profile.height}}</td>
+                      </tr>
+                      <tr>
+                        <td>Weight</td>
+                        <td  colspan="3">{{profile.profile.weight}}</td>
+                      </tr>
+                      <tr>
+                        <td>Diet Type</td>
+                        <td  colspan="3">{{profile.profile.diet_type}}</td>
+                      </tr>
+                      <tr>
+                        <td>Body Type</td>
+                        <td  colspan="3">{{profile.profile.body_type}}</td>
+                      </tr>
+                      <tr>
+                        <td>Our Story/About Us</td>
+                        <td  colspan="3">{{profile.profile.sponser_text}}</td>
+                      </tr>
+                      <tr>
+                        <td>Activities</td>
+                        <td  colspan="3">{{profile.profile.activities}}</td>
+                      </tr>
+                      <tr>
+                        <td>Product Review</td>
+                        <td  colspan="3">
+                            {% if profile.profile.brands == '0' %}
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            {% endif %}
+
+                            {% if profile.profile.brands == '1' %}
+                            <i style="color: gold;" class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            {% endif %}
+                            {% if profile.profile.brands == '2' %}
+                            <i style="color: gold;" class="fa fa-star"></i>
+                            <i style="color: gold;" class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            {% endif %}
+                            {% if profile.profile.brands == '3' %}
+                            <i style="color: gold;" class="fa fa-star"></i>
+                            <i style="color: gold;" class="fa fa-star"></i>
+                            <i style="color: gold;" class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            {% endif %}
+                            {% if profile.profile.brands == '4' %}
+                            <i style="color: gold;" class="fa fa-star"></i>
+                            <i style="color: gold;" class="fa fa-star"></i>
+                            <i style="color: gold;" class="fa fa-star"></i>
+                            <i style="color: gold;" class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            {% endif %}
+                            {% if profile.profile.brands >= '5' %}
+                                <i style="color: gold;" class="fa fa-star"></i>
+                                <i style="color: gold;" class="fa fa-star"></i>
+                                <i style="color: gold;" class="fa fa-star"></i>
+                                <i style="color: gold;" class="fa fa-star"></i>
+                                <i style="color: gold;" class="fa fa-star"></i>
+                            {% endif %}
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+
+
+                <!-- <div class="row">
+                    <div class="col-sm-6 col-12">
+                        <h3 class="title poppins">Business Name:
+                            <span class="data edit_able_data">{{profile.profile.business_name}}</span>
+                        </h3>
+                    </div>
+                    <div class="col-sm-6 col-12">
+                        <h3 class="title poppins">Degree/Diplomas:
+                            <span class="data edit_able_data">{{profile.profile.degree}}</span>
+                        </h3>
+                    </div>
+                    <div class="col-sm-6 col-12">
+                        <h3 class="title poppins">Professions:
+                            <span class="data edit_able_data">{{profile.profile.profession}}</span>
+                        </h3>
+                    </div>
+                    <div class="col-sm-6 col-12">
+                        <h3 class="title poppins">Client Preferences:
+                            <span class="data edit_able_data">{{profile.profile.client_preferences}}</span>
+                        </h3>
+                    </div>
+                    <div class="col-sm-6 col-12">
+                        <h3 class="title poppins">Certifications:
+                            <span class="data edit_able_data">{{profile.profile.certifications}}</span>
+                        </h3>
+                    </div>
+
+                    <div class="col-sm-6 col-12">
+                        <h3 class="title poppins">Availability for online training:
+                            <span class="data edit_able_data">
+                               {% if profile.profile.availability_for_on_line_training == 1 %}Yes{% endif %}
+                               {% if profile.profile.availability_for_on_line_training == 2 %}No{% endif %}
+                               {% if profile.profile.availability_for_on_line_training == 0 %}-{% endif %}
+                           </span>
+                        </h3>
+                    </div>
+                    
+                    <div class="col-sm-6 col-12">
+                        <h3 class="title poppins">Availability for in-home training:
+                            <span class="data edit_able_data">
+                               {% if profile.profile.availability_for_in_home_training == 1 %}Yes{% endif %}
+                               {% if profile.profile.availability_for_in_home_training == 2 %}No{% endif %}
+                               {% if profile.profile.availability_for_in_home_training == 0 %}-{% endif %}
+                           </span>
+                        </h3>
+                    </div>
+
+                    <div class="col-sm-6 col-12">
+                        <h3 class="title poppins">Specialities:
+                            <span class="data edit_able_data">
+                               {{ profile.profile.specialities }}
+                           </span>
+                        </h3>
+                    </div>
+
+                    <div class="col-sm-6 col-12">
+                        <h3 class="title poppins">Fitness Awards:
+                            <span class="data edit_able_data">
+                               {{ profile.profile.fitness_awards }}
+                           </span>
+                        </h3>
+                    </div>
+
+                    <div class="col-sm-6 col-12">
+                        <h3 class="title poppins">Activities:
+                            <span class="data edit_able_data">
+                               {{ profile.profile.activities }}
+                           </span>
+                        </h3>
+                    </div>
+                    <div class="col-sm-6 col-12">
+                        <h3 class="title poppins">My Favourite Brands / Reviews:
+                            <span class="data edit_able_data">
+                               {{ profile.profile.brands }}
+                           </span>
+                        </h3>
+                    </div>
+
+
+                    <div class="col-sm-6 col-12">
+                        <h3 class="title poppins">Diet type:
+                            <span class="data edit_able_data">
+                               {{ profile.profile.diet_type }}
+                           </span>
+                        </h3>
+                    </div>
+                    <div class="col-sm-6 col-12">
+                        <h3 class="title poppins">Sponsors Names:
+                            <span class="data edit_able_data">
+                               {{ profile.profile.sponsor_names }}
+                           </span>
+                        </h3>
+                    </div>
+                    
+         -->
+                    {% if profile.sponsers %}
+                    <div style="margin-left: 575px; margin-bottom:30px">
+                        {% for obj in profile.sponsers %}
+                        
+                        <img src="{{obj.image.url}}" style="width: 70px; height:70px;">
+                        <span ><p>{{profile.profile.sponsor_names}}</p></span>
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+                    <!-- <div class="col-sm-6 col-12">
+                        <h3 class="title poppins">My Story/About Me:
+                            <span class="data edit_able_data">
+                               {{ profile.profile.sponser_text }}
+                           </span>
+                        </h3>
+                    </div> -->
+
+                    <div class="modal fade" id="imageprofessional" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                          <div class="modal-content">
+                            <div class="modal-body">
+                              <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                              <img src="" class="imagepreview" style="width: 50%; height:100px">
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+
+
+
+                    {% if is_authenticated_user %}
+                    <div class="col-12">
+                        <div class="edit_ico" id="myInfoeditbtn" style="margin-right: 70px"
+                             onclick="Show_Edit_Details('my_info_show_able' ,'my_info_editable' )">
+                            <i class="material-icons">create</i>
+                        </div>
+                    </div>
+                    {% endif %}
+                </div>
+                {% endif %}
+
+                {% if active == "model" %}
+
+                <table class="table" style="color:gray;">
+                    <tbody>
+                        <tr>
+                            <td colspan="2"><h3>KEY INFO</h3></td>
+                            <td colspan="2">
+                                {% if is_authenticated_user %}
+                                <a href="#pro-form" style="background-color: red; padding: 12px; border-radius: 25px; color: white; float: right;" onclick="EditMainClickAboveTab()" id="edited_click_on_main_profile_above">
+                                    <i class="material-icons">create</i>
+                                </a>
+                                {% endif %}
+                            </td>
+                        </tr>
+                      <tr>
+                        <td>Age</td>
+                        <td  colspan="3">{{profile.profile.age}}</td>
+                      </tr>
+                      <tr>
+                        <td>Height</td>
+                        <td  colspan="3">{{profile.profile.height}}</td>
+                      </tr>
+                      <tr>
+                        <td>Weight</td>
+                        <td  colspan="3">{{profile.profile.weight}}</td>
+                      </tr>
+                      <tr>
+                        <td>Body Type</td>
+                        <td  colspan="3">{{profile.profile.body_type}}</td>
+                      </tr>
+                      <tr>
+                        <td>Ethnicity</td>
+                        <td  colspan="3">{{profile.profile.ethnicity}}</td>
+                      </tr>
+                      <tr>
+                        <td>Skin Tone</td>
+                        <td  colspan="3">{{profile.profile.skin_tone}}</td>
+                      </tr>
+                      <tr>
+                        <td>Eye Color</td>
+                        <td  colspan="3">{{profile.profile.eye_color}}</td>
+                      </tr>
+                      <tr>
+                        <td>Hair Length</td>
+                        <td  colspan="3">{{profile.profile.hair_length}}</td>
+                      </tr>
+                      <tr>
+                        <td>Tattoos</td>
+                        <td  colspan="3">{{profile.profile.tattoos}}</td>
+                      </tr>
+                      <tr>
+                        <td>Piercings</td>
+                        <td  colspan="3">{{profile.profile.piercing}}</td>
+                      </tr>
+                      <tr>
+                        <td>Experience</td>
+                        <td  colspan="3">
+                               {% if profile.profile.working_with_media == 1 %}No Experience{% endif %}
+                               {% if profile.profile.working_with_media == 2 %}Some Experience{% endif %}
+                               {% if profile.profile.working_with_media == 3 %}{% endif %}
+                               {% if profile.profile.working_with_media == 4 %}Very Experience{% endif %}
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>Languages</td>
+                        <td  colspan="3">{{profile.profile.languages}}</td>
+                      </tr>
+                      <tr>
+                        <td>Working With Media</td>
+                        <td  colspan="3">{{profile.profile.experience}}</td>
+                      </tr>
+                      <tr>
+                        <td>Modeling Interests</td>
+                        <td  colspan="3">{{profile.profile.modeling_interests}}</td>
+                      </tr>
+                      <tr>
+                        <td>Compensation</td>
+                        <td  colspan="3">{{profile.profile.compensation}}</td>
+                      </tr>
+                      <tr>
+                        <td>Note About Compensation</td>
+                        <td  colspan="3">{{profile.profile.c}}</td>
+                      </tr>
+                      <tr>
+                        <td>Activities</td>
+                        <td  colspan="3">{{profile.profile.interested_in}}</td>
+                      </tr>
+                      <tr>
+                        <td>Our Story/About Us</td>
+                        <td  colspan="3">{{profile.profile.about_us}}</td>
+                      </tr>
+                      <tr>
+                        <td>Profile URL </td>
+                        <td  colspan="3">{{profile.profile.profile_url  }}</td>
+                      </tr>
+                      <tr>
+                        <td>Product Review</td>
+                        <td  colspan="3">
+                            {% if profile.profile.brands == '' %}
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            {% endif %}
+
+                            {% if profile.profile.brands == '1' %}
+                            <i style="color: gold;" class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            {% endif %}
+                            {% if profile.profile.brands == '2' %}
+                            <i style="color: gold;" class="fa fa-star"></i>
+                            <i style="color: gold;" class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            {% endif %}
+                            {% if profile.profile.brands == '3' %}
+                            <i style="color: gold;" class="fa fa-star"></i>
+                            <i style="color: gold;" class="fa fa-star"></i>
+                            <i style="color: gold;" class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            {% endif %}
+                            {% if profile.profile.brands == '4' %}
+                            <i style="color: gold;" class="fa fa-star"></i>
+                            <i style="color: gold;" class="fa fa-star"></i>
+                            <i style="color: gold;" class="fa fa-star"></i>
+                            <i style="color: gold;" class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            {% endif %}
+                            {% if profile.profile.brands >= '5' %}
+                                <i style="color: gold;" class="fa fa-star"></i>
+                                <i style="color: gold;" class="fa fa-star"></i>
+                                <i style="color: gold;" class="fa fa-star"></i>
+                                <i style="color: gold;" class="fa fa-star"></i>
+                                <i style="color: gold;" class="fa fa-star"></i>
+                            {% endif %}
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+
+
+                
+
+
+
+                    {% if is_authenticated_user %}
+
+                    <div class="col-12">
+                        <div class="edit_ico" id="myInfoeditbtn" style="margin-right: 70px"
+                             onclick="Show_Edit_Details('my_info_show_able' ,'my_info_editable' )">
+                            <i class="material-icons">create</i>
+                        </div>
+                    </div>
+
+                    {% endif %}
+                </div>
+                {% endif %}
+
+            </div>
+
+            <div class="my_info_edit_container " id="my_info_editable">
+                <h3>Edit Your Info Tab Information</h3>
+                {% if profile.user.active_user_role.name == "Fitness Center" %}
+                <form method="POST" action="{% url 'client:update_info_tab' %}" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="row">
+
+                        <div class="col-sm-6 col-12">
+                            <label class="form-label-heading">Select Specialities</label>
+                            <select class="value_inpt poppins multiselect" id="fitness_center_specialities"
+                            name="specialities" required  multiple="multiple">
+                                {% for obj in specialities %}
+    
+                                <option value="{{obj.name}}" {% if obj.name in profile.specialities_list %} selected {% endif %}>
+                                    {{obj.name}}
+                                </option>
+                                    {% endfor %}
+                            </select>
+                        </div>
+                        <div class="col-sm-6 col-12">
+                            <label class="form-label-heading">Select Languages</label>
+                            <select class="value_inpt poppins multiselect" id="fitness_center_languages" name="languages" required multiple>
+                                <option  {% if 'English' in profile.languages_list %} selected {% endif %}>English</option>
+                                <option  {% if 'Spanish' in profile.languages_list %} selected {% endif %}>Spanish</option>
+                                <option  {% if 'German' in profile.languages_list %} selected {% endif %}>German</option>
+                                <option  {% if 'French' in profile.languages_list %} selected {% endif %}>French</option>
+                                <option  {% if 'Portuguese' in profile.languages_list %} selected {% endif %}>Portuguese</option>
+                                <option  {% if 'Chinese' in profile.languages_list %} selected {% endif %}>Chinese</option>
+                            </select>
+                        </div>
+                        <div class="giving_margin"></div>
+                        <div class="col-sm-6 col-12">
+                            <label class="form-label-heading">Type Hours Of Operation</label>
+                            <input class="form-control mt-0" placeholder="Hours Of Operation" name="hours_of_operation"
+                                   value="{{profile.profile.hours_of_operation}}" required>
+                        </div>
+                        <div class="col-sm-6 col-12">
+                            <label class="form-label-heading">Type Accomplishments</label>
+                            <input class="form-control mt-0" placeholder="Awards & Accomplishment" name="awards"
+                                   value="{{profile.profile.awards}}"  >
+                        </div>
+                        <div class="giving_margin"></div>
+                        <div class="col-sm-12 col-12">
+                            <label class="form-label-heading">Membership Plan Details</label>
+                            <textarea class="form-control" rows="3" name="member_ship_plans"  style="margin-top: 0px;"
+                            required>{{profile.profile.member_ship_plans}}</textarea>
+                        </div>
+
+                        <div class="giving_margin"></div>
+                        <div class="col-sm-12 col-12">
+                            <label class="form-label-heading">Our Story/About Us</label>
+                            <textarea class="form-control" rows="3" name="about_us"  style="margin-top: 0px;"
+                            required>{{profile.profile.about_us}}</textarea>
+                        </div>
+
+                        <div class="col-sm-6 col-12">
+                            <label class="form-label-heading">My Favourite Brands / Reviews</label>
+                            <input class="form-control mt-0" placeholder="Brands / Reviews" name="brands"
+                                   value="{{profile.profile.brands}}"  >
+                        </div>
+
+                        
+
+                        {% if fitness_professionals %}
+                        <div class="col-sm-6 col-12" style="margin-top: 20px;">
+                            <label class="form-label-heading">Select Fitness Professionals</label>
+                            <select class="value_inpt poppins multiselect" id="fitness_center_professionals"
+                            name="fitness_pros" required  multiple="multiple">
+                                {% for obj in fitness_professionals %}
+                                <option value="{{obj.id}}" {% if obj.id in profile.fitness_pros_list %}selected{% endif %}>
+                                    {{obj.name}}
+                                </option>
+                                    {% endfor %}
+                            </select>
+                        </div>
+                        {% endif %}
+                        <div class="col-sm-12 col-12 text-right mt-3">
+                            <button class="update_btn poppins" type="submit">Update
+                            </button>
+                            <button class="update_btn poppins" type="button"
+                                    onclick="Show_Edit_Details('my_info_show_able' ,'my_info_editable' )">Cancel
+                            </button>
+                        </div>
+                    </div>
+                </form>
+                {% endif %}
+
+                {% if profile.user.active_user_role.name == "Fitness Professional" %}
+
+                
+
+                <form method="POST" action="{% url 'client:update_info_tab' %}" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="row">
+                        <div class="col-sm-6 col-12">
+                            <label class="form-label-heading">Type Business Name</label>
+                            <input class="form-control mt-0" placeholder="Business Name" name="business_name"
+                                   data-role="tagsinput"
+                                   value="{{profile.profile.business_name}}" required>
+                        </div>
+                        <div class="col-sm-6 col-12">
+                            <label class="form-label-heading">Type Degrees</label>
+                             <input class="form-control mt-0" placeholder="Degrees" name="degree"
+                                   value="{{profile.profile.degree}}" required>
+                        </div>
+                        <div class="col-sm-6 col-12">
+                            <label class="form-label-heading">Type Professions</label>
+                             <input class="form-control mt-0" placeholder="Professions " name="professions"
+                                   value="{{profile.profile.profession}}" >
+                        </div>
+                        <div class="giving_margin"></div>
+                        <div class="col-sm-6 col-12">
+                            <label class="form-label-heading">Select Client Preference</label>
+                            <select class="form-control mt-0" name="client_preferences">
+                                {% for obj in client_preferences %}
+                                <option value="{{obj.name}}" {% if obj.name == profile.profile.client_preferences %}selected{% endif %}>{{obj.name}}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="col-sm-6 col-12">
+                            <label class="form-label-heading">Select Certifications</label>
+                            <input type="text" style="margin-bottom:10px;" class="form-control mt-0" placeholder="Enter Certificate if not in List" name="certificateinput">
+                             <select class="value_inpt poppins multiselect" id="professional_certifications"
+                            name="certifications"  multiple="multiple">
+                                {% for obj in certifications %}
+                                <option value="{{obj.name}}" {% if obj.name in profile.certification_list %}selected{% endif %}>
+                                    {{obj.name}}
+                                </option>
+                                    {% endfor %}
+                            </select>
+                        </div>
+                        <div class="giving_margin"></div>
+                        <div class="col-sm-6 col-12">
+                            <label class="form-label-heading">Available for online training?</label>
+                            <select class="form-control mt-0" name="availability_for_on_line_training">
+                                <option value="0" disabled selected>Available for on-line training?</option>
+                                <option value="1" {% if profile.profile.availability_for_on_line_training == 1 %}selected{% endif %}>Yes
+                                </option>
+                                <option value="2"  {% if profile.profile.availability_for_on_line_training == 2 %}selected{% endif %}>No
+                                </option>
+
+                            </select>
+                        </div>
+                        <div class="col-sm-6 col-12">
+                            <label class="form-label-heading">Note About Training Rates</label>
+                            <input class="form-control mt-0" placeholder="Note About Training Rates" name="note_about_training_rates"
+                                   data-role="tagsinput"
+                                   value="{{profile.profile.note_about_training_rates}}" required>
+                        </div>
+                        <div class="col-sm-6 col-12">
+                            <label class="form-label-heading">Traning Methods and Styles</label>
+                            <input class="form-control mt-0" placeholder="Traning Methods and Styles" name="training_methods_and_styles"
+                                   data-role="tagsinput"
+                                   value="{{profile.profile.training_methods_and_styles}}" required>
+                        </div>
+                        <div class="col-sm-6 col-12">
+                            <label class="form-label-heading">Available for home training?</label>
+                            <select class="form-control mt-0" name="availability_for_in_home_training">
+                                <option value="0" disabled selected>Available for in-home training?</option>
+                                <option value="1" {% if profile.profile.availability_for_in_home_training == 1 %}selected{% endif %}>Yes, available
+                                </option>
+                                <option value="2"  {% if profile.profile.availability_for_in_home_training == 2 %}selected{% endif %}>No, Join my place
+                                </option>
+
+                            </select>
+                        </div>
+                        <div class="col-sm-6 col-12">
+                            <label class="form-label-heading">Select Specialities</label>
+                            <select class="value_inpt poppins multiselect" id="professional_specialities"
+                            name="specialities" required  multiple="multiple">
+                                {% for obj in specialities %}
+                                {% if obj.name != "Other" %}
+                                <option value="{{obj.name}}" {% if obj.name in profile.specialities_list %}selected{% endif %}>
+                                    {{obj.name}}
+                                </option>
+                                {% endif %}
+                                    {% endfor %}
+                            </select>
+                        </div>
+                        <div class="giving_margin"></div>
+                        <div class="col-sm-6 col-12">
+                            <label class="form-label-heading">Type Awards</label>
+                            <input class="form-control mt-0" placeholder="Awards" name="fitness_awards"
+                                   value="{{profile.profile.fitness_awards}}">
+                        </div>
+
+                        <div class="col-sm-6 col-12">
+                            <label class="form-label-heading">My Favourite Brands / Reviews</label>
+                            <input class="form-control mt-0" placeholder="Brands / Reviews" name="brands"
+                                   value="{{profile.profile.brands}}">
+                        </div>
+                        <div class="col-sm-6 col-12">
+                            <label class="form-label-heading">Select Activities</label>
+                            <select class="value_inpt poppins multiselect" id="professional_activities"
+                            name="activities" required  multiple="multiple">
+                                {% for obj in activities %}
+                                <option value="{{obj.name}}" {% if obj.name in profile.activities_list %}selected{% endif %}>
+                                    {{obj.name}}
+                                </option>
+                                    {% endfor %}
+                            </select>
+                        </div>
+                        <div class="giving_margin"></div>
+                        
+                        <div class="col-sm-6 col-12">
+                            <label class="form-label-heading">Your Diet Type</label>
+                            <select class="value_inpt poppins mt-0" id="professional_diet"
+                            name="diet_type" required >
+                                {% for obj in diet_types %}
+                                <option value="{{obj.name}}" {% if obj.name == profile.profile.diet_type %}selected{% endif %}>
+                                    {{obj.name}}
+                                </option>
+                                    {% endfor %}
+                            </select>
+                        </div>
+                        <div class="giving_margin"></div>
+
+                        <div class="col-sm-12 col-12 text-right mt-3">
+                            <button class="update_btn poppins" type="submit">Update
+                            </button>
+                            <button class="update_btn poppins" type="button"
+                                    onclick="Show_Edit_Details('my_info_show_able' ,'my_info_editable' )">Cancel
+                            </button>
+                        </div>
+                    </div>
+                </form>
+                <div>
+                    <h2>Our Story/About Me</h2>
+                    <br>
+                    <form method="POST" action="{% url 'client:Professional_Sponsers_Update' %}" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <textarea class="content poppins" name="sponser_text" id="about_detail"
+                              rows="8"
+                              placeholder="Enter Text" >{{profile.profile.sponser_text}}</textarea><br>
+                        <br>
+                        <h2>Sponsors</h2>
+                        <br>
+                        <input style="margin-bottom: 10px;" class="form-control mt-0" placeholder="Sponsors Names " name="name"
+                                       value="{{profile.profile.sponsor_names}}" >
+                        <div class="upload_file_field">
+                            <input type="file" class="form-control" name="img_name" id="sponsor_image" required multiple>
+                            <label for="sponsor_image" class="poppins file_upload_label"
+                                style="margin-top: 7px;">Browse</label>
+                            <span class="poppins file_name" id="sponsor_image_file_uploaded_name">Sponsor Logo Image</span>                        
+                            
+                            
+                        </div>
+                        <div class="field poppins age edit " style="float:right; margin-top:10px;">
+                            <button class="update_btn mt_10" type="submit">
+                                Update
+                            </button>
+                            <button class="update_btn mt_10" type="button"
+                            onclick="Show_Edit_Details('my_info_show_able' ,'my_info_editable' )">
+                                Cancel
+                            </button>
+                        </div>
+                    </form>
+                    <div class="row">
+                        {% for obj in profile.sponsers %}
+                        <div class="col-sm-3 col-12 mt-5">
+                            <div class="card img_card"
+                                style="background-image: url('{{obj.image.url}}');min-height: 200px;">
+                                <div class="edit_ico" style="z-index: 1;width: 40px;height: 40px;">
+                                    <form method="POST" action="{% url 'client:Delete_professional_Sponser' %}">
+                                        {% csrf_token %}
+                                        <input type="hidden" name="id" value="{{obj.id}}">
+                                        <button type="submit" style="background: none; border: none;"><i
+                                                class="material-icons" style="font-size: 25px">delete</i></button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+    
+                    </div>
+    
+                </div>
+                {% endif %}
+
+                {% if profile.user.active_user_role.name == "Fitness Model" %}
+
+                <form method="POST" action="{% url 'client:update_info_tab' %}" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="row">
+
+                        <div class="col-sm-6 col-12 ">
+                            <label class="form-label-heading">Select Model Interests</label>
+                             <select class="value_inpt poppins multiselect" id="model_info_tab_modeling_interests"
+                            name="modeling_interests" required  multiple="multiple">
+                                {% for obj in modeling_interests %}
+                                <option value="{{obj.name}}" {% if obj.name in profile.modeling_interests_list %}selected{% endif %}>
+                                    {{obj.name}}
+                                </option>
+                                    {% endfor %}
+                            </select>
+
+
+                        </div>
+                        <div class="col-sm-6 col-12 ">
+                            <label class="form-label-heading">Select Eye Color</label>
+                            <select class="value_inpt poppins"
+                            name="eye_color" required >
+                                {% for obj in eye_color %}
+                                <option value="{{obj.name}}" {% if obj.name == profile.profile.eye_color %}selected{% endif %}>
+                                    {{obj.name}}
+                                </option>
+                                    {% endfor %}
+                            </select>
+                        </div>
+                        <div class="giving_margin"></div>
+                        <div class="col-sm-6 col-12">
+                            <label class="form-label-heading">Select Ethnicity</label>
+                            <select class="value_inpt poppins"
+                            name="ethnicity" required >
+                                {% for obj in ethnicity %}
+                                <option value="{{obj.name}}" {% if obj.name == profile.profile.ethnicity %}selected{% endif %}>
+                                    {{obj.name}}
+                                </option>
+                                    {% endfor %}
+                            </select>
+                        </div>
+                        <div class="col-sm-6 col-12">
+                            <label class="form-label-heading">Select Body Tattoos</label>
+                            <select class="value_inpt poppins"
+                            name="tattoos" required >
+                                {% for obj in tattoos %}
+                                <option value="{{obj.name}}" {% if obj.name == profile.profile.tattoos %}selected{% endif %}>
+                                    {{obj.name}}
+                                </option>
+                                    {% endfor %}
+                            </select>
+                        </div>
+                        <div class="giving_margin"></div>
+                        <div class="col-sm-6 col-12">
+                            <label class="form-label-heading">Select Body Piercing</label>
+                            <select class="value_inpt poppins"
+                            name="piercing" required >
+                                {% for obj in tattoos %}
+                                <option value="{{obj.name}}" {% if obj.name == profile.profile.piercing %}selected{% endif %}>
+                                    {{obj.name}}
+                                </option>
+                                    {% endfor %}
+                            </select>
+                        </div>
+                        <div class="col-sm-6 col-12">
+                            <label class="form-label-heading">Select Hair Length</label>
+                             <select class="value_inpt poppins"
+                            name="hair_length" required >
+                                {% for obj in hair_color %}
+                                <option value="{{obj.name}}" {% if obj.name == profile.profile.hair_length %}selected{% endif %}>
+                                    {{obj.name}}
+                                </option>
+                                    {% endfor %}
+                            </select>
+                        </div>
+                        <div class="giving_margin"></div>
+                        <div class="col-sm-6 col-12">
+                            <label class="form-label-heading">Select Skin Tone</label>
+                             <select class="value_inpt poppins"
+                            name="skin_tone" required >
+                                {% for obj in skin_type %}
+                                <option value="{{obj.name}}" {% if obj.name == profile.profile.skin_tone %}selected{% endif %}>
+                                    {{obj.name}}
+                                </option>
+                                    {% endfor %}
+                            </select>
+                        </div>
+                        <div class="col-sm-6 col-12">
+                            <label class="form-label-heading">Select Experience</label>
+                             <select class="value_inpt poppins"
+                            name="working_with_media" required >
+
+                                <option value="0" {% if 0 == profile.profile.working_with_media %}selected{% endif %}>Not selected</option>
+                                <option value="1" {% if 1 == profile.profile.working_with_media %}selected{% endif %}>No Experience</option>
+                                <option value="2" {% if 2 == profile.profile.working_with_media %}selected{% endif %}>Some Experience</option>
+                                <option value="3" {% if 3 == profile.profile.working_with_media %}selected{% endif %}>Experienced</option>
+                                <option value="4" {% if 4 == profile.profile.working_with_media %}selected{% endif %}>Very Experienced</option>
+
+                            </select>
+                        </div>
+                        <div class="giving_margin"></div>
+                        <div class="col-sm-6 col-12">
+                            <label class="form-label-heading">Select Activities</label>
+                             <select class="value_inpt poppins multiselect" id="modal_interested_in"
+                            name="interested_in" required  multiple="multiple">
+                                {% for obj in activities %}
+                                <option value="{{obj.name}}" {% if obj.name in profile.interested_in_list %}selected{% endif %}>
+                                    {{obj.name}}
+                                </option>
+                                    {% endfor %}
+                            </select>
+                        </div>
+
+                        <div class="col-sm-6 col-12">
+                            <label class="form-label-heading">Note About Compensation</label>
+                            <input class="form-control mt-0" placeholder="Compensation" name="compensation"
+                                   value="{{profile.profile.c}}" required>
+                        </div>
+
+
+                        <div class="col-sm-6 col-12">
+                            <label class="form-label-heading">Working With Media</label>
+                            <div class="radio">
+                                <label><input type="radio" {% if profile.profile.experience == 'Yes' %} checked {% endif %} value="Yes" name="experience"> Yes</label>
+                              </div>
+                              <div class="radio">
+                                <label><input type="radio" {% if profile.profile.experience == 'No' %} checked {% endif %} {% if profile.profile.experience == '' %} checked {% endif %} value="No" name="experience"> No</label>
+                              </div>
+                        </div>
+
+                          
+
+                        <div class="col-sm-12 col-12">
+                            <label class="form-label-heading">Our Story/About Us</label>
+                            <textarea class="form-control" rows="3" name="about_us"  style="margin-top: 0px;"
+                            required>{{profile.profile.about_us}}</textarea>
+                        </div>
+
+                        <div class="col-sm-6 col-12">
+                            <label class="form-label-heading">My Favourite Brands / Reviews</label>
+                            <input class="form-control mt-0" placeholder="Brands / Reviews" name="brands"
+                                   value="{{profile.profile.brands}}">
+                        </div>
+
+
+
+                        <div class="col-sm-12 col-12 text-right mt-3">
+                            <button class="update_btn poppins"   type="submit">Update
+                            </button>
+                            <button class="update_btn poppins" type="button"
+                                    onclick="Show_Edit_Details('my_info_show_able' ,'my_info_editable' )">Cancel
+                            </button>
+                        </div>
+                    </div>
+                </form>
+                {% endif %}
+
+
+            </div>
+        </div>
+    </section>

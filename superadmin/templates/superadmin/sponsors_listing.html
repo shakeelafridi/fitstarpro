@@ -1,0 +1,281 @@
+{% extends 'superadmin/structure_layout/base.html' %}
+
+{% load static %}
+
+{% block title %}Sponsors Listing{% endblock %}
+
+
+{% block content %}
+
+<div class="content d-flex flex-column flex-column-fluid" id="kt_content">
+    <div class="d-flex flex-column-fluid">
+        <!--begin::Container-->
+        <div class="container">
+            <div class="row">
+                <!--begin::Card-->
+                <div class="card card-custom gutter-b" style="width: 100%">
+                    <div class="card-header flex-wrap py-3">
+                        <div class="card-title">
+                            <h3 class="card-label">All Sponsors Listing
+                            </h3>
+                        </div>
+                        <div class="card-toolbar">
+                            <!--begin::Dropdown-->
+                            <!--end::Dropdown-->
+                            <!--begin::Button-->
+                            <a data-target="#addNewUser" data-toggle="modal" class="btn btn-primary font-weight-bolder">
+											<span class="svg-icon svg-icon-md">
+												<!--begin::Svg Icon | path:assets/media/svg/icons/Design/Flatten.svg-->
+												<svg xmlns="http://www.w3.org/2000/svg"
+                                                     xmlns:xlink="http://www.w3.org/1999/xlink" width="24px"
+                                                     height="24px" viewBox="0 0 24 24" version="1.1">
+													<g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+														<rect x="0" y="0" width="24" height="24"/>
+														<circle fill="#000000" cx="9" cy="15" r="6"/>
+														<path d="M8.8012943,7.00241953 C9.83837775,5.20768121 11.7781543,4 14,4 C17.3137085,4 20,6.6862915 20,10 C20,12.2218457 18.7923188,14.1616223 16.9975805,15.1987057 C16.9991904,15.1326658 17,15.0664274 17,15 C17,10.581722 13.418278,7 9,7 C8.93357256,7 8.86733422,7.00080962 8.8012943,7.00241953 Z"
+                                                              fill="#000000" opacity="0.3"/>
+													</g>
+												</svg>
+                                                <!--end::Svg Icon-->
+											</span>New Record</a>
+                            <!--end::Button-->
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <!--begin: Datatable-->
+                        <table class="table table-bordered table-checkable" id="kt_datatable">
+                            <thead>
+                            <tr>
+                                <th>Sr #</th>
+                                <th>Profile Image</th>
+                                <th>Created At</th>
+                                <th>Active</th>
+                                <th>Action</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for obj in sponsors %}
+                            <tr>
+                                <td>{{forloop.counter}}</td>
+                                <td>
+                                    <div class="image-input image-input-outline">
+                                        <div class="image-input-wrapper"
+                                             style="background-image: url({{obj.profile_image.url}});"></div>
+                                    </div>
+                                </td>
+                                <td>{{obj.created_at}}</td>
+
+                                <td>
+                                    <span class="switch switch-icon">
+                                        <label>
+                                         <input onclick='change_activeness_sponsor(this, {{obj.id}});' type="checkbox" {% if obj.remove == false %} checked="checked" {% endif %}  name="select"/>
+                                         <span></span>
+                                        </label>
+                                   </span>
+                                </td>
+                                <td>
+                                    <a data-target="#" onclick="editSponsor({{obj.id}});" class=" font-weight-bolder">
+											<span class="svg-icon svg-icon-md">
+												<!--begin::Svg Icon | path:assets/media/svg/icons/Design/Flatten.svg-->
+												<span class="svg-icon svg-icon-primary svg-icon-2x"><!--begin::Svg Icon | path:C:\wamp64\www\keenthemes\themes\metronic\theme\html\demo1\dist/../src/media/svg/icons\Design\Edit.svg--><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+    <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <rect x="0" y="0" width="24" height="24"/>
+        <path d="M8,17.9148182 L8,5.96685884 C8,5.56391781 8.16211443,5.17792052 8.44982609,4.89581508 L10.965708,2.42895648 C11.5426798,1.86322723 12.4640974,1.85620921 13.0496196,2.41308426 L15.5337377,4.77566479 C15.8314604,5.0588212 16,5.45170806 16,5.86258077 L16,17.9148182 C16,18.7432453 15.3284271,19.4148182 14.5,19.4148182 L9.5,19.4148182 C8.67157288,19.4148182 8,18.7432453 8,17.9148182 Z" fill="#000000" fill-rule="nonzero" transform="translate(12.000000, 10.707409) rotate(-135.000000) translate(-12.000000, -10.707409) "/>
+        <rect fill="#000000" opacity="0.3" x="5" y="20" width="15" height="2" rx="1"/>
+    </g>
+</svg><!--end::Svg Icon--></span>
+                                                <!--end::Svg Icon-->
+											</span></a>
+                                    <a class="font-weight-bolder" onClick="deleteSponsor({{obj.id}});">
+                                    <span class="svg-icon svg-icon-primary svg-icon-2x"><!--begin::Svg Icon | path:C:\wamp64\www\keenthemes\themes\metronic\theme\html\demo1\dist/../src/media/svg/icons\Code\Error-circle.svg--><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+    <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <rect x="0" y="0" width="24" height="24"/>
+        <circle fill="#000000" opacity="0.3" cx="12" cy="12" r="10"/>
+        <path d="M12.0355339,10.6213203 L14.863961,7.79289322 C15.2544853,7.40236893 15.8876503,7.40236893 16.2781746,7.79289322 C16.6686989,8.18341751 16.6686989,8.81658249 16.2781746,9.20710678 L13.4497475,12.0355339 L16.2781746,14.863961 C16.6686989,15.2544853 16.6686989,15.8876503 16.2781746,16.2781746 C15.8876503,16.6686989 15.2544853,16.6686989 14.863961,16.2781746 L12.0355339,13.4497475 L9.20710678,16.2781746 C8.81658249,16.6686989 8.18341751,16.6686989 7.79289322,16.2781746 C7.40236893,15.8876503 7.40236893,15.2544853 7.79289322,14.863961 L10.6213203,12.0355339 L7.79289322,9.20710678 C7.40236893,8.81658249 7.40236893,8.18341751 7.79289322,7.79289322 C8.18341751,7.40236893 8.81658249,7.40236893 9.20710678,7.79289322 L12.0355339,10.6213203 Z" fill="#000000"/>
+    </g>
+</svg><!--end::Svg Icon--></span>
+                                    </a>
+                                    <input type="hidden" id="image_link_{{obj.id}}" value="{{obj.profile_image.url}}" />
+
+                                </td>
+
+
+                            </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div aria-hidden="true" aria-labelledby="editSponsor" class="modal fade" data-backdrop="static"
+     id="editSponsor"
+     role="dialog" tabindex="-1">
+    <div class="modal-dialog  modal-dialog-centered modal-xl" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Edit Sponsor</h5>
+            </div>
+            <div class="modal-body">
+
+                <form class="form fv-plugins-bootstrap fv-plugins-framework" id="kt_login_signup_form" method="POST"
+                      enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <input type="hidden" name="id"  id="identity" />
+
+                    <div class="row">
+                        <div class="col-6">
+                            <div class="form-group row">
+                                <label class="col-2 col-form-label">Select Picture</label>
+                                <div class="col-10">
+                                    <div class="image-input image-input-outline image-input-changed" id="kt_image_1">
+                                        <div class="image-input-wrapper" id="img_identity"></div>
+                                        <label class="btn btn-xs btn-icon btn-circle btn-white btn-hover-text-primary btn-shadow"
+                                               data-action="change" data-toggle="tooltip" title=""
+                                               data-original-title="Change avatar">
+                                            <i class="fa fa-pen icon-sm text-muted"></i>
+                                            <input type="file" name="profile_avatar" accept=".png, .jpg, .jpeg"
+                                                   required >
+                                            <input type="hidden" name="profile_avatar_remove">
+                                        </label>
+                                        <span class="btn btn-xs btn-icon btn-circle btn-white btn-hover-text-primary btn-shadow"
+                                              data-action="cancel" data-toggle="tooltip" title=""
+                                              data-original-title="Cancel avatar">
+															<i class="ki ki-bold-close icon-xs text-muted"></i>
+														</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <button class="btn btn-light-primary font-weight-bold" data-dismiss="modal" type="button">Close
+                    </button>
+                    <button class="btn btn-primary font-weight-bold" type="submit">Save changes
+                    </button>
+                </form>
+
+
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div aria-hidden="true" aria-labelledby="addNewUser" class="modal fade" data-backdrop="static"
+     id="addNewUser"
+     role="dialog" tabindex="-1">
+    <div class="modal-dialog  modal-dialog-centered modal-xl" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Add New Sponsor</h5>
+            </div>
+            <div class="modal-body">
+
+                <form class="form fv-plugins-bootstrap fv-plugins-framework" id="kt_login_signup_form" method="POST"
+                      enctype="multipart/form-data">
+                    {% csrf_token %}
+
+                    <div class="row">
+                        <div class="col-6">
+                            <div class="form-group row">
+                                <label class="col-2 col-form-label">Select Picture</label>
+                                <div class="col-10">
+                                    <div class="image-input image-input-outline image-input-changed" id="kt_image_2">
+                                        <div class="image-input-wrapper"></div>
+                                        <label class="btn btn-xs btn-icon btn-circle btn-white btn-hover-text-primary btn-shadow"
+                                               data-action="change" data-toggle="tooltip" title=""
+                                               data-original-title="Change avatar">
+                                            <i class="fa fa-pen icon-sm text-muted"></i>
+                                            <input type="file" name="profile_avatar" accept=".png, .jpg, .jpeg"
+                                                   required>
+                                            <input type="hidden" name="profile_avatar_remove">
+                                        </label>
+                                        <span class="btn btn-xs btn-icon btn-circle btn-white btn-hover-text-primary btn-shadow"
+                                              data-action="cancel" data-toggle="tooltip" title=""
+                                              data-original-title="Cancel avatar">
+															<i class="ki ki-bold-close icon-xs text-muted"></i>
+														</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <button class="btn btn-light-primary font-weight-bold" data-dismiss="modal" type="button">Close
+                    </button>
+                    <button class="btn btn-primary font-weight-bold" type="submit">Save changes
+                    </button>
+                </form>
+
+
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    function deleteSponsor(id){
+        $.ajax({
+            type: "POST",
+            url: "/superadmin/delete_sponsor",
+            headers:{
+                "X-CSRFToken": '{{ csrf_token }}'
+            },
+            contentType: "application/json; charset=utf-8",
+            data: JSON.stringify({id: id}),
+            dataType: "json",
+            success: function(data){
+                location.reload();
+            },
+            error: function(errMsg) {
+            }
+        });
+  };
+
+
+  function change_activeness_sponsor(identity, id){
+    $.ajax({
+        type: "POST",
+        url: "/superadmin/change_activeness_sponsor",
+        headers:{
+            "X-CSRFToken": '{{ csrf_token }}'
+        },
+        contentType: "application/json; charset=utf-8",
+        data: JSON.stringify({id: id, check: identity.checked}),
+        dataType: "json",
+        success: function(data){
+            console.log('yes');
+        },
+        error: function(errMsg) {
+        }
+    });
+  };
+
+  function editSponsor(id){
+    img_url = '#image_link_' + id;
+    img_url = $(img_url).val();
+
+    $('#identity').val(id);
+
+    $('#img_identity').css('background-image', 'url(' + img_url + ')');
+
+    $('#editSponsor').modal('toggle');
+  }
+</script>
+
+{% endblock %}
+
+{% block javascript %}
+<script src="{% static 'js/pages/crud/file-upload/image-input.js' %}"></script>
+
+{% endblock %}

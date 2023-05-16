@@ -1,0 +1,96 @@
+{% extends 'client/base.html' %}
+{% block title %}Contact Us{% endblock %}
+{% load static %}
+{% block header %}
+<img src="{% static 'images/logo.png' %}" alt="Logo"
+          />
+{% endblock %}
+{% block body %}
+{% if messages %}
+<div class="msg-box">
+    {% for msg in messages %}
+    {% if msg != 'info_tab' and msg != 'about_tab' and msg != 'portfolio_tab' and msg != 'ads_tab' and msg != 'contact_tab' %}
+    <div class="msg {{ msg.tags }}">
+        <p style="background-color: green; color:white; text-align:center;">{{ msg }}</p>
+    </div>
+    {% endif %}
+    {% endfor %}
+</div>
+{% endif %}
+
+<section id="banner">
+    <div class="container">
+        <div class="mainHeading">
+            <h2>CONTACT</h2>
+            <div class="secondoryHeading">
+                <h2>Contact <span>Us</span></h2>
+                <div class="heroUnderLine"></div>
+            </div>
+        </div>
+    </div>
+</section>
+<section id="whoWeAre">
+    <div class="container">
+        <div class="whoLeftSide" style="margin-bottom: 22px;">
+            <img style="height: 610px;" src="{% static 'images/contact.png'  %}">
+        </div>
+        <div class="whoRightSide">
+            <h2 style="text-align: center;font: normal normal normal 100px/90px DELIRIUM NEON NCV;">Contact <span style="color: #FF1A1A">Form</span></h2>
+            <form class="contact-form" action="{% url 'client:contact_us' %}" method="POST"  onsubmit="return validateRecaptcha();">
+                {% csrf_token %}
+                <div class="row">
+                    <div class="col-sm-6 col-12">
+                        <input name="name" type="text" class="form-control" style="background: #F2F4F9;height: 50px" id="name" placeholder="Name" required/>
+                    </div>
+
+                    <div  class="col-sm-6 col-12">
+                        <input name="email" type="email" class="form-control" style="background: #F2F4F9;height: 50px" id="email" required
+                               placeholder="Email Address"/>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12 col-12">
+                        <input name="chat-code" type="text" class="form-control" style="background: #F2F4F9;height: 50px" placeholder="Chat Code" required/>
+                    </div>
+                </div>
+                <div class="clear"></div>
+                <div class="message" style="padding:15px; margin-top: -20px;">
+                    <textarea name="message" rows="7" class="form-control" id="message" required
+                              placeholder="Message" style="background: #F2F4F9;"></textarea>
+                </div>
+                <div class="mt-4 text-center">
+                    <div class="g-recaptcha" data-sitekey="6LdL8AUaAAAAAPlNDKd8dRPu9PsbBft6hinwwDmg"></div>
+                    <button style="margin-top: 20px;" class="btn-custom" type="submit" id="submit">Send</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</section>
+<style>
+    .form-control{
+        padding: 15px 30px;
+        margin-top: 25px;
+        border: none;
+        background-color: #F2F4F9;
+        border-radius: 10px;
+        font-family: 'Poppins', sans-serif;
+    }
+</style>
+<script src="https://www.google.com/recaptcha/api.js" async defer></script>
+{% endblock body %}
+
+{% block js %}
+<script>
+
+    function validateRecaptcha() {
+        var response = grecaptcha.getResponse();
+        if (response.length === 0) {
+            alert("You need to fill the captcha");
+            return false;
+        } else {
+            return true;
+        }
+    }
+</script>
+
+{% endblock js %}

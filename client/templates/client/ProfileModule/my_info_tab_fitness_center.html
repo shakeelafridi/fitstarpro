@@ -1,0 +1,325 @@
+{% load static %}
+<style>
+    .font_family_check {
+        font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans",sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji"
+    }
+</style>
+    {% if active == "center" %}
+
+<div class="myinfocontainer relative active" id="my_info_show_able" style="width: 100%;max-width: 100%">
+
+
+
+    <form method="POST" id="info_tab_submit_fitness_center"
+          action="{% url 'client:update_info_tab' %}" enctype="multipart/form-data">
+        {% csrf_token %}
+    <table class="table" style="color:gray;">
+        <tbody>
+        <tr>
+            <td colspan="2"><h3 class="font_family_check">BUSINESS</h3></td>
+            <td colspan="2">
+                     {% if is_authenticated_user %}
+                <a style="background-color: red; padding: 12px; border-radius: 25px; color: white;
+                float: right;margin-right: 70px" class="isAboutInfo"
+                   onclick="toggle_edit_info('isAboutEdit', 'isAboutInfo')">
+                    <i class="material-icons">create</i>
+                </a>
+                <a style="background-color: red; padding: 12px; border-radius: 25px; color: white;
+                float: right;margin-right: 70px" class="isAboutEdit"
+                   onclick="toggle_edit_info('isAboutInfo', 'isAboutEdit')">
+                    <i class="material-icons">cancel</i>
+                </a>
+                {% endif %}
+            </td>
+        </tr>
+        <tr>
+            <td>Open Since</td>
+            <td colspan="3">
+                <span class="isAboutInfo">{{profile.profile.open_since}}</span>
+                <span class="isAboutEdit">
+                    <input class="form-control mt-0" placeholder="Open Since" name="open_since"
+                           value="{{profile.profile.open_since}}" required>
+                </span>
+            </td>
+        </tr>
+        <tr>
+            <td>Fitness Center Type</td>
+            <td colspan="3">
+                <span class="isAboutInfo">
+                {% if profile.profile.fitness_center_type %}{{profile.profile.fitness_center_type.name}}{% else %} -{% endif %}
+                </span>
+                <span class="isAboutEdit">
+                     <select class="value_inpt poppins" name="fitness_center" required>
+                        <option value= "" disabled selected>Select Fitness Center</option>
+                        {% for obj in profile.fitness_center_type %}
+
+                        <option value="{{obj.id}}"
+                                {% if profile.profile.fitness_center_type %}
+                                {% ifequal profile.profile.fitness_center_type.id obj.id %} selected {% endifequal %}
+                                {% endif %}
+                        >{{obj.name}}
+                        </option>
+                        {% endfor %}
+                    </select>
+                </span>
+
+            </td>
+        </tr>
+        <tr>
+            <td>Languages</td>
+            <td colspan="3">
+                <span class="isAboutInfo">
+                {{profile.profile.languages}}
+                </span>
+                <span class="isAboutEdit">
+                       <select class="value_inpt poppins multiselect" id="fitness_center_languages" name="languages" required multiple>
+                                <option  {% if 'English' in profile.languages_list %} selected {% endif %}>English</option>
+                                <option  {% if 'Spanish' in profile.languages_list %} selected {% endif %}>Spanish</option>
+                                <option  {% if 'German' in profile.languages_list %} selected {% endif %}>German</option>
+                                <option  {% if 'French' in profile.languages_list %} selected {% endif %}>French</option>
+                                <option  {% if 'Portuguese' in profile.languages_list %} selected {% endif %}>Portuguese</option>
+                                <option  {% if 'Chinese' in profile.languages_list %} selected {% endif %}>Chinese</option>
+                            </select>
+                </span>
+
+            </td>
+        </tr>
+         <tr>
+            <td>Specialities</td>
+            <td colspan="3">
+                <span class="isAboutInfo">
+                {{profile.profile.specialities}}
+                </span>
+                <span class="isAboutEdit">
+                       <select class="value_inpt poppins multiselect" id="fitness_center_specialities"
+                            name="specialities" required  multiple="multiple">
+                                {% for obj in specialities %}
+
+                                <option value="{{obj.name}}" {% if obj.name in profile.specialities_list %} selected {% endif %}>
+                                    {{obj.name}}
+                                </option>
+                                    {% endfor %}
+                            </select>
+                </span>
+
+            </td>
+        </tr>
+
+         <tr>
+            <td>Hours Of Operation</td>
+            <td colspan="3">
+                <span class="isAboutInfo">{{profile.profile.hours_of_operation}}</span>
+                <span class="isAboutEdit">
+                    <input class="form-control mt-0" placeholder="Hours of Operation" name="hours_of_operation"
+                           value="{{profile.profile.hours_of_operation}}" required>
+                </span>
+            </td>
+        </tr>
+
+         <tr>
+            <td>Membership Plans</td>
+            <td colspan="3">
+                <span class="isAboutInfo">{{profile.profile.member_ship_plans}}</span>
+                <span class="isAboutEdit">
+                    <input class="form-control mt-0" placeholder="Membership Plans" name="member_ship_plans"
+                           value="{{profile.profile.member_ship_plans}}" required>
+                </span>
+            </td>
+        </tr>
+
+         <tr>
+            <td>Accomplishments </td>
+            <td colspan="3">
+                <span class="isAboutInfo">{{profile.profile.awards}}</span>
+                <span class="isAboutEdit">
+                    <input class="form-control mt-0" placeholder="Accomplishments" name="awards"
+                           value="{{profile.profile.awards}}" required>
+                </span>
+            </td>
+        </tr>
+         <tr>
+            <td>Our Fitness Pros</td>
+            <td colspan="3">
+                <span class="isAboutInfo">
+                    {% if fitness_professionals %}
+                    {% for obj in fitness_professionals %}
+                            <p>{{obj.name}}</p>
+                    {% endfor %}
+                    {% endif %}
+                </span>
+                <span class="isAboutEdit">
+                    {% if fitness_professionals %}
+                        <select class="value_inpt poppins multiselect" id="fitness_center_professionals"
+                        name="fitness_pros" required  multiple="multiple">
+                            {% for obj in fitness_professionals %}
+                            <option value="{{obj.id}}" {% if obj.id in profile.fitness_pros_list %}selected{% endif %}>
+                                {{obj.name}}
+                            </option>
+                                {% endfor %}
+                        </select>
+                    {% endif %}
+                </span>
+            </td>
+        </tr>
+
+         <tr>
+            <td>Our Story/About Us</td>
+            <td colspan="3">
+                <span class="isAboutInfo">{{profile.profile.about_us}}</span>
+                <span class="isAboutEdit">
+                    <textarea class="form-control" rows="3" name="about_us"  style="margin-top: 0px;"
+                            required>{{profile.profile.about_us}}</textarea>
+                </span>
+            </td>
+        </tr>
+
+
+
+        <tr>
+            <td>Product Reviews</td>
+            <td colspan="3">
+                <span class="isAboutInfo">
+                    {% for obj in profile.product_reviews %}
+                        <div>
+                        <div  style="margin-bottom: 10px">
+                            <div class="col-10 p-0 row">
+                                <input class="col-3 form-control mt-0" disabled
+                                       style="margin-right: 2px" placeholder="Product" value="{{obj.name}}">
+                                <input class="col-4 form-control mt-0 " disabled
+                                       style="margin-right: 5px" placeholder="Review" value="{{obj.review}}">
+                                <div class="col-3">
+                                    <div class="rating" style="width:90px;">
+                                        <style>
+                                            .material-icons {
+                                                font-size: 11px;
+                                            }
+                                        </style>
+                                        {% if obj.star == 0 %}
+                                            <i class="material-icons">star_outline</i>
+                                            <i class="material-icons">star_outline</i>
+                                            <i class="material-icons">star_outline</i>
+                                            <i class="material-icons">star_outline</i>
+                                            <i class="material-icons">star_outline</i>
+                                            {% endif %}
+                                             {% if obj.star == 1 %}
+                                            <i class="material-icons">star_outline</i>
+                                            <i class="material-icons">star_outline</i>
+                                            <i class="material-icons">star_outline</i>
+                                            <i class="material-icons">star_outline</i>
+                                            <i class="material-icons">star</i>
+                                            {% endif %}
+                                             {% if obj.star == 2 %}
+                                            <i class="material-icons">star_outline</i>
+                                            <i class="material-icons">star_outline</i>
+                                            <i class="material-icons">star_outline</i>
+                                            <i class="material-icons">star</i>
+                                            <i class="material-icons">star</i>
+                                            {% endif %}
+
+                                             {% if obj.star == 3 %}
+                                            <i class="material-icons">star_outline</i>
+                                            <i class="material-icons">star_outline</i>
+                                            <i class="material-icons">star</i>
+                                            <i class="material-icons">star</i>
+                                            <i class="material-icons">star</i>
+                                            {% endif %}
+
+                                             {% if obj.star == 4 %}
+                                            <i class="material-icons">star_outline</i>
+                                            <i class="material-icons">star</i>
+                                            <i class="material-icons">star</i>
+                                            <i class="material-icons">star</i>
+                                            <i class="material-icons">star</i>
+                                            {% endif %}
+                                             {% if obj.star == 5 %}
+                                            <i class="material-icons">star</i>
+                                            <i class="material-icons">star</i>
+                                            <i class="material-icons">star</i>
+                                            <i class="material-icons">star</i>
+                                            <i class="material-icons">star</i>
+                                            {% endif %}
+                                </div>
+                                </div>
+                                <div class="col-1">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </span>
+                <span class="isAboutEdit">
+                  {% if profile.product_reviews %}
+                        {% for obj in profile.product_reviews %}
+                            <div class="productReviewsMain">
+                            <div class="row productReviewsMainItem" id style="margin-bottom: 10px">
+                                <div class="col-10 p-0 row">
+                                    <input class="col-3 form-control mt-0 product_review_name_multiple_field"
+                                           style="margin-right: 2px" placeholder="Product" value="{{obj.name}}">
+                                    <input class="col-4 form-control mt-0 product_review_multiple_field"
+                                           style="margin-right: 5px" placeholder="Review" value="{{obj.review}}">
+                                    <div class="col-3">
+                                        <div class="rating" style="width:90px;">
+                                        <input id="star5{{forloop.counter}}" name="star1" type="radio" value="5" class="radio-btn hide" onchange="updateRatingValue({{forloop.counter}}, 5)"/>
+                                        <label for="star5{{forloop.counter}}" >☆</label>
+                                        <input id="star4{{forloop.counter}}" name="star1" type="radio" value="4" class="radio-btn hide" onchange="updateRatingValue({{forloop.counter}}, 4)"/>
+                                        <label for="star4{{forloop.counter}}" >☆</label>
+                                        <input id="star3{{forloop.counter}}" name="star1" type="radio" value="3" class="radio-btn hide" onchange="updateRatingValue({{forloop.counter}}, 3)"/>
+                                        <label for="star3{{forloop.counter}}" >☆</label>
+                                        <input id="star2{{forloop.counter}}" name="star1" type="radio" value="2" class="radio-btn hide" onchange="updateRatingValue({{forloop.counter}}, 2)"/>
+                                        <label for="star2{{forloop.counter}}" >☆</label>
+                                        <input id="star1{{forloop.counter}}" name="star1" type="radio" value="1" class="radio-btn hide" onchange="updateRatingValue({{forloop.counter}}, 1)"/>
+                                        <label for="star1{{forloop.counter}}" >☆</label>
+                                        <div class="clear"></div>
+                                    </div>
+                                    </div>
+                                    <div class="col-1">
+                                      <input value="{{obj.star}}" class="productReviewRatingValue productReviewRatingValue{{forloop.counter}}" type="number" style="width: 30px;visibility: hidden">
+                                    </div>
+                                </div>
+
+                                <div class="col-2 p-0 text-right">
+                                    <a style="background-color: red; padding: 6px; border-radius: 25px; color: white; float: right;"
+                                    onclick="removeProductReview()">
+                                        <i class="material-icons">delete</i>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    {% else %}
+                        <div class="productReviewsMain">
+                    </div>
+                    {% endif %}
+                     <button type="button" class="update_btn poppins" onclick="addNewProductReview()" style="width: auto;padding: 5px 11px;margin-top: 13px;">Add New Product Review</button>
+                </span>
+            </td>
+        </tr>
+
+
+
+          <tr>
+            <td colspan="3">
+                <span class="isAboutInfo"></span>
+                <span class="isAboutEdit">
+                    <button type="submit" class="update_btn poppins">Update Info</button>
+                </span>
+            </td>
+        </tr>
+
+
+        </tbody>
+    </table>
+
+        <input id="productNameReviewValue" name="productNameReviewValue" style="visibility: hidden">
+        <input id="productReviewValue" name="productReviewValue" style="visibility: hidden">
+        <input id="productReviewStarValue" name="productReviewStarValue" style="visibility: hidden">
+    </form>
+
+<!--            {% for obj in profile.profile.fitness_pros.all %}-->
+<!--            <a href="/pro/{% if obj.profile_url %}{{obj.profile_url}}{% else %}{{obj.id}}{% endif %}">-->
+<!--                <img src="{% if obj.profile_image %}{{obj.profile_image.url}}{% else %}{% static 'css/profilepage/aboutusgirl.png' %}{% endif %}"-->
+<!--                     style="width: 50px; height: 50px;margin-right: 10px"></a>-->
+<!--            {% endfor %}-->
+
+</div>
+    {% endif %}

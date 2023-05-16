@@ -1,0 +1,483 @@
+{% load static %}
+  <style>
+                    .form-label-heading {
+                        font-family: 'Poppins', sans-serif;
+                        margin-bottom: 5px;
+                    }
+                    .giving_margin {
+                        margin-bottom: 20px;
+                    }
+                </style>
+    <section class="profile_detail_content mt_35 {% if active_profile == 'ads_tab' %}active{% endif %}" id="Ads_Section">
+        <div class="container">
+            <div class="active relative" id="adss_show_able_content" style="width: 100%;max-width: 100%">
+                {% if is_authenticated_user %}
+                <div class="edit_ico" style="top: 0;right: -21px;"
+                                 onclick="Show_Edit_Details('adss_show_able_content','adss_edit_able_content' )">
+                                <i class="material-icons">create</i>
+                            </div>
+                {% endif %}
+                <div class="row">
+                    {% if profile.ads_info %}
+                    {% for obj in profile.ads_info %}
+                    <div class="col-sm-4 col-12">
+                        <div class="ad_card" style="background-image: url('{{obj.ad_info.image.url}}');">
+                            {% if is_authenticated_user %}
+                            <div class="edit_ico editAdInfoIconTab" style="top: 0;left: 0px;" data-value="{{obj.id}}"
+                            onclick="editAdInfo({{obj.id}})"  data-toggle="modal" data-target="#editAdModal">
+                                    <i class="material-icons">edit</i>
+                                </div>
+                            {% endif %}
+                            {% if is_authenticated_user %}
+                            <form method="POST" action="{% url 'client:delete_ad_information' %}">
+                                {% csrf_token %}
+                                <input type="hidden" name="id" value="{{obj.id}}">
+                                <button type="submit" style="background: none; border: none;">
+                                    <div class="edit_ico" style="top: 0;right: 50px;">
+                                <i class="material-icons">delete</i>
+                            </div>
+                                </button>
+                            </form>
+                            {% endif %}
+
+                            <input type="hidden" id="ad_session_name_{{obj.id}}" value="{{obj.ad_info.session_name}}" />
+                            <input type="hidden" id="ad_price_{{obj.id}}" value="{{obj.ad_info.price}}" />
+                            <input type="hidden" id="ad_activity_{{obj.id}}" value="{{obj.ad_info.activity}}" />
+                            <input type="hidden" id="ad_intensity_level_{{obj.id}}" value="{{obj.ad_info.intensity_level}}" />
+                            <input type="hidden" id="ad_days_{{obj.id}}" value="{{obj.ad_info.days}}" />
+                            <input type="hidden" id="ad_time_{{obj.id}}" value="{{obj.ad_info.time}}" />
+                            <input type="hidden" id="ad_location_{{obj.id}}" value="{{obj.ad_info.location}}" />
+                            <input type="hidden" id="ad_description_{{obj.id}}" value="{{obj.ad_info.description}}" />
+                            <input type="hidden" id="ad_spots_available_{{obj.id}}" value="{{obj.ad_info.spots_available}}" />
+                            <input type="hidden" id="ad_image_{{obj.id}}" value="{{obj.ad_info.image.url}}" />
+
+                            <div class="ads_card_banner poppins">
+                                <div style="display: inline-block; width: 100%;">
+                                    <h3 style="float:left;color: #ffffff;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;max-width: 70%;">{{obj.ad_info.session_name}}</h3>
+                                    <span class="ad_price right" style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;max-width: 20%;">{{obj.ad_info.price}}{% if profile.user.active_user_role.name != "Fitness Model" %}${% endif %}</span>
+                                </div>
+                                 <div style="display: inline-block; width: 100%;">
+                                      <p style="float:left;color: #ffffff;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;max-width: 70%;">{{obj.ad_info.activity}}</p>
+                                    <span class="see_desc right" data-toggle="modal" data-target="#myModal{{obj.id}}">
+                                        <button style="background-color: #5a5a5a;border-color: #5a5a5a;" type="button" class="btn btn-primary">Details</button> </span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="modal fade" id="myModal{{obj.id}}">
+                            <div class="modal-dialog modal-lg">
+                                <div class="modal-content">
+
+                                    <!-- Modal Header -->
+                                    <div class="modal-header">
+                                        <h4 class="modal-title poppins">Ad Information</h4>
+                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                    </div>
+
+                                    <!-- Modal body -->
+                                    <div class="modal-body">
+                                        <div class="row">
+
+
+                                            <div class="col-sm-6 col-12" style="margin-top: 20px;">
+                                                <label style="font-family: 'Poppins', sans-serif;">{% if profile.user.active_user_role.name != 'Fitness Model' %}Session Name{% else %}Session Title{% endif %}</label>
+                                                <input class="form-control mt-0" placeholder="Session Name" disabled value="{{obj.ad_info.session_name}}" name="session_name">
+                                            </div>
+
+                                            <div class="col-sm-6 col-12" style="margin-top: 20px;">
+                                                <label style="font-family: 'Poppins', sans-serif;">{% if profile.user.active_user_role.name != "Fitness Model" %}Interests{% else %}Activities{% endif %}</label>
+                                                <input class="form-control mt-0" placeholder="Activities" value="{{obj.ad_info.activity}}" name="activities" disabled>
+                                            </div>
+                                            {% if profile.user.active_user_role.name != "Fitness Model" %}
+                                            <div class="col-sm-6 col-12" style="margin-top: 20px;">
+                                                <label style="font-family: 'Poppins', sans-serif;">Intensity Level</label>
+                                                <select class="form-control" style="margin-top: 0px;" name="intensity_level" disabled {{obj.ad_info.intensity_level}}>
+                                                    <option value="0" disabled selected>Select Intensity Level</option>
+                                                    <option value="1" selected>Beginner</option>
+                                                    <option value="2" selected>Intermediate</option>
+                                                    <option value="3" selected>Advanced</option>
+                                                    <option value="4" selected>Elite</option>
+
+                                                </select>
+                                            </div>
+                                            {% endif %}
+                                            {% if profile.user.active_user_role.name != "Fitness Model" %}
+                                            <div class="col-sm-6 col-12" style="margin-top: 20px;">
+                                                <label style="font-family: 'Poppins', sans-serif;">No. of days</label>
+                                                <input class="form-control mt-0"  type="text" disabled value="{{obj.ad_info.days}}" />
+                                            </div>
+                                            {% endif %}
+                                            {% if profile.user.active_user_role.name != "Fitness Model" %}
+                                            <div class="col-sm-6 col-12" style="margin-top: 20px;">
+                                                <label style="font-family: 'Poppins', sans-serif;">Time Info</label>
+                                                <input class="form-control mt-0" placeholder="Time" disabled name="time" value="{{obj.ad_info.time}}">
+                                            </div>
+                                            {% endif %}
+
+                                            <div class="col-sm-6 col-12" style="margin-top: 20px;">
+                                                <label style="font-family: 'Poppins', sans-serif;">Location Info</label>
+                                                <textarea rows="3" disabled>{{obj.ad_info.location}}"</textarea>
+                                            </div>
+
+
+                                            <div class="col-sm-6 col-12" style="margin-top: 20px;">
+                                                <label style="font-family: 'Poppins', sans-serif;">Description</label>
+                                                <textarea rows="3" disabled>{{obj.ad_info.description}}"</textarea>
+                                            </div>
+
+                                            <div class="col-sm-6 col-12" style="margin-top: 20px;">
+                                                <label style="font-family: 'Poppins', sans-serif;">{% if profile.user.active_user_role.name != "Fitness Model" %}Pricing{% else %}Compensation{% endif %}</label>
+                                                <input class="form-control mt-0" placeholder="Price" name="price" disabled value="{{obj.ad_info.price}}">
+                                            </div>
+                                            {% if profile.user.active_user_role.name != "Fitness Model" %}
+                                            <div class="col-sm-6 col-12" style="margin-top: 20px;">
+                                                <label style="font-family: 'Poppins', sans-serif;">Spots Available</label>
+                                                <input class="form-control mt-0" placeholder="Spots Available" disabled name="spots_available" value="{{obj.ad_info.spots_available}}">
+                                            </div>
+                                            {% endif %}
+                                        </div>
+
+                                    </div>
+
+                                    <!-- Modal footer -->
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    {% endfor %}
+                    {% else %}
+                    <div style="text-align: center">No Information is available</div>
+                    {% endif %}
+                </div>
+            </div>
+            <div id="adss_edit_able_content">
+
+                <form method="POST" action="{% url 'client:ads_info_tab_update' %}" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    {% if profile.user.active_user_role.name == "Fitness Model" %}
+                    <div class="row">
+
+                        <div class="col-sm-6 col-12 giving_margin">
+                            <label class="form-label-heading">Type Service Title</label>
+                            <input class="form-control mt-0" placeholder="Service Title" name="session_name"
+                                   required>
+                        </div>
+                        <div class="col-sm-6 col-12 giving_margin">
+                            <label class="form-label-heading">Select Interests</label>
+                            <select class="value_inpt poppins multiselect mt-0" id="modal_ad_interests"
+                            name="activities" required  multiple="multiple">
+                                {% for obj in modeling_interests %}
+                                <option value="{{obj.name}}">
+                                    {{obj.name}}
+                                </option>
+                                    {% endfor %}
+                            </select>
+                        </div>
+                        <div class="col-sm-6 col-12 giving_margin">
+                            <label class="form-label-heading">Select Compensation</label>
+                            <select class="form-control mt-0" name="price" required>
+                                {% for obj in compensation %}
+                                    <option value="{{obj.name}}">{{obj.name}}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="col-sm-6 col-12 giving_margin">
+                            <label class="form-label-heading">Type Location</label>
+                            <input class="form-control mt-0" placeholder="Location" id="ad_tab_address1" name="location"
+                                   required>
+                        </div>
+
+
+                        <script>
+                            $(document).ready(function(){
+                                var autocomplete;
+                                autocomplete = new google.maps.places.Autocomplete((document.getElementById('ad_tab_address1')),{
+                                    types: ['geocode'],
+                                });
+                                google.maps.event.addListener(autocomplete, 'place_changed', function(){
+                                    var near_place = autocomplete.getPlace();
+                                });
+                            });
+                        </script>
+                        <div class="col-sm-6 col-12 giving_margin">
+                            <label class="form-label-heading">Description</label>
+                            <textarea class="mt-0" rows="3" name="description" required></textarea>
+                        </div>
+                        <div class="col-sm-6 col-12 giving_margin">
+                            <label class="form-label-heading">Select Featured Image</label>
+                            <input type="file" class="form-control" placeholder="Select Photo" name="image" required>
+                        </div>
+
+                        <div class="col-sm-12 col-12 text-right mt-3">
+                            <button class="update_btn poppins" type="submit">Update
+                            </button>
+                            <button class="update_btn poppins" type="button"
+                                    onclick="Show_Edit_Details('adss_show_able_content' ,'adss_edit_able_content' )">Cancel
+                            </button>
+                        </div>
+                    </div>
+                    {% else %}
+                    <div class="row">
+
+                        <div class="col-sm-6 col-12">
+                            <input class="form-control" placeholder="Session Name" name="session_name"
+                                   required>
+                        </div>
+                        <div class="col-sm-6 col-12" style="margin-top: 25px;">
+                            <select class="value_inpt poppins multiselect" id="ads_activities"
+                            name="activities" required  multiple="multiple">
+                                {% for obj in activities %}
+                                <option value="{{obj.name}}">
+                                    {{obj.name}}
+                                </option>
+                                    {% endfor %}
+                            </select>
+                        </div>
+                        <div class="col-sm-6 col-12">
+
+                            <select class="form-control" name="intensity_level" required>
+                                <option value="0" disabled selected>Select Intensity Level</option>
+                                <option value="1" selected>Beginner</option>
+                                <option value="2" >Intermediate</option>
+                                <option value="3" >Advanced</option>
+                                <option value="4" >Elite</option>
+                            </select>
+                        </div>
+                        <div class="col-sm-6 col-12" style="margin-top: 25px;">
+                            <select class="form-control" id="ads_days" name="days" required multiple>
+                                <option value="Mon">Monday</option>
+                                <option value="Tue">Tuesday</option>
+                                <option value="Wed">Wednesday</option>
+                                <option value="Thu">Thursday</option>
+                                <option value="Fri">Friday</option>
+                                <option value="Sat">Saturday</option>
+                                <option value="Sun">Sunday</option>
+                            </select>
+                        </div>
+                        <div class="col-sm-6 col-12">
+                            <input class="form-control" placeholder="Time" name="time"
+                                   required>
+                        </div>
+                        <div class="col-sm-6 col-12">
+                            <input class="form-control" placeholder="Location" name="location"
+                                   id="ad_tab_address2"
+                                   required>
+                        </div>
+
+
+                        <script>
+                            $(document).ready(function(){
+                                var autocomplete;
+                                autocomplete = new google.maps.places.Autocomplete((document.getElementById('ad_tab_address2')),{
+                                    types: ['geocode'],
+                                });
+                                google.maps.event.addListener(autocomplete, 'place_changed', function(){
+                                    var near_place = autocomplete.getPlace();
+                                });
+                            });
+                        </script>
+                        <div class="col-sm-6 col-12">
+                            <input class="form-control" placeholder="Description" name="description"
+                                   required>
+                        </div>
+                        <div class="col-sm-6 col-12">
+                            <input class="form-control" placeholder="Price" name="price" type="number"
+                                   required>
+                        </div>
+                        <div class="col-sm-6 col-12">
+                            <input class="form-control" placeholder="Spots Available" name="spots_available"
+                                   required>
+                        </div>
+                        <div class="col-sm-6 col-12">
+                            <input type="file" class="form-control" placeholder="Select Photo" name="image" required>
+                        </div>
+
+                        <div class="col-sm-12 col-12 text-right mt-3">
+                            <button class="update_btn poppins" type="submit">Update
+                            </button>
+                            <button class="update_btn poppins" type="button"
+                                    onclick="Show_Edit_Details('adss_show_able_content' ,'adss_edit_able_content' )">Cancel
+                            </button>
+                        </div>
+                    </div>
+                    {% endif %}
+                </form>
+            </div>
+        </div>
+    </section>
+
+<div class="modal fade" id="editAdModal">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+
+                <div class="modal-header">
+                    <h4 class="modal-title poppins">Edit Ad</h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+
+                <div class="modal-body">
+                    <form method="POST" action="{% url 'client:edit_ads_info_tab_update' %}" enctype="multipart/form-data">
+                    {% csrf_token %}
+                        <input type="hidden" name="id" id="ad_identity_input"/>
+                    {% if profile.user.active_user_role.name == "Fitness Model" %}
+                    <div class="row">
+                        <div class="col-sm-6 col-12 giving_margin">
+                            <label class="form-label-heading">Type Service Title</label>
+                            <input id="ad_a_session" class="form-control mt-0" placeholder="Service Title" name="session_name"
+                                   required>
+                        </div>
+                        <div class="col-sm-6 col-12 giving_margin">
+                            <label class="form-label-heading">Select Interests</label>
+                            <select class="value_inpt poppins multiselect mt-0" id="ad_a_interests"
+                            name="activities"  multiple="multiple">
+                                {% for obj in modeling_interests %}
+                                <option value="{{obj.name}}">
+                                    {{obj.name}}
+                                </option>
+                                    {% endfor %}
+                            </select>
+                        </div>
+                        <div class="col-sm-6 col-12 giving_margin">
+                            <label class="form-label-heading">Select Compensation</label>
+                            <select class="form-control mt-0" name="price" required id="ad_a_price">
+                                {% for obj in compensation %}
+                                    <option value="{{obj.name}}">{{obj.name}}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="col-sm-6 col-12 giving_margin">
+                            <label class="form-label-heading">Type Location</label>
+                            <input class="form-control mt-0" placeholder="Location" id="ad_tab_address1_edit"
+                                   name="location"
+                                   >
+                        </div>
+
+
+                        <script>
+                            $(document).ready(function(){
+                                var autocomplete;
+                                autocomplete = new google.maps.places.Autocomplete((document.getElementById('ad_tab_address1_edit')),{
+                                    types: ['geocode'],
+                                });
+                                google.maps.event.addListener(autocomplete, 'place_changed', function(){
+                                    var near_place = autocomplete.getPlace();
+                                });
+                            });
+                        </script>
+                        <div class="col-sm-6 col-12 giving_margin">
+                            <label class="form-label-heading">Description</label>
+                            <textarea class="mt-0" rows="3" name="description" id="ad_a_description" required></textarea>
+                        </div>
+                        <div class="col-sm-6 col-12 giving_margin">
+                            <label class="form-label-heading">Select Featured Image</label>
+                            <input type="file" class="form-control" placeholder="Select Photo" id="ad_a_img" name="image">
+                        </div>
+
+                        <div class="col-sm-12 col-12 text-right mt-3">
+                            <button class="update_btn poppins" type="submit">Update
+                            </button>
+                            <button class="update_btn poppins" type="button">Cancel
+                            </button>
+                        </div>
+                    </div>
+                    {% else %}
+                    <div class="row">
+
+                        <div class="col-sm-6 col-12">
+                            <input class="form-control" placeholder="Session Name" name="session_name"
+                                   id="ad_a_session"
+                                   required>
+                        </div>
+                        <div class="col-sm-6 col-12" style="margin-top: 25px;">
+                            <select class="value_inpt poppins multiselect" id="ad_a_interests"
+                            name="activities"  multiple="multiple">
+                                {% for obj in activities %}
+                                <option value="{{obj.name}}">
+                                    {{obj.name}}
+                                </option>
+                                    {% endfor %}
+                            </select>
+                        </div>
+                        <div class="col-sm-6 col-12">
+
+                            <select class="form-control" name="intensity_level" id="ad_a_intensity">
+                                <option value="0" disabled selected>Select Intensity Level</option>
+                                <option value="1" selected>Beginner</option>
+                                <option value="2" >Intermediate</option>
+                                <option value="3" >Advanced</option>
+                                <option value="4" >Elite</option>
+                            </select>
+                        </div>
+                        <div class="col-sm-6 col-12" style="margin-top: 25px;">
+                            <select class="form-control" id="ad_a_days" name="days" multiple>
+                                <option value="Mon">Monday</option>
+                                <option value="Tue">Tuesday</option>
+                                <option value="Wed">Wednesday</option>
+                                <option value="Thu">Thursday</option>
+                                <option value="Fri">Friday</option>
+                                <option value="Sat">Saturday</option>
+                                <option value="Sun">Sunday</option>
+                            </select>
+                        </div>
+                        <div class="col-sm-6 col-12">
+                            <input class="form-control" placeholder="Time" name="time" id="ad_a_time"
+                                   required>
+                        </div>
+                        <div class="col-sm-6 col-12">
+                            <input class="form-control" placeholder="Location" name="location"
+                                   id="ad_tab_address1_edit"
+                                   >
+                        </div>
+
+
+                        <script>
+                            $(document).ready(function(){
+                                var autocomplete;
+                                autocomplete = new google.maps.places.Autocomplete((document.getElementById('ad_tab_address1_edit')),{
+                                    types: ['geocode'],
+                                });
+                                google.maps.event.addListener(autocomplete, 'place_changed', function(){
+                                    var near_place = autocomplete.getPlace();
+                                });
+                            });
+                        </script>
+                        <div class="col-sm-6 col-12">
+                            <input class="form-control" placeholder="Description" name="description" id="ad_a_description"
+                                   required>
+                        </div>
+                        <div class="col-sm-6 col-12">
+                            <input class="form-control" placeholder="Price" name="price" type="number" id="ad_a_price"
+                                   required>
+                        </div>
+                        <div class="col-sm-6 col-12">
+                            <input class="form-control" placeholder="Spots Available" name="spots_available" id="ad_a_spots"
+                                   required>
+                        </div>
+                        <div class="col-sm-6 col-12">
+                            <input type="file" class="form-control" placeholder="Select Photo" name="image" id="ad_a_img">
+                        </div>
+
+                        <div class="col-sm-12 col-12 text-right mt-3">
+                            <button class="update_btn poppins" type="submit">Update
+                            </button>
+                            <button class="update_btn poppins" type="button">Cancel
+                            </button>
+                        </div>
+                    </div>
+                    {% endif %}
+                </form>
+                </div>
+
+                <!-- Modal footer -->
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                </div>
+
+            </div>
+        </div>
+    </div>

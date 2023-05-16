@@ -1,0 +1,298 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,400;0,500;0,600;1,300;1,400;1,500;1,600&display=swap");
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  position: relative;
+}
+.msg-box {
+  width: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+.msg {
+  width: 100%;
+}
+.msg.error {
+  background-color: #b40000;
+}
+.msg.success {
+  background-color: #009700;
+}
+.msg.info {
+  background-color: #b99700;
+}
+
+.msg p {
+  font-family: Poppins;
+  color: white;
+  width: 100%;
+  text-align: center;
+}
+
+a {
+  text-decoration: none;
+  color: #000000;
+  font-family: Poppins;
+}
+
+.mr {
+  margin-right: 5px;
+}
+
+.ml {
+  margin-left: 5px;
+}
+
+.fl {
+  /* Float Left */
+  float: left;
+  text-align: left;
+}
+
+.fr {
+  /* Float RIGHT */
+  float: right;
+  text-align: right;
+}
+.poppins {
+  font-family: Poppins;
+}
+
+section#signup-form {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.container1 {
+  margin: 0 auto;
+  max-width: 1150px;
+  width: 100%;
+}
+.side-image {
+  display: inline-block;
+  width: 35%;
+  margin-top: 40px;
+}
+.side-image img {
+  /* height: 127%; */
+  max-width: 110%;
+}
+.form {
+  display: inline-block;
+  width: 64%;
+  text-align: center;
+  vertical-align: top;
+}
+.form img,
+input[type="text"],
+input[type="email"],
+.input-field {
+  max-width: 525px;
+  width: 100%;
+  margin: 0 auto;
+}
+
+.form h1 {
+  font-family: "britannic";
+  font-size: 50px;
+  color: #5a5a5a;
+}
+
+input {
+  outline: none;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="password"] {
+  padding: 15px 30px;
+  margin-top: 25px;
+  border: none;
+  background-color: #f2f4f9;
+  border-radius: 10px;
+  font-family: "Poppins", sans-serif;
+  /*font-size: 17px;*/
+}
+
+.input-group {
+  max-width: 525px;
+  width: 100%;
+  margin: 10px auto 25px auto;
+}
+
+.col {
+  display: flex;
+}
+
+.row-field.pr {
+  padding-right: 5px;
+}
+
+.row-field.pl {
+  padding-left: 5px;
+}
+
+#check-field {
+  text-align: left;
+}
+
+input[type="password"] {
+  max-width: 525px;
+  width: 100%;
+
+  padding: 15px 30px;
+  box-sizing: border-box;
+
+  border: none;
+  background-color: #f2f4f9;
+  border-radius: 10px;
+  font-family: "Poppins", sans-serif;
+  /*font-size: 17px;*/
+}
+
+select {
+  max-width: 525px;
+  width: 100%;
+
+  padding: 15px 30px;
+  box-sizing: border-box;
+  border: none;
+  background-color: #f2f4f9;
+  border-radius: 10px;
+  font-family: "Poppins", sans-serif;
+  /*font-size: 20px;*/
+  background: url("/media/images/accounts/drop.png") #f2f4f9 no-repeat 90%;
+
+  outline: none;
+}
+
+select::-ms-expand {
+  display: none;
+}
+
+.btnNext {
+  background: #5a5a5a 0% 0% no-repeat padding-box;
+  border-radius: 30px;
+  padding: 11px 46px;
+  color: #fff;
+  font-size: 20px;
+  font-family: Poppins;
+  display: block;
+  margin: 35px auto;
+  border: none;
+  outline: none;
+  cursor: pointer;
+}
+
+footer p {
+  text-align: left;
+  font: normal 20px/30px Poppins;
+  color: #000;
+  opacity: 1;
+}
+footer img {
+  width: 100%;
+}
+.secondpart h2,
+.thirdpart h2,
+.forthpart h2 {
+  color: #000;
+  font: normal normal 600 20px/30px Poppins;
+  margin: 5% 0;
+}
+.firstpart {
+  width: 28%;
+  padding: 0;
+}
+footer ul li {
+  padding: 2px 0;
+}
+footer ul li a {
+  color: #000;
+  font: normal normal normal 14px Poppins;
+}
+footer ul li a:hover {
+  color: #ff1a1a;
+  border-bottom: 2px solid #ff1a1a;
+  text-decoration: none;
+}
+.thirdpart i {
+  padding: 6px 0;
+  width: 100%;
+}
+.thirdpart i:hover {
+  color: #ff1a1a;
+}
+.fa-phone:before,
+.fa-envelope:before {
+  padding-right: 7%;
+  color: #ff1a1a;
+}
+.forthpart {
+  text-align: center;
+}
+.forthpart i {
+  text-align: center;
+  padding: 7px 10px;
+  background-color: #5a5a5a;
+  border-radius: 50px;
+  color: #fff;
+}
+.forthpart i:hover {
+  background-color: #fff;
+  color: #ff1a1a;
+}
+.forthpart p {
+  text-align: center;
+  padding: 8% 0;
+}
+.forthpart p i {
+  padding: 0 11%;
+  padding: 7px 4%;
+  margin: 0 8%;
+  background-color: #5a5a5a;
+  border-radius: 50px;
+  color: #fff;
+}
+.forthpart p i:hover {
+  background-color: #fff;
+  color: #ff1a1a;
+}
+.firstHeader {
+  background-color: #f2f4f9;
+}
+.secondFooter p {
+  display: inline-block;
+  width: 33%;
+  font: normal normal normal 16px/25px Poppins;
+  vertical-align: middle;
+  font-size: 14px;
+}
+.secondFooter ul {
+  display: inline-block;
+  width: 39%;
+  vertical-align: middle;
+}
+.secondFooter li {
+  display: inline-block;
+  width: 32%;
+  text-align: center;
+}
+.secondFooter li a {
+  font: normal normal medium 16px/25px Poppins;
+  color: #ff1a1a;
+  font-size: 14px;
+}
+.secondFooter img {
+  display: inline-block;
+  width: 27%;
+  vertical-align: middle;
+}

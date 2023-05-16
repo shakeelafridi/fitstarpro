@@ -1,0 +1,320 @@
+{% extends 'superadmin/structure_layout/base.html' %}
+
+{% load static %}
+
+{% block title %}Users Listing{% endblock %}
+
+
+{% block content %}
+
+<div class="content d-flex flex-column flex-column-fluid" id="kt_content">
+    <div class="d-flex flex-column-fluid">
+        <!--begin::Container-->
+        <div class="container">
+            <div class="row">
+                <!--begin::Card-->
+                <div class="card card-custom gutter-b" style="width: 100%">
+                    <div class="card-header flex-wrap py-3">
+                        <div class="card-title">
+                            <h3 class="card-label">All Users Listing
+                            </h3>
+                        </div>
+                        <div class="card-toolbar">
+                            <!--begin::Dropdown-->
+                            <!--end::Dropdown-->
+                            <!--begin::Button-->
+                            <a data-target="#addNewUser" data-toggle="modal" class="btn btn-primary font-weight-bolder">
+											<span class="svg-icon svg-icon-md">
+												<!--begin::Svg Icon | path:assets/media/svg/icons/Design/Flatten.svg-->
+												<svg xmlns="http://www.w3.org/2000/svg"
+                                                     xmlns:xlink="http://www.w3.org/1999/xlink" width="24px"
+                                                     height="24px" viewBox="0 0 24 24" version="1.1">
+													<g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+														<rect x="0" y="0" width="24" height="24"/>
+														<circle fill="#000000" cx="9" cy="15" r="6"/>
+														<path d="M8.8012943,7.00241953 C9.83837775,5.20768121 11.7781543,4 14,4 C17.3137085,4 20,6.6862915 20,10 C20,12.2218457 18.7923188,14.1616223 16.9975805,15.1987057 C16.9991904,15.1326658 17,15.0664274 17,15 C17,10.581722 13.418278,7 9,7 C8.93357256,7 8.86733422,7.00080962 8.8012943,7.00241953 Z"
+                                                              fill="#000000" opacity="0.3"/>
+													</g>
+												</svg>
+                                                <!--end::Svg Icon-->
+											</span>New Record</a>
+                            <!--end::Button-->
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <form action="searchuser" method="POST" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            <input type="text" style="float: left;" class="form-control col-md-3" placeholder="Search user" name="search">
+                            <select style="float: left; margin-left: 10px;" class="input--style-4 form-control col-md-3" id="user" name="user" required>
+                                <option selected disabled>Select Type</option>
+                                <option value="model">MODEL</option>
+                                <option value="professional">PROFESSIONAL</option>
+                                <option value="center">CENTER</option>
+                            </select>
+                            <button class="btn" type="submit"><i class="fa fa-search"></i></button>
+                          </form>
+
+                        <!--begin: Datatable-->
+                        <table class="table table-bordered table-checkable" style="margin-top: 10px;" id="kt_datatable">
+                            <thead>
+                            <tr>
+                                <th>Sr #</th>
+                                <th>Username</th>
+                                <th>Role</th>
+                                <th>Active Role</th>
+                                <th>Email Address</th>
+                                <th>Referred By</th>
+                                <th>Created At</th>
+                                <th>Active</th>
+                                <th>Delete</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for obj in users_info %}
+                            
+                            {% for role in obj.roles.all %}
+                            <tr>
+                                <td>{{forloop.counter}}</td>
+                                <td>{{obj.username}}</td>
+                                <td>{{role.name}}</td>
+                                <td>{{obj.active_user_role.name}}</td>
+                                <td>{{obj.user.email}}</td>
+                                <td>{{obj.referred}}</td>
+                                <td>{{obj.created_at}}</td>
+                                <td>
+                                    <span class="switch switch-icon">
+
+                                        <label>
+                                         <input onclick='change_active_user(this, {{obj.id}});' type="checkbox" {% if obj.user.is_active == True %} checked="checked" {% endif %} name="select"/>
+                                         <span></span>
+                                        </label>
+                                   </span>
+                                </td>
+                                <td><a href="/superadmin/delete_user/{{obj.id}}/{{role.name}}/{{role.id}}"><i style="color: red; font-size: 20px; padding: 10px;;" class="fa fa-trash"></i></a></td>
+                            </tr>
+                            {% endfor %}
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div aria-hidden="true" aria-labelledby="addNewUser" class="modal fade" data-backdrop="static"
+     id="addNewUser"
+     role="dialog" tabindex="-1">
+    <div class="modal-dialog  modal-dialog-centered modal-xl" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Add New User</h5>
+            </div>
+            <div class="modal-body">
+
+                <form class="form fv-plugins-bootstrap fv-plugins-framework" id="kt_login_signup_form">
+                    <div class="row">
+                        <div class="col-6">
+                            <div class="form-group row">
+                                <label class="col-2 col-form-label">Username</label>
+                                <div class="col-10">
+                                    <input class="form-control" type="text" placeholder="Type Full Name" name="username"
+                                           id="username" required>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="col-6">
+                            <div class="form-group row">
+                                <label class="col-2 col-form-label">Email Address</label>
+                                <div class="col-10">
+                                    <input class="form-control" type="text" placeholder="Enter Email Address"
+                                           name="email"
+                                           id="email" required>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-6">
+                            <div class="form-group row">
+                                <label class="col-2 col-form-label">Password</label>
+                                <div class="col-10">
+                                    <input class="form-control" checked="checked"type="password" placeholder="Password" name="password"
+                                           id="password" required>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="col-6">
+                            <div class="form-group row">
+                                <label class="col-2 col-form-label">Confirm Password</label>
+                                <div class="col-10">
+                                    <input class="form-control" type="password" placeholder="Confirm Password"
+                                           id="c_password" required>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-6">
+                            <div class="form-group row">
+                                <label class="col-2 col-form-label">Select User Role</label>
+                                <div class="col-10">
+                                    <select class="form-control form-control-lg" id="userrole" required>
+                                        {% for role in user_roles %}
+                                        <option value="{{ role.id }}">{{ role.name }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                            </div>
+
+                        </div>
+                        
+                        <div class="col-6">
+                            <div class="form-group row">
+                                <label class="col-2 col-form-label">Select Location</label>
+                                <div class="col-10">
+                                    <input class="form-control"  type="text" style="margin-top: 0px;" id="register_location_city_country" placeholder="Enter Your Location" name="location" required>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </form>
+
+                <div id="error_div" style="color: red; display: none;">All Fields Are Required</div>
+
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-light-primary font-weight-bold" data-dismiss="modal" type="button">Close</button>
+                <button class="btn btn-primary font-weight-bold" type="button" id="save_user_info"
+                        onclick="saveUserInfo()">Save changes
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=places&key=AIzaSyCy7x2Sx_u2gBDfSBfksctKjknIHpAqy24"></script>
+
+<script>
+    $(document).ready(function(){
+        var autocomplete;
+        autocomplete = new google.maps.places.Autocomplete((document.getElementById('register_location_city_country')),{
+            types: ['geocode'],
+        });
+        google.maps.event.addListener(autocomplete, 'place_changed', function(){
+            var near_place = autocomplete.getPlace();
+        });
+    });
+</script>
+{% endblock %}
+
+
+
+{% block javascript %}
+
+<script src="https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=places&key=AIzaSyCy7x2Sx_u2gBDfSBfksctKjknIHpAqy24"></script>
+
+<script>
+    $(document).ready(function(){
+        var autocomplete;
+        autocomplete = new google.maps.places.Autocomplete((document.getElementById('register_location_city_country')),{
+            types: ['geocode'],
+        });
+        google.maps.event.addListener(autocomplete, 'place_changed', function(){
+            var near_place = autocomplete.getPlace();
+        });
+    });
+</script>
+
+<script type="text/javascript">
+
+    function saveUserInfo() {
+        username = $('#username').val();
+        password = $('#password').val();
+        c_password = $('#c_password').val();
+        email = $('#email').val();
+        userrole = $('#userrole').val();
+        timezone = $('#register_location_city_country').val();
+
+        console.log(username, password, c_password, email, userrole, timezone);
+
+        is_form_submit = true;
+        if (username == ''){
+            is_form_submit = false;
+        }
+        if (password == ''){
+            is_form_submit = false;
+        }
+        if (c_password == ''){
+            is_form_submit = false;
+        }
+        if (c_password != password){
+            is_form_submit = false;
+        }
+        if (email === ''){
+            is_form_submit = false;
+        }
+        if (userrole == ''){
+            is_form_submit = false;
+        }
+        if (timezone === ''){
+            is_form_submit = false;
+        }
+
+        console.log(is_form_submit);
+
+        if (is_form_submit == true) {
+            $.ajax({
+                type: "POST",
+                url: "/superadmin/create_user",
+                headers:{
+                    "X-CSRFToken": '{{ csrf_token }}'
+                },
+                contentType: "application/json; charset=utf-8",
+                data: JSON.stringify({ username: username, password:password, email:email, userrole:userrole, timezone:timezone}),
+                dataType: "json",
+                success: function(data){
+                    $('#addNewUser').modal('toggle');
+                    location.reload();
+                },
+                error: function(errMsg) {
+                }
+            });
+        }
+
+        if (is_form_submit == false){
+            setTimeout(function(){
+               $('#error_div').show();// or fade, css display however you'd like.
+            }, 5000);
+        }
+    }
+
+
+  function change_active_user(identity, id){
+    $.ajax({
+        type: "POST",
+        url: "/superadmin/change_activeness_user",
+        headers:{
+            "X-CSRFToken": '{{ csrf_token }}'
+        },
+        contentType: "application/json; charset=utf-8",
+        data: JSON.stringify({id: id, check: identity.checked}),
+        dataType: "json",
+        success: function(data){
+            console.log('yes');
+        },
+        error: function(errMsg) {
+        }
+    });
+  };
+
+
+</script>
+{% endblock %}

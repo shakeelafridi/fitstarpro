@@ -1,0 +1,392 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,400;0,700;1,200;1,300;1,400&display=swap");
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* UTILITY CLASSES  */
+
+.tag_line {
+  font-weight: 700;
+}
+
+.delirium {
+  font-family: "DELIRIUM NCV";
+}
+
+.tag_line {
+  font-size: 25px;
+  color: black;
+  font-weight: bold;
+}
+.poppins {
+  font-family: "Poppins";
+}
+
+.mt_25 {
+  margin-top: 25px;
+}
+.mt_10 {
+  margin-top: 10px;
+}
+.mt_35 {
+  margin-top: 35px;
+}
+
+.fs_red {
+  color: #ff1a1a;
+}
+
+.fs_gray {
+  color: #939391;
+}
+
+.fs_d_gray {
+  color: #5a5a5a;
+}
+
+.tool_tip {
+  position: relative;
+  cursor: pointer;
+}
+
+.tool_tip::before {
+  content: attr(data-tool-tip);
+  color: #939391;
+  position: absolute;
+  font-size: 14px;
+
+  left: 50%;
+  bottom: 0;
+  background-color: #00000010;
+  border-radius: 15px;
+  padding: 5px 20px;
+  transform: translate(-50%, 100%) scale(0);
+  transition: 0.5s;
+  cursor: pointer;
+}
+
+.tool_tip:hover::before {
+  transform: translate(-50%, 100%) scale(1);
+}
+
+.relative {
+  position: relative !important;
+}
+
+a {
+  text-decoration: none;
+}
+
+section#profile_sec {
+  width: 100%;
+  background-color: #f2f4f9;
+  padding: 40px 0;
+}
+
+.profile_top_container {
+  max-width: 1300px;
+  width: 90%;
+  background-color: white;
+  height: 100%;
+  margin: 0 auto;
+
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  grid-gap: 10px;
+}
+
+.card {
+  max-width: 400px;
+  margin: 0 auto;
+  width: 100%;
+  min-height: 400px;
+}
+
+.card.img_card {
+  background-image: url("./aboutusgirl.png");
+  /* background-position: center; */
+  background-size: cover;
+  background-repeat: no-repeat;
+
+  position: relative;
+}
+
+.edit_ico {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #ff1a1a;
+  border-radius: 50%;
+  cursor: pointer;
+
+  position: absolute;
+  width: 50px;
+  height: 50px;
+  bottom: 0;
+  right: 0;
+  transform: translate(50%, 50%);
+}
+.edit_ico i {
+  color: white;
+  font-size: 35px;
+}
+
+/* CENTERAL CARD//////////////////////////////////////////////////////////////////// */
+
+.card.center_card {
+  padding: 30px 0;
+  position: relative;
+}
+
+.card.center_card::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  right: 30px;
+  width: 2px;
+  height: 80%;
+  background-color: #ff1a1a;
+
+  transform: translateY(-50%);
+}
+
+.card.center_card h3.role_name {
+  font-weight: 500;
+  font-size: 13px;
+  text-transform: uppercase;
+}
+
+.card.center_card h1.profile_name {
+  text-transform: capitalize;
+  font-size: 33px;
+}
+
+.card.center_card .reviews {
+  font-size: 13px;
+}
+
+.card.center_card .location {
+  display: flex;
+  align-items: center;
+}
+
+.address {
+  text-transform: capitalize;
+  font-size: 15px;
+}
+
+img.flag {
+  max-width: 35px;
+  margin-left: 6px;
+}
+
+.card.center_card .social_links {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  max-width: 200px;
+}
+
+.card.center_card .social_links i {
+  font-size: 40px;
+}
+
+/* PROFILE DETAILS CARDS ///////////////////////////////////////////////////////////////////// */
+
+.card.profile_detail_card {
+  padding: 30px 10px;
+  position: relative;
+}
+
+.card.profile_detail_card .edit_ico {
+  top: 5px;
+  right: 0px;
+  transform: translate(-50%, 50%);
+  display: flex;
+  z-index: 10;
+}
+
+.card.profile_detail_card.edit .edit_ico {
+  display: none;
+}
+
+.card.profile_detail_card .show_able {
+  display: block;
+  margin-top: 20px;
+}
+
+.card.profile_detail_card.edit .show_able {
+  display: none;
+}
+
+.title {
+  font-size: 18px;
+  margin-bottom: 15px;
+  font-weight: bolder;
+}
+
+.data {
+  font-size: 16px;
+  font-weight: lighter;
+  text-transform: capitalize;
+  color: #555454;
+}
+
+.card.profile_detail_card .edit_able {
+  display: none;
+}
+
+.card.profile_detail_card.edit .edit_able {
+  display: grid;
+  margin-top: 20px;
+}
+
+.field {
+  margin-bottom: 15px;
+}
+
+.input_edit {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-gap: 10px;
+  grid-row-gap: 20px;
+  width: 100%;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  display: none;
+}
+
+.value_inpt {
+  /* max-width: 150px ; */
+  width: 100%;
+
+  background-color: #f2f4f9;
+  height: 34px;
+  padding: 4px 10px;
+  font-size: 15px;
+  font-weight: 600;
+  outline: none;
+  border-radius: 5px;
+  border: none;
+}
+
+.value_inpt::placeholder {
+  color: black;
+}
+
+.input_inner_ico {
+  position: absolute;
+  top: 6px;
+  right: 2px;
+  color: white;
+  font-size: 20px;
+  z-index: 10;
+}
+
+.input_inner_ico.small {
+  font-size: 14px;
+}
+
+.drop_down_btn {
+  width: 100%;
+  /* height: 100%; */
+  border: none;
+  text-align: left;
+  position: relative;
+  cursor: pointer;
+}
+
+.arrow_btn {
+  position: absolute;
+  top: 50%;
+  right: 0px;
+  color: #ff1a1a;
+  font-size: 35px;
+
+  transform: translateY(-50%);
+}
+
+.drop_down .drop_down_items {
+  position: absolute;
+  width: 100%;
+  padding: 0 10px;
+  background-color: #f2f4f9;
+  z-index: 110;
+  max-height: 300px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  display: none;
+}
+
+.drop_down .drop_down_items input[type="radio"] {
+  display: none;
+}
+
+.drop_down .drop_down_items input[type="radio"]:checked ~ label {
+  color: #ff1a1a;
+}
+
+.drop_down.active .drop_down_items {
+  display: block;
+  border-bottom-left-radius: 5px;
+  border-bottom-right-radius: 5px;
+}
+
+.drop_down.active .drop_down_btn {
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+.update_btn {
+  border: none;
+  padding: 10px 0;
+  width: 120px;
+  font-size: 18px;
+  font-weight: 100;
+  cursor: pointer;
+  outline: none;
+  border-radius: 20px;
+  background-color: #5a5a5a;
+  color: white;
+}
+
+section#profile_details_header {
+  width: 100%;
+}
+
+section#profile_details_header .profile_header_container {
+  background-color: white;
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  grid-gap: 2px;
+}
+
+section#profile_details_header .profile_header_container button {
+  background-color: #ff1a1a;
+  color: white;
+  padding: 20px 0;
+  text-align: center;
+  font-family: DELIRIUM NCV;
+  font-size: 50px;
+  letter-spacing: 1px;
+  border: none;
+  outline: none;
+  cursor: pointer;
+}
+
+section#profile_details_header .profile_header_container button:hover,
+section#profile_details_header .profile_header_container button.active {
+  background-color: #5a5a5a;
+}
+
+@media (max-width: 1000px) {
+  .card.center_card::after {
+    display: none;
+  }
+}

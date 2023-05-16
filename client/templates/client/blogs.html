@@ -1,0 +1,133 @@
+{% extends 'client/base.html' %}
+
+{% load static %}
+
+{% block title %}Blog{% endblock %}
+{% block header %}
+<img src="{% static 'images/blog-logo.png' %}" alt="Logo"
+          />
+{% endblock %}
+{% block body %}
+
+
+
+<section id="secondarySection">
+    <div class="">
+        <div class="row">
+            <a href="{% url 'client:blog' %}?category=all" class="col blogMenu" {% ifequal category "all" %}style="background-color: #5A5A5A" {% endifequal %}>All</a>
+            <a href="{% url 'client:blog' %}?category=nutrition" class="col blogMenu" {% ifequal category "nutrition" %}style="background-color: #5A5A5A" {% endifequal %} >Nutrition</a>
+            <a href="{% url 'client:blog' %}?category=recipes" class="col blogMenu" {% ifequal category "recipes" %}style="background-color: #5A5A5A" {% endifequal %} >Recipes</a>
+            <a href="{% url 'client:blog' %}?category=workout" class="col blogMenu" {% ifequal category "workout" %} style="background-color: #5A5A5A" {% endifequal %} >Workouts</a>
+            <a href="{% url 'client:blog' %}?category=reviews" class="col blogMenu" {% ifequal category "reviews" %} style="background-color: #5A5A5A" {% endifequal %}>Reviews</a>
+            <a href="{% url 'client:blog' %}?category=podcasts" class="col blogMenu" {% ifequal category "podcasts" %} style="background-color: #5A5A5A" {% endifequal %}>Podcasts</a>
+            <a href="{% url 'client:blog' %}?category=music" class="col blogMenu" style="border: none;{% ifequal category "music" %};background-color: #5A5A5A"{% else %}"{% endifequal %}">Music</a>
+        </div>
+    </div>`
+</section>
+
+
+<section class="mt-5  mb-5">
+    <div class="container">
+        {% for obj in blog %}
+        {% if forloop.counter == 1 %}
+            <div class="row" style="margin-bottom: 50px">
+                
+                <div class="col-sm-6 col-12">
+                    <img src="{{obj.featured_image.url}}" class="blogImage" style="width: 100%">
+                </div>
+                
+                <div class="col-sm-6 col-12 blog-main">
+                    
+                    <h5 class="blog-heading">{{obj.category.name}}<span style="color: #969393;font-size: 20px"> | {{obj.created_at}}</span>
+                    </h5>
+                    <h3 class="blog-heading"><a href="{% url 'client:blog_details' %}?blog_id={{obj.id}}">{{obj.title}}</a></h3>
+                    <p style="color: #969393;font-size: 15px">{{obj.short_description}}</p>
+                    <div class="clearfix">
+                        <img src="{{obj.author_profile_pic.url}}"
+                             style="width: 70px;height: 70px;border-radius: 50px;float: left">
+                        <div style="padding-left: 20px">
+                            <span style="margin-top: 10px;position: absolute;margin-left: 20px;">{{obj.author}}</span><br>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+
+        {% endfor %}
+
+        <div class="row">
+        {% for obj in blog %}
+            {% if forloop.counter != 1 %}
+            <div class="col-sm-6 col-12 blog-main" style="margin-bottom: 30px">
+                <img src="{{obj.featured_image.url}}" class="blogImage" style="width: 100%">
+            </div>
+            <div class="col-sm-6 col-12 blog-main">
+                <!-- <div style="margin-top: 10px; cursor:pointer;">
+                        <img style="margin-right: 10px; height: 25px; width: 50px;" src="/static/images/facebook.png" alt="Share on Facebook"
+                             onclick="window.open('https://www.facebook.com/sharer/sharer.php?u='+encodeURIComponent('https://fitstar.pro{% if active == 'center' %}/center/{% if profile.profile.profile_url %}{{profile.profile.profile_url}}{% else %}{{profile.profile.id}}{% endif %}{% endif %}{% if active == 'pro' %}/pro/{% if profile.profile.profile_url %}{{profile.profile.profile_url}}{% else %}{{profile.profile.id}}{% endif %}{% endif %}{% if active == 'model' %}/model/{% if profile.profile.profile_url %}{{profile.profile.profile_url}}{% else %}{{profile.profile.id}}{% endif %}{% endif %}'),'facebook-share-dialog','width=626,height=436'); return false;" />
+                             <img src="/static/images/linkedin.png" style=" height: 25px; width: 50px;" alt="Share on Linkedin"
+                             onclick="window.open('https://www.linkedin.com/shareArticle?mini=true&url='+encodeURIComponent('https://fitstar.pro{% if active == 'center' %}/center/{% if profile.profile.profile_url %}{{profile.profile.profile_url}}{% else %}{{profile.profile.id}}{% endif %}{% endif %}{% if active == 'pro' %}/pro/{% if profile.profile.profile_url %}{{profile.profile.profile_url}}{% else %}{{profile.profile.id}}{% endif %}{% endif %}{% if active == 'model' %}/model/{% if profile.profile.profile_url %}{{profile.profile.profile_url}}{% else %}{{profile.profile.id}}{% endif %}{% endif %}'),'facebook-share-dialog','width=626,height=436'); return false;" />
+                             <img src="/static/images/twitter.png" style=" height: 25px; width: 50px;" alt="Share on Twitter"
+                             onclick="window.open('https://twitter.com/home?status='+encodeURIComponent('https://fitstar.pro{% if active == 'center' %}/center/{% if profile.profile.profile_url %}{{profile.profile.profile_url}}{% else %}{{profile.profile.id}}{% endif %}{% endif %}{% if active == 'pro' %}/pro/{% if profile.profile.profile_url %}{{profile.profile.profile_url}}{% else %}{{profile.profile.id}}{% endif %}{% endif %}{% if active == 'model' %}/model/{% if profile.profile.profile_url %}{{profile.profile.profile_url}}{% else %}{{profile.profile.id}}{% endif %}{% endif %}'),'facebook-share-dialog','width=626,height=436'); return false;" />
+                             <a data-pin-do="buttonBookmark" href="//www.pinterest.com/pin/create/button/" class="fa fa-facebook" style="padding: 20px; font-size: 30px; width: 30px; text-align: center; text-decoration: none; margin: 5px 2px; border-radius: 50%; background: #3B5998; color: white;">Facebook</a>
+                            </div> -->
+                <h5 class="blog-heading mt-3">{{obj.category.name}}<span
+                        style="color: #969393;font-size: 20px"> | {{obj.created_at}}</span></h5>
+                <h3 class="blog-heading"><a href="{% url 'client:blog_details' %}?blog_id={{obj.id}}">{{obj.title}}</a></h3>
+                <p style="color: #969393;font-size: 15px">{{obj.short_description}}</p>
+                <div class="clearfix">
+                    <img src="{{obj.author_profile_pic.url}}"
+                         style="width: 70px;height: 70px;border-radius: 50px;float: left">
+                    <div style="padding-left: 20px">
+                        <span style="margin-top: 10px;position: absolute;margin-left: 20px;">{{obj.author}}</span><br>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+        {% endfor %}
+        </div>
+
+        {% if not blog %}
+            No information is available
+        {% endif %}
+
+    </div>
+</section>
+
+
+<style>
+    .blog-main{
+        font-family: Poppins;
+    }
+    .blog-heading{
+        color: #000000;
+        font-family: Poppins;
+    }
+    #secondarySection a{
+        font-size: 50px;
+    }
+    .blogImage{
+        height: 400px;
+    }
+    .blogMenu:hover{
+        background-color: #5A5A5A;
+    }
+
+    @media only screen and (max-width: 600px) {
+        .blogImage{
+            height: 250px;
+        }
+        .blogMenu{
+            flex-basis: auto;
+            width: 100%;
+        }
+    }
+</style>
+
+{% endblock %}
+
+{% block js %}
+<script type="text/javascript">
+
+</script>
+{% endblock %}

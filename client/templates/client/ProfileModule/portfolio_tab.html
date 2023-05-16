@@ -1,0 +1,204 @@
+{% load static %}
+<style>
+
+#myImg {
+  border-radius: 5px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+#myImg:hover {opacity: 0.7;}
+
+/* The Modal (background) */
+.imgModel {
+  display: none; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  padding-top: 100px; /* Location of the box */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgb(0,0,0); /* Fallback color */
+  background-color: rgba(0,0,0,0.9); /* Black w/ opacity */
+}
+
+/* Modal Content (image) */
+.imgModel-content {
+  margin: auto;
+  display: block;
+  width: 80%;
+  max-width: 700px;
+}
+
+/* Caption of Modal Image */
+#caption {
+  margin: auto;
+  display: block;
+  width: 80%;
+  max-width: 700px;
+  text-align: center;
+  color: #ccc;
+  padding: 10px 0;
+  height: 150px;
+}
+
+/* Add Animation */
+.imgModel-content, #caption {  
+  -webkit-animation-name: zoom;
+  -webkit-animation-duration: 0.6s;
+  animation-name: zoom;
+  animation-duration: 0.6s;
+}
+
+@-webkit-keyframes zoom {
+  from {-webkit-transform:scale(0)} 
+  to {-webkit-transform:scale(1)}
+}
+
+@keyframes zoom {
+  from {transform:scale(0)} 
+  to {transform:scale(1)}
+}
+
+/* The Close Button */
+.close {
+  position: absolute;
+  top: 15px;
+  right: 35px;
+  color: #f1f1f1;
+  font-size: 40px;
+  font-weight: bold;
+  transition: 0.3s;
+}
+
+.close:hover,
+.close:focus {
+  color: #bbb;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+/* 100% Image Width on Smaller Screens */
+@media only screen and (max-width: 700px){
+  .imgModel-content {
+    width: 100%;
+  }
+}
+</style>
+<section class="profile_detail_content mt_25 {% if active_profile == 'portfolio_tab' %}active{% endif %}"
+    id="PortFolio_Section">
+    <div class="portfolio_container">
+        <div id="portfolio_show_able_content" class="active relative">
+            {% if is_authenticated_user %}
+            <div class="edit_ico" style="top: 0;right: 50px;"
+                onclick="Show_Edit_Details('portfolio_show_able_content','portfolio_edit_able_content' )">
+                <i class="material-icons">create</i>
+            </div>
+            {% endif %}
+
+            <div class="heading mt_35">
+                <h2 class="delirium portfolio_heading fs_d_gray">Success stories</h2>
+            </div>
+            {% if profile.success_stories %}
+            <div class="slider_container mt_35">
+                <div class="thingsSlider" id="wrapper" style="width:950px; overflow-wrap: break-word;">
+                    {% for obj in profile.success_stories %}
+                    <div class="items">
+                        <div>
+                            <img src="{{obj.before}}" style="float: left;" onclick="myFtn('{{obj.before}}')"  class="thingsSliderImg">
+                            <img src="{{obj.after}}" style="float: right;" onclick="myFtn('{{obj.after}}')"  class="thingsSliderImg">
+                        </div>
+                        
+                        <div class="clear"></div>
+
+                        <div>
+                            <p style="word-break: break-all; text-align:center;">{{obj.description}}</p>
+                        </div>
+                        {% if is_authenticated_user %}
+                        <div class="clear">
+                            <form method="POST" action="{% url 'client:delete_success_story' %}">
+                                {% csrf_token %}
+                                <input type="hidden" name="id" value="{{obj.id}}">
+                                <button type="submit" style="width: 100%;" class="btn btn-danger">Delete</button>
+                            </form>
+                        </div>
+                        {% endif %}
+                    </div>
+                    {% endfor %}
+                </div>
+
+            </div>
+            {% else %}
+            <div style="text-align: center;">No Success Stories Added Yet!</div>
+            {% endif %}
+
+        </div>
+        <div id="portfolio_edit_able_content" class="">
+            <h2>Update Success Story</h2>
+            <br>
+            <form method="POST" action="{% url 'client:portfolio_update' %}" enctype="multipart/form-data">
+                {% csrf_token %}
+                <input type="hidden" id="identity_of_success_story" name="id" />
+                <div class="upload_file_field">
+                    <input type="file" class="form-control" name="img_name" id="before_image" required>
+                    <label for="before_image" class="poppins file_upload_label" style="margin-top: 7px;">Browse</label>
+                    <span class="poppins file_name" id="before_image_file_uploaded_name">Select Before Image</span>
+                </div>
+                <div class="mt-10 mb-10">
+                    <img src="#" id="before_image_preview" style="display: none;height: 300px;" />
+                </div>
+                <div class="upload_file_field mt_10">
+                    <input type="file" class="form-control" name="img_name1" id="after_image" required>
+                    <label for="after_image" class="poppins file_upload_label" style="margin-top: 7px;">Browse</label>
+                    <span class="poppins file_name" id="after_image_file_uploaded_name">Select After Image</span>
+                </div>
+                <div class="mt-10 mb-10">
+                    <img src="#" id="after_image_preview" style="display: none;height: 300px;" />
+                </div>
+                <div class="description mt_10">
+                    <textarea class="form-control" required placeholder="Description for Success Story..."
+                        name="description" id="description"></textarea>
+                </div>
+
+                <div class="field poppins age edit ">
+                    <button class="update_btn mt_10" type="submit">
+                        Update
+                    </button>
+                    <button class="update_btn mt_10" type="button"
+                        onclick="Show_Edit_Details('portfolio_show_able_content','portfolio_edit_able_content');randerMyFunction()">
+                        Cancel
+                    </button>
+                </div>
+
+            </form>
+            {% comment %} <hr> {% endcomment %}
+        </div>
+    </div>
+
+    <div id="myModal" class="imgModel">
+        <span onclick="closeFtn()" class="close">&times;</span>
+            <img class="imgModel-content" id="img01">
+        <div id="caption"></div>
+    </div>
+    <script>
+
+        // Get the <span> element that closes the modal
+            var span = document.getElementsByClassName("close")[0];
+        
+        // When the user clicks on <span> (x), close the modal
+        function closeFtn() { 
+          modal.style.display = "none";
+        }
+
+        var modal = document.getElementById("myModal");
+        var modalImg = document.getElementById("img01");
+
+        function myFtn(obj){
+        modal.style.display = "block";
+        modalImg.src = obj;
+        }
+
+        </script>
+</section>

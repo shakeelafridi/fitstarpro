@@ -1,0 +1,121 @@
+{% load static %}
+<style>
+    .panel-heading{
+        color: #333;
+        background-color: #f5f5f5;
+        border-color: #ddd;
+        padding: 10px 15px;
+        border-bottom: 1px solid transparent;
+        border-top-left-radius: 3px;
+        border-top-right-radius: 3px;
+        border: 1px solid rgb(223, 212, 212);
+    }
+</style>
+
+    <section class="profile_detail_content {% if active_profile == 'about_tab' %}active{% endif %}" id="AboutMe_Section">
+        <div class="container">
+            <div class="profile_c_container about_me_container relative" style="width: 100%;max-width: 100%">
+                <div class="active" id="show_able_aboutme_content">
+                {% if is_authenticated_user %}
+                    <div class="edit_ico " style="margin-right: 70px;top: 0;"
+                         onclick="Show_Edit_Details('show_able_aboutme_content' ,'edit_able_aboutme_content' )">
+                        <i class="material-icons">create</i>
+                    </div>
+                {% endif %}
+                    <br><br><br>
+                        <div class="row">
+                            <div class="embed-responsive my-2 embed-responsive-16by9">
+                                <iframe class="embed-responsive-item" src="{{profile.youtube_links.0.video_link}}" allowfullscreen></iframe>
+                            </div>
+                        </div>
+
+                        <div class="row" style="padding: 0px;">
+                            {% for obj in profile.youtube_links %}
+
+                                <div class="col-sm-6" id="col" style="padding: 0px 2px;">
+                                    <div class="panel panel-default" >
+                                        <div class="panel-heading">
+                                            <h4>{{obj.video_category}}</h4>
+
+                                        </div>
+                                        <div class="panel-body" style="padding: 0px;">
+                                            <div class="embed-responsive embed-responsive-16by9" style=" width:100%;">
+                                                <iframe class="embed-responsive-item" src="{{obj.video_link}}" allowfullscreen>
+                                                </iframe> 
+                                            </div>
+                                        </div>
+                                    </div> 
+                                    {% if is_authenticated_user %}
+                                        <form method="POST" style="text-align: center;" action="/delete_video_link_pro/">
+                                            {% csrf_token %}
+                                            <input hidden name="id" value="{{obj.id}}">
+                                            <button class="submit btn btn-block btn-danger" style="margin-bottom: 5px;">Delete</button>
+                                        </form>
+                                    {% endif %}    
+                                </div>  
+                            {% endfor %} 
+                        </div>       
+                    <br>
+                    
+
+                </div>
+                <form id="edit_able_aboutme_content" method="POST" action="{% url 'client:about_info_update' %}">
+                    {% csrf_token %}
+
+                    <textarea class="content poppins" hidden name="about_us" id="about_detail"
+                              rows="8"
+                              placeholder="{% if active == 'center' %}About Us{% else %}About Your Self{% endif %}" >{{profile.profile.about_us}}</textarea>
+
+                    
+                    
+                    <input name="total_video_links" hidden id="total_video_links" />
+                           <div class="youtubeImagesMain">
+                           </div>
+                           <button type="button" class="update_btn poppins" onclick="addNewYoutubeLink()" style="width: auto;padding: 5px 11px;margin:10px 0px 0px 15px;">Add new video</button>
+                    <div class="field poppins age edit ">
+                        <button class="update_btn mt_10" type="submit">save</button>
+                        <button class="update_btn mt_10" type="button"
+                                onclick="Show_Edit_Details('show_able_aboutme_content' ,'edit_able_aboutme_content' )">
+                            cancel
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+        </div>
+    </section>
+    <script>
+        var countImg = 0;
+        function addNewYoutubeLink(){
+            $('.youtubeImagesMain').append('<input style="margin-bottom: 10px; float:left;" type="text" class="video_link'+countImg+' col-sm-8 form-control content poppins mt_25" name="video_link'+countImg+'" placeholder="Enter embed video URL (Optional)"/>' +
+        '\n' +
+        '<div style="float:left;" class="col-sm-3 col-12 video_link'+countImg+'">'+
+        '       <select class="form-control" name="category'+countImg+'">'+
+        '           <option selected disabled value="">Select Video Category</option>'+
+        '               <option name="category'+countImg+'" value="WORKOUT">WORKOUT</option>'+
+        '               <option name="category'+countImg+'" value="MUSIC PLAYLIST">MUSIC PLAYLIST</option>'+
+        '               <option name="category'+countImg+'" value="RECIPES">RECIPES</option>'+
+        '                <option name="category'+countImg+'" value="PRODUCT REVIEW">PRODUCT REVIEW</option>'+
+        '                <option name="category'+countImg+'" value="JUST FOR FUN">JUST FOR FUN </option>'+
+        '                <option name="category'+countImg+'" value="VIDEO PODCAST">VIDEO PODCAST</option>'+
+        '                <option name="category'+countImg+'" value="SUCCESS STORIES">SUCCESS STORIES</option>'+
+        '                <option name="category'+countImg+'" value="AD">AD</option>'+
+        '                <option name="category'+countImg+'" value="OTHER">OTHER</option>'+
+        '        </select>'+
+        '    </div>'+
+        '                            <div class="video_link'+countImg+'" class="col-2 p-0 text-right">\n' +
+        '                                <a style="background-color: red; padding: 6px; border-radius: 25px; color: white; float:right; margin-top:23px;"\n' +
+        '                                   onclick="removeNewYoutubeLink('+countImg+')">\n' +
+        '                                    <i class="material-icons">delete</i>\n' +
+        '                                </a>\n' +
+        '                            </div>\n' +
+        ' </div>');
+        countImg++;
+        $('#total_video_links').val(countImg);
+}
+
+function removeNewYoutubeLink(id){
+    $('.video_link'+id+'').remove();
+    //event.target.closest('.YoutubeUrlMainItem').remove();
+}
+    </script>

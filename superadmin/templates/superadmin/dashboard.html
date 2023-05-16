@@ -1,0 +1,76 @@
+{% extends 'client/structure_layout/base.html' %}
+
+{% load static %}
+
+{% block title %}Dashboard{% endblock %}
+
+
+{% block content %}
+
+<div class="content d-flex flex-column flex-column-fluid" id="kt_content">
+    <div class="d-flex flex-column-fluid">
+        <!--begin::Container-->
+        <div class="container">
+            <div class="row">
+                {% for obj in side_bar_navigation %}
+                    <div class="col-xl-4">
+                        <div class="card card-custom bgi-no-repeat card-stretch gutter-b" >
+                                                <!--begin::Body-->
+                            <div class="card-body my-4">
+                                <a href="{% url 'mega_process_detail' %}?mega_process={{obj.mega_process_id}}" class="card-title font-weight-bolder text-info font-size-h6 mb-4 text-hover-state-dark d-block">{{obj.mega_process}} </a>
+                                <hr>
+                                <div class="font-weight-bold text-dark-65 font-size-sm">
+                                    The eTOM is the standard business process framework used by service providers and others in the telecom industry to standardize and categorize business process analysis (BPA) activities.
+                                    <hr>
+                                    <br>
+                                    <p><span class="text-dark font-weight-bold text-hover-primary font-size-h4 mb-0">Threat Level</span>
+                                    <span class="label label-info label-xl label-pill label-inline mr-2">Minor</span>
+                                    </p>
+
+                                    <div class="row">
+                                        <div class="col-xl-4">
+                                            <div class="progress" style="height: 10px;">
+                                                <div class="progress-bar bg-danger" role="progressbar" style="width: 75%;" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"></div>
+                                            </div>
+                                        </div>
+                                        <div class="col-xl-4">
+                                            <div class="progress" style="height: 10px;">
+                                                <div class="progress-bar bg-warning" role="progressbar" style="width: 15%;" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"></div>
+                                            </div>
+                                        </div>
+                                        <div class="col-xl-4">
+                                            <div class="progress" style="height: 10px;">
+                                                <div class="progress-bar bg-success" role="progressbar" style="width: 50%;" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-xl-4 text-center text-dark-75">
+                                            Critical
+                                        </div>
+                                        <div class="col-xl-4 text-center text-dark-75">
+                                            Severe
+                                        </div>
+                                        <div class="col-xl-4 text-center text-dark-75">
+                                            Moderate
+                                        </div>
+                                    </div>
+                                    <hr>
+
+                                <div class="text-center">
+                                    <a href="{% url 'mega_process_detail' %}?mega_process={{obj.mega_process_id}}" class="btn btn-primary btn-sm btn-shadow-hover font-weight-bold mr-2">Start Assessment</a>
+
+                                </div>
+                                </div>
+
+                            </div>
+                            <!--end::Body-->
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,118 @@
+{% extends 'client/accounts/form_base.html' %}
+
+{% load static %}
+
+{% block title %}Sign Up{% endblock title %}
+
+{% block body %}
+<style>
+    .pac-container{
+  top: 570px !important;
+}
+</style>
+<section id="">
+    <div class="container1">
+        <div class="side-image">
+            <img src="{% static 'images/accounts/sign.png' %}" alt="Girl doing exercise">
+        </div>
+        <div class="form">
+            <a href="/"><img src="{% static 'images/accounts/logo.png' %}" alt="Fitstar Pro Logo"></a>
+            <h1>Sign Up</h1>
+            <form method="POST" action="{% url 'client:register' %}" onsubmit="return validateRecaptcha();">
+                {% csrf_token %}
+                <div class="input-field">
+                    <input type="text" placeholder="Full Name" name="username" required>
+                </div>
+                <div class="col input-group ">
+                <div class="input-field">
+                    <input style="margin-top: 15px;" type="email" placeholder="Email Address" name="email" required>
+                </div>
+                <select style="height: 55px; margin-top:15px" id="gender" name="gender" class="row-field ml" required>
+                    <option value="" selected disabled>Who Referred you to Fitstar?</option>
+                    {% for u in users %}
+                    <option value="{{ u.username }}{{ u.id }}">{{u.username}}</option>
+                    {% endfor %}
+                    <option value="others">others</option>
+                </select>
+                
+            </div>
+                <div class="col input-group">
+                    <div class="input-field row-field pr">
+                        <input type="password" placeholder="Password" name="password" id="password1"
+                               onmouseover="this.type='text'" onmouseout="this.type='password'" required style="margin-top: 0px;">
+                        <span style="float: right;
+                        margin-top: -33px;
+                        margin-right: 10px;
+                        position: relative;
+                        z-index: 2;" class="fa fa-fw fa-eye field-icon "></span>
+                    </div>
+                    <div class="input-field row-field pl">
+                        <input type="password" placeholder="Confirm Password" id="password2" name="c_password" required style="margin-top: 0px;" onmouseover="this.type='text'" onmouseout="this.type='password'">
+                        <span style="float: right;
+                        margin-top: -33px;
+                        margin-right: 10px;
+                        position: relative;
+                        z-index: 2;" class="fa fa-fw fa-eye field-icon "></span>
+                    </div>
+                </div>
+                 <div class="col input-group">
+                       <select id="ref" name="role" class="row-field mr" required>
+                        <option selected disabled>Select Role</option>
+                        {% for role in user_roles %}
+                        <option value="{{ role.id }}">{{ role.name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="col input-group">
+                    <div class="input-field row-field pr">
+                        <input type="text" style="margin-top: 0px;" id="register_location_city_country" placeholder="Enter Your Location" name="location" required>
+                    </div>
+                </div>
+
+                <div class="input-field " id="check-field">
+                    <input type="checkbox" name="checkbtn" id="checkbtn" required>
+                    <label for="checkbtn">I agree the supplied information is true and agree to FitStar Pro's Terms and
+                        Conditions.</label>
+                </div>
+                <div style="margin-right: -50px; margin-top:30px; margin-left: 200px;" class="g-recaptcha" data-sitekey="6LdL8AUaAAAAAPlNDKd8dRPu9PsbBft6hinwwDmg"></div>
+                <button class="btnNext">Sign Up</button>
+            </form>
+        </div>
+    </div>
+</section>
+
+<script src="https://www.google.com/recaptcha/api.js" async defer></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=places&key=AIzaSyCy7x2Sx_u2gBDfSBfksctKjknIHpAqy24"></script>
+
+<script>
+    $(document).ready(function(){
+        var autocomplete;
+        autocomplete = new google.maps.places.Autocomplete((document.getElementById('register_location_city_country')),{
+            types: ['geocode'],
+        });
+        google.maps.event.addListener(autocomplete, 'place_changed', function(){
+            var near_place = autocomplete.getPlace();
+        });
+    });
+
+    function validateRecaptcha() {
+
+        password1 = $('#password1').val();
+        password2 = $('#password2').val();
+
+        if (password1 !== password2){
+            alert("Passowrd must be same");
+            return false;
+        }
+
+        var response = grecaptcha.getResponse();
+        if (response.length === 0) {
+            alert("You need to fill the captcha");
+            return false;
+        } else {
+            return true;
+        }
+    }
+</script>
+{% endblock body %}

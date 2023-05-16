@@ -1,0 +1,81 @@
+{% load static %}
+<section class="profile_detail_content mt_25 {% if active_profile == 'gallery_tab' %}active{% endif %}"
+    id="Gallery_Section">
+    <div class="portfolio_container">
+        <div id="gallery_show_able_content" class="active relative">
+            {% if is_authenticated_user %}
+            <div class="edit_ico" style="top: 0;right: 50px;"
+                onclick="Show_Edit_Details('gallery_show_able_content','gallery_edit_able_content' )">
+                <i class="material-icons">create</i>
+            </div>
+            {% endif %}
+
+            <div class="heading mt_35">
+                <h2 class="delirium portfolio_heading fs_d_gray">Gallery</h2>
+            </div>
+
+            {% if profile.gallery %}
+
+            <div class="gallery_imgs_container">
+                {% for obj in profile.gallery %}
+
+                <div data-toggle="modal" data-target="#imagemodal" class="gallery_img_card pop" style="background-image: url('{{obj.image.url}}');"></div>
+                {% endfor %}
+            </div>
+            {% else %}
+            <div style="text-align: center;">No Images Added Yet!</div>
+            {% endif %}
+        </div>
+        <div id="gallery_edit_able_content">
+                <h2>Update Gallery Images</h2>
+                <br>
+                <form method="POST" action="{% url 'client:portfolio_update_gallery' %}" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="upload_file_field">
+                        <input type="file" class="form-control" name="img_name" id="gallery_image" required multiple>
+                        <label for="gallery_image" class="poppins file_upload_label"
+                            style="margin-top: 7px;">Browse</label>
+                        <span class="poppins file_name" id="gallery_image_file_uploaded_name">No File Choosen</span>
+                    </div>
+                    <div class="field poppins age edit ">
+                        <button class="update_btn mt_10" type="submit">
+                            update
+                        </button>
+                        <button class="update_btn mt_10" type="button"
+                            onclick="Show_Edit_Details('gallery_show_able_content','gallery_edit_able_content');randerMyFunction()">
+                            cancel
+                        </button>
+                    </div>
+                </form>
+                <div class="row">
+                    {% for obj in profile.gallery %}
+                    <div class="col-sm-3 col-12 mt-5">
+                        <div class="card img_card"
+                            style="background-image: url('{{obj.image.url}}');min-height: 200px;">
+                            <div class="edit_ico" style="z-index: 1;width: 40px;height: 40px;">
+                                <form method="POST" action="{% url 'client:delete_portfolio_gallery_image' %}">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="id" value="{{obj.id}}">
+                                    <button type="submit" style="background: none; border: none;"><i
+                                            class="material-icons" style="font-size: 25px">delete</i></button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+
+                </div>
+        </div>
+    </div>
+</section>
+
+<div class="modal fade" id="imagemodal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-body">
+          <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+          <img src="" class="imagepreview" style="width: 100%;">
+        </div>
+      </div>
+    </div>
+  </div>

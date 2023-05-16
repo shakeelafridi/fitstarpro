@@ -1,0 +1,539 @@
+{% extends 'client/base.html' %}
+
+{% load static %}
+{% block header %}
+<img src="{% static 'images/logo.png' %}" alt="Logo"
+
+          />
+          
+{% endblock %}
+
+{% block meta_content_head %}
+<meta name="image" property="og:image" content="https://fitstar.pro{% if active == 'model' %}{% if profile.profile.profile_image %}{{profile.profile.profile_image.url}}{% else %}{% static 'css/profilepage/model.jpg' %}{% endif %}{% endif %}{% if active == 'pro' %}{% if profile.profile.profile_image %}{{profile.profile.profile_image.url}}{% else %}{% static 'css/profilepage/pro.jpg' %}{% endif %}{% endif %}{% if active == 'center' %}{% if profile.profile.profile_image %}{{profile.profile.profile_image.url}}{% else %}{% static 'css/profilepage/center.jpg' %}{% endif %}{% endif %}" />
+
+<title>{% if active == "model" %}{% if profile.profile.name %}{{profile.profile.name}} | FITSTAR{% else %}YOUR NAME | FITSTAR{% endif %}{% endif %}{% if active == "pro" %}{% if profile.profile.name %}{{profile.profile.name}} | FITSTAR{% else %}YOUR NAME | FITSTAR{% endif %}{% endif %}{% if active == "center" %}{% if profile.profile.name %}{{profile.profile.name}} | FITSTAR{% else %}YOUR CENTER NAME | FITSTAR{% endif %}{% endif %}</title>
+<meta property="og:url"           content="https://fitstar.pro{% if active == 'center' %}/center/{% if profile.profile.profile_url %}{{profile.profile.profile_url}}{% else %}{{profile.profile.id}}{% endif %}{% endif %}{% if active == 'pro' %}/pro/{% if profile.profile.profile_url %}{{profile.profile.profile_url}}{% else %}{{profile.profile.id}}{% endif %}{% endif %}{% if active == 'model' %}/model/{% if profile.profile.profile_url %}{{profile.profile.profile_url}}{% else %}{{profile.profile.id}}{% endif %}{% endif %}" />
+<meta property="og:type"          content="website" />
+<meta property="og:title"         content="{% if active == 'model' %}{% if profile.profile.name %}{{profile.profile.name}}{% else %} YOUR NAME{% endif %}{% endif %}{% if active == 'pro' %}{% if profile.profile.name %}{{profile.profile.name}}{% else %} YOUR NAME{% endif %}{% endif %}{% if active == 'center' %}{% if profile.profile.name %}{{profile.profile.name}}{% else %} YOUR CENTER NAME{% endif %}{% endif %}" />
+<meta property="og:description"   content="{% if profile.profile.about_us %}{{profile.profile.about_us}}{% else %}-{% endif %}" />
+<meta property="og:image:width" content="400"/>
+<meta property="og:image:height" content="400"/>
+
+<meta name="description"   content="{% if profile.profile.about_us %}{{profile.profile.about_us}}{% else %}-{% endif %}" />
+<meta name="title"  content="{% if active == 'model' %}{% if profile.profile.name %}{{profile.profile.name}}{% else %} YOUR NAME{% endif %}{% endif %}{% if active == 'pro' %}{% if profile.profile.name %}{{profile.profile.name}}{% else %} YOUR NAME{% endif %}{% endif %}{% if active == 'center' %}{% if profile.profile.name %}{{profile.profile.name}}{% else %} YOUR CENTER NAME{% endif %}{% endif %}" />
+
+
+<!--<meta title="{% if active == 'model' %}{% if profile.profile.name %}{{profile.profile.name}}{% else %} YOUR NAME{% endif %}{% endif %}{% if active == 'pro' %}{% if profile.profile.name %}{{profile.profile.name}}{% else %} YOUR NAME{% endif %}{% endif %}{% if active == 'center' %}{% if profile.profile.name %}{{profile.profile.name}}{% else %} YOUR CENTER NAME{% endif %}{% endif %}">-->
+
+{% endblock %}
+{% block css %}
+<script async defer src="https://assets.pinterest.com/js/pinit.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/bootstrap.tagsinput/0.4.2/bootstrap-tagsinput.css" />
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+<link rel="stylesheet" href="{% static 'css/profilepage/profile_style.css' %}">
+<link rel="stylesheet" href="{% static 'css/profilepage/profile_my_info.css' %}">
+
+<link rel="stylesheet" href="{% static 'multiSelectPlugin/bootstrap-multiselect.css' %}" type="text/css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropper/2.3.4/cropper.min.css">
+<style>
+    #header {
+        background-color: #f2f4f9;
+    }
+    .bootstrap-tagsinput {
+        line-height: 30px;
+        width: 100%;
+        background: #f2f4f9;
+    }
+    .bootstrap-tagsinput .tag {
+        margin-right: 2px;
+        color: white;
+    }
+    .bootstrap-tagsinput .label-info {
+        background-color: #5bc0de;
+    }
+    .bootstrap-tagsinput .label {
+        display: inline;
+        padding: .2em .6em .3em;
+        font-size: 75%;
+        font-weight: 700;
+        line-height: 1;
+        color: #fff;
+        text-align: center;
+        white-space: nowrap;
+        vertical-align: baseline;
+        border-radius: .25em;
+    }
+</style>
+{% endblock %}
+
+
+{% block body %}
+
+{% if error_message %}
+<div class="error_div text-center" style="color: red">
+    <span>{{error_message}}</span>
+</div>
+{% endif %}
+
+<section id="profile_sec">
+  {% include 'client/ProfileModule/profile_section.html' %}
+</section>
+
+<section id="profile_details_header">
+    <div class="profile_header_container">
+        <button class="tabButton {% if active_profile == 'info_tab' %}active{% endif %}" onclick="UpdateNavTab('MyInfo_Tab' , 'section_my_info')" id="MyInfo_Tab"
+                href="#">About
+        </button>
+        <button class="tabButton {% if active_profile == 'about_tab' %}active{% endif %}" onclick="UpdateNavTab('AboutMe_Tab' , 'AboutMe_Section')" id="AboutMe_Tab"
+                href="#">{% if active == 'center' %}Videos{% else %}Videos{% endif %}
+        </button>
+        {% if active != "model" %}
+        <button class="tabButton {% if active_profile == 'portfolio_tab' %}active{% endif %}" onclick="UpdateNavTab('PortFolio_Tab' , 'PortFolio_Section');randerMyFunction()"
+                id="PortFolio_Tab"
+                href="#">Portfolio
+        </button>
+        {% endif %}
+        <button class="tabButton {% if active_profile == 'gallery_tab' %}active{% endif %}" onclick="UpdateNavTab('Gallery_Tab' , 'Gallery_Section');randerMyFunction()"
+                id="Gallery_Tab"
+                href="#">{% if active == "model" %} Gallery {% else %} Gallery {% endif %}
+        </button>
+        <button class="tabButton {% if active_profile == 'ads_tab' %}active{% endif %}" onclick="UpdateNavTab('Ads_Tab' , 'Ads_Section')" id="Ads_Tab"
+                href="#">ads
+        </button>
+        <button class="tabButton {% if active_profile == 'contact_tab' %}active{% endif %}" onclick="UpdateNavTab('ContactMe_Tab' , 'ContactMe_Section')"
+                id="ContactMe_Tab" >Contact me
+        </button>
+    </div>
+</section>
+<section id="Profile_complete_details">
+    {% include 'client/ProfileModule/my_info_tab_handler.html' %}
+    {% include 'client/ProfileModule/about_tab.html' %}
+    {% include 'client/ProfileModule/portfolio_tab.html' %}
+    {% include 'client/ProfileModule/gallery_tab.html' %}
+    {% include 'client/ProfileModule/ads_tab.html' %}
+    {% include 'client/ProfileModule/contact_me_tab.html' %}
+</section>
+
+
+
+<section id="faltu" style="min-height: 10vh;"></section>
+
+
+<style>
+    h1, h2, h3, h4, h5, h6 {
+        color: #000000;
+    }
+    .card{
+        border: none;
+    }
+    .card.center_card .social_links i{
+        font-size: 30px;
+    }
+    section#section_my_info #my_info_show_able.active, section#section_my_info #my_info_editable.edit{
+        grid-template-columns: auto!important;
+    }
+
+    .thingsSliderImg{
+        width: 48% !important;
+        margin-bottom: 10px!important;
+    }
+    .form-control{
+        /*padding: 15px 30px;*/
+        margin-top: 25px;
+        border: none;
+        background-color: #F2F4F9;
+        border-radius: 10px;
+        font-family: 'Poppins', sans-serif;
+    }
+    @media only screen and (max-width: 600px) {
+        .profile_top_container{
+            width: 100%;
+        }
+        .edit_ico_profile{
+            transform: none;
+        }
+
+        .thingsSliderImg{
+            width: 100% !important;
+        }
+    }
+
+    .fa_icon_class {
+        background: #f2f4f9;
+        border-radius: 50%;
+    }
+    .stars {
+        display: inline-block;
+    }
+
+    .stars input {
+        display: none;
+    }
+
+    .stars label {
+        float: right;
+        padding: 2px;
+        font-size: 24px;
+        color: #444;
+        transition: all .2s;
+    }
+
+    .stars label:before {
+        content: '\2605';
+    }
+
+    .stars input:checked ~ label:before {
+        color: #FF1A1A;
+        transition: all .25s;
+    }
+
+    .stars label:hover {
+        transform: scale(1.3);
+    }
+    .multiselect-search {
+        margin-top: 0px !important;
+    }
+    .multiselect-filter .input-group-prepend {
+        display: none;
+    }
+    .multiselect-filter .input-group-append {
+        display: none;
+    }
+    .multiselect {
+        background:#f2f4f9 url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='4' height='5' viewBox='0 0 4 5'%3e%3cpath fill='%23343a40' d='M2 0L0 2h4zm0 5L0 3h4z'/%3e%3c/svg%3e") no-repeat right .75rem center/8px 10px;
+        font-family: 'Poppins', sans-serif;
+        font-size: 1rem;
+    }
+
+</style>
+
+
+{% endblock %}
+
+
+{% block js %}
+
+<script src="{% static 'js/profilepage/profile_top_script.js' %}"></script>
+<script src="{% static 'js/profilepage/my_info_script.js' %}"></script>
+<script src="{% static 'js/profilepage/profile_main_scripts.js' %}"></script>
+<script src="{% static 'multiSelectPlugin/bootstrap-multiselect.js' %}"></script>
+<script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_GB/sdk.js#xfbml=1&version=v9.0" nonce="ft22AOSd"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/0.8.1/cropper.min.js"></script>
+
+<script type="text/javascript">
+
+    function FunctionToShareVideo() {
+      var copyText = document.getElementById("myInputShareUrl");
+      copyText.type = 'text';
+      copyText.select();
+      copyText.setSelectionRange(0, 99999)
+      document.execCommand("copy");
+      copyText.type = 'hidden';
+      alert("Profile Link Copied: " + copyText.value);
+    }
+
+    function FunctionToShareBlogLink() {
+      var copyText = document.getElementById("blogLinkUrl");
+      /*copyText.type = 'text';
+      copyText.select();
+      copyText.setSelectionRange(0, 99999)
+      document.execCommand("copy");
+      copyText.type = 'hidden';
+      alert("Blog Link Copied: " + copyText.value);*/
+      window.open(copyText.value)
+    }
+    function FunctionToShareWebsiteLink() {
+        var copyText = document.getElementById("websiteLinkUrl");
+        /*copyText.type = 'text';
+        copyText.select();
+        copyText.setSelectionRange(0, 99999)
+        document.execCommand("copy");
+        copyText.type = 'hidden';
+        alert("Website Link Copied: " + copyText.value);*/
+        window.open(copyText.value)
+      }
+
+    function FunctionToShareBookingLink() {
+        var copyText = document.getElementById("bookingUrl");
+        /*copyText.type = 'text';
+        copyText.select();
+        copyText.setSelectionRange(0, 99999)
+        document.execCommand("copy");
+        copyText.type = 'hidden';
+        alert("Website Link Copied: " + copyText.value);*/
+        window.open(copyText.value)
+      }
+      function FunctionToSharePortalLink() {
+        var copyText = document.getElementById("portalUrl");
+        /*copyText.type = 'text';
+        copyText.select();
+        copyText.setSelectionRange(0, 99999)
+        document.execCommand("copy");
+        copyText.type = 'hidden';
+        alert("Website Link Copied: " + copyText.value);*/
+        window.open(copyText.value)
+      }
+    
+    $('#fitness_center_specialities').multiselect({
+        nonSelectedText: 'Select Specialities',
+        enableCaseInsensitiveFiltering: true,
+        maxHeight: 400,
+        filterPlaceholder: 'Search Specialities',
+        buttonWidth: '100%'
+    });
+
+    $('#professional_specialities').multiselect({
+        nonSelectedText: 'Select Specialities',
+        enableCaseInsensitiveFiltering: true,
+        maxHeight: 400,
+        filterPlaceholder: 'Search Specialities',
+        buttonWidth: '100%'
+    });
+
+    {% if profile.user.active_user_role.name == "Fitness Professional" %}
+
+        $('#professional_languages_tag').multiselect({
+            nonSelectedText: 'Select Languages',
+            enableCaseInsensitiveFiltering: true,
+            maxHeight: 400,
+            filterPlaceholder: 'Search Languages',
+            buttonWidth: '100%'
+        });
+    {% endif %}
+
+    {% if profile.user.active_user_role.name == "Fitness Center" %}
+
+        $('#fitness_center_languages').multiselect({
+            nonSelectedText: 'Select Languages',
+            enableCaseInsensitiveFiltering: true,
+            maxHeight: 400,
+            filterPlaceholder: 'Search Languages',
+            buttonWidth: '100%'
+        });
+    {% endif %}
+
+    $('#profile_section_languages').multiselect({
+        nonSelectedText: 'Select Languages',
+        enableCaseInsensitiveFiltering: true,
+        maxHeight: 400,
+        filterPlaceholder: 'Search Languages',
+        buttonWidth: '100%'
+    });
+
+    $('#professional_languages_tag').multiselect({
+        nonSelectedText: 'Select Languages',
+        enableCaseInsensitiveFiltering: true,
+        maxHeight: 400,
+        filterPlaceholder: 'Search Languages',
+        buttonWidth: '100%'
+    });
+
+    $('#fitness_center_professionals').multiselect({
+        nonSelectedText: 'Select Professionals',
+        enableCaseInsensitiveFiltering: true,
+        maxHeight: 400,
+        filterPlaceholder: 'Search Professionals',
+        buttonWidth: '100%'
+    });
+
+    $('#ads_activities').multiselect({
+        nonSelectedText: 'Select Activities',
+        enableCaseInsensitiveFiltering: true,
+        maxHeight: 400,
+        filterPlaceholder: 'Search Activities',
+        buttonWidth: '100%'
+    });
+
+    {% if profile.user.active_user_role.name != "Fitness Model" %}
+        $('#ads_days').multiselect({
+            nonSelectedText: 'Select Days',
+            enableCaseInsensitiveFiltering: true,
+            maxHeight: 400,
+            filterPlaceholder: 'Search Days',
+            buttonWidth: '100%'
+        });
+    {% endif %}
+
+    {% if profile.user.active_user_role.name != "Fitness Model" %}
+        $('#ad_a_days').multiselect({
+            nonSelectedText: 'Select Days',
+            enableCaseInsensitiveFiltering: true,
+            maxHeight: 400,
+            filterPlaceholder: 'Search Days',
+            buttonWidth: '100%'
+        });
+    {% endif %}
+
+<!--    {% if profile.user.active_user_role.name == "Fitness Professional" %}-->
+<!--        var sponsor_image = document.getElementById('sponsor_image');-->
+<!--        sponsor_image.addEventListener('change' , function(){-->
+<!--            console.log('event trigger');-->
+<!--            var fileChoosenID_tag = document.getElementById('sponsor_image_file_uploaded_name');-->
+<!--            if (this.files.length == 1){-->
+<!--                text_ = this.files.length + " file is uploaded";-->
+<!--            }-->
+<!--            else {-->
+<!--                text_ = this.files.length + " files are uploaded";-->
+<!--            }-->
+
+<!--            fileChoosenID_tag.innerText = text_;-->
+<!--        })-->
+<!--   {% endif %}-->
+
+    $('#professional_activities').multiselect({
+        nonSelectedText: 'Select Activities',
+        enableCaseInsensitiveFiltering: true,
+        maxHeight: 400,
+        filterPlaceholder: 'Search Activities',
+        buttonWidth: '100%'
+    });
+
+    $('#modal_interested_in').multiselect({
+        nonSelectedText: 'Select Activities',
+        enableCaseInsensitiveFiltering: true,
+        maxHeight: 400,
+        filterPlaceholder: 'Search Activities',
+        buttonWidth: '100%'
+    });
+
+    $('#model_info_tab_modeling_interests').multiselect({
+        nonSelectedText: 'Select Interests',
+        enableCaseInsensitiveFiltering: true,
+        maxHeight: 400,
+        filterPlaceholder: 'Search Interests',
+        buttonWidth: '100%'
+    });
+
+    $('#professional_certifications').multiselect({
+        nonSelectedText: 'Select Certifications',
+        enableCaseInsensitiveFiltering: true,
+        maxHeight: 400,
+        filterPlaceholder: 'Search Certifications',
+        buttonWidth: '100%'
+    });
+
+    $('#modal_ad_interests').multiselect({
+        nonSelectedText: 'Select Interests',
+        enableCaseInsensitiveFiltering: true,
+        maxHeight: 400,
+        filterPlaceholder: 'Search Interests',
+        buttonWidth: '100%'
+    });
+
+    $('#ad_a_interests').multiselect({
+        nonSelectedText: 'Select',
+        enableCaseInsensitiveFiltering: true,
+        maxHeight: 400,
+        filterPlaceholder: 'Search',
+        buttonWidth: '100%'
+    });
+    
+    var x = window.matchMedia("(max-width: 700px)");
+    myFunction(x);
+    x.addListener(randerMyFunction);
+    function randerMyFunction() {
+        setTimeout( () => {
+            $('.slick-next').click();
+        }, 10);
+     }    function myFunction(x) {
+           if (x.matches) { // If media query matches
+               $( document ).ready(function() {
+                   $('.thingsSlider').slick({
+                       slidesToShow: 1,
+                       slidesToScroll: 1,
+                       autoplay: false,
+                       arrows: true,
+                       centerMode: true,
+                   });
+                   $('.autoplay').slick({
+                       slidesToShow: 1,
+                       slidesToScroll: 1,
+                       autoplay: true,
+                       autoplaySpeed: 2000,
+                       arrows: false,
+                   });
+               });
+           } else {
+               $( document ).ready(function() {
+                   $('.thingsSlider').slick({
+                       slidesToShow: 1,
+                       slidesToScroll: 1,
+                       autoplay: false,
+                       arrows: true,
+                       centerMode: true,
+                   });
+                   $('.autoplay').slick({
+                       slidesToShow: 1,
+                       slidesToScroll: 1,
+                       autoplay: true,
+                       autoplaySpeed: 2000,
+                       arrows: false,
+                   });
+               });
+           }
+    }
+
+    setTimeout(function() {
+        $('.error_div').fadeOut('fast');
+    }, 5000); // <-- time in milliseconds
+
+
+    setTimeout(function() {
+        $('.msg-box').fadeOut('fast');
+    }, 5000); // <-- time in milliseconds
+
+    function editAdInfo(id){
+        console.log(id);
+
+        session_name = '#ad_session_name_' + id;
+        price = '#ad_price_' + id;
+        activity = '#ad_activity_' + id;
+        intensity_level = '#ad_intensity_level_' + id;
+        days = '#ad_days_' + id;
+        time = '#ad_time_' + id;
+        location = '#ad_location_' + id;
+        description = '#ad_description_' + id;
+        ad_spots = '#ad_spots_available_' + id;
+        img = '#ad_image_' + id;
+
+        session_name = $(session_name).val();
+        price = $(price).val();
+        activity = $(activity).val();
+        intensity_level = $(intensity_level).val();
+        days = $(days).val();
+        time = $(time).val();
+        // location = $(location).val();
+        description = $(description).val();
+        ad_spots = $(ad_spots).val();
+        img = $(img).val();
+
+        $('#ad_identity_input').val(id);
+
+        activity = activity.split(",");
+
+        {% if profile.user.active_user_role.name == "Fitness Model" %}
+            $('#ad_a_session').val(session_name);
+            // $('#ad_a_interests').val(activity);
+            $('#ad_a_price').val(price);
+            // $('#ad_tab_address1_edit').val(location);
+            $('#ad_a_description').val(description);
+            // $('#ad_a_img').val(img);
+        {% else %}
+            $('#ad_a_session').val(session_name);
+            // $('#ad_a_interests').val(activity);
+            $('#ad_a_price').val(price);
+            // $('#ad_tab_address1_edit').val(location);
+            $('#ad_a_description').val(description);
+            // $('#ad_a_img').val(img);
+            $('#ad_a_intensity').val(intensity_level);
+            // $('#ad_a_days').val(days);
+            $('#ad_a_time').val(time);
+            $('#ad_a_spots').val(ad_spots);
+        {% endif %}
+    }
+
+
+</script>
+
+{% endblock js %}

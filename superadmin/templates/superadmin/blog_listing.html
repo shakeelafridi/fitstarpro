@@ -1,0 +1,619 @@
+{% extends 'superadmin/structure_layout/base.html' %}
+
+{% load static %}
+
+{% block title %}Blogs Listing{% endblock %}
+
+
+{% block content %}
+
+<div class="content d-flex flex-column flex-column-fluid" id="kt_content">
+    <div class="d-flex flex-column-fluid">
+        <!--begin::Container-->
+        <div class="container">
+            <div class="row">
+                <!--begin::Card-->
+                <div class="card card-custom gutter-b" style="width: 100%">
+                    <div class="card-header flex-wrap py-3">
+                        <div class="card-title">
+                            <h3 class="card-label">All Blogs Listing
+                            </h3>
+                        </div>
+                        <div class="card-toolbar">
+                            <!--begin::Dropdown-->
+                            <!--end::Dropdown-->
+                            <!--begin::Button-->
+                            <a data-target="#addNewUser" data-toggle="modal" class="btn btn-primary font-weight-bolder">
+											<span class="svg-icon svg-icon-md">
+												<!--begin::Svg Icon | path:assets/media/svg/icons/Design/Flatten.svg-->
+												<svg xmlns="http://www.w3.org/2000/svg"
+                                                     xmlns:xlink="http://www.w3.org/1999/xlink" width="24px"
+                                                     height="24px" viewBox="0 0 24 24" version="1.1">
+													<g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+														<rect x="0" y="0" width="24" height="24"/>
+														<circle fill="#000000" cx="9" cy="15" r="6"/>
+														<path d="M8.8012943,7.00241953 C9.83837775,5.20768121 11.7781543,4 14,4 C17.3137085,4 20,6.6862915 20,10 C20,12.2218457 18.7923188,14.1616223 16.9975805,15.1987057 C16.9991904,15.1326658 17,15.0664274 17,15 C17,10.581722 13.418278,7 9,7 C8.93357256,7 8.86733422,7.00080962 8.8012943,7.00241953 Z"
+                                                              fill="#000000" opacity="0.3"/>
+													</g>
+												</svg>
+                                                <!--end::Svg Icon-->
+											</span>New Record</a>
+                            <!--end::Button-->
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <!--begin: Datatable-->
+                        <table class="table table-bordered table-checkable" id="kt_datatable">
+                            <thead>
+                            <tr>
+                                <th>Sr #</th>
+                                <th>Title</th>
+                                <th>Author</th>
+                                <th>Short Description</th>
+                                <th>Created At</th>
+                                <th>Active</th>
+                                <th>Action</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for obj in blogs %}
+                            <tr>
+                                <td>{{forloop.counter}}</td>
+                                <td>{{obj.title}}</td>
+                                <td>{{obj.author}}</td>
+                                <td>{{obj.short_description}}</td>
+                                <td>{{obj.created_at}}</td>
+
+                                <td>
+                                    <span class="switch switch-icon">
+                                        <label>
+                                         <input onclick='change_activeness_blog(this, {{obj.id}});' type="checkbox" {% if obj.remove == false %} checked="checked" {% endif %}   name="select"/>
+                                         <span></span>
+                                        </label>
+                                   </span>
+                                </td>
+
+                                <td>
+                                    <a data-target="#" onclick="editBlog({{obj.id}});" class=" font-weight-bolder">
+											<span class="svg-icon svg-icon-md">
+												<!--begin::Svg Icon | path:assets/media/svg/icons/Design/Flatten.svg-->
+												<span class="svg-icon svg-icon-primary svg-icon-2x"><!--begin::Svg Icon | path:C:\wamp64\www\keenthemes\themes\metronic\theme\html\demo1\dist/../src/media/svg/icons\Design\Edit.svg--><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+    <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <rect x="0" y="0" width="24" height="24"/>
+        <path d="M8,17.9148182 L8,5.96685884 C8,5.56391781 8.16211443,5.17792052 8.44982609,4.89581508 L10.965708,2.42895648 C11.5426798,1.86322723 12.4640974,1.85620921 13.0496196,2.41308426 L15.5337377,4.77566479 C15.8314604,5.0588212 16,5.45170806 16,5.86258077 L16,17.9148182 C16,18.7432453 15.3284271,19.4148182 14.5,19.4148182 L9.5,19.4148182 C8.67157288,19.4148182 8,18.7432453 8,17.9148182 Z" fill="#000000" fill-rule="nonzero" transform="translate(12.000000, 10.707409) rotate(-135.000000) translate(-12.000000, -10.707409) "/>
+        <rect fill="#000000" opacity="0.3" x="5" y="20" width="15" height="2" rx="1"/>
+    </g>
+</svg><!--end::Svg Icon--></span>
+                                                <!--end::Svg Icon-->
+											</span></a>
+                                    <a class="font-weight-bolder" onClick="delete_blog({{obj.id}});">
+                                    <span class="svg-icon svg-icon-primary svg-icon-2x"><!--begin::Svg Icon | path:C:\wamp64\www\keenthemes\themes\metronic\theme\html\demo1\dist/../src/media/svg/icons\Code\Error-circle.svg--><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+    <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <rect x="0" y="0" width="24" height="24"/>
+        <circle fill="#000000" opacity="0.3" cx="12" cy="12" r="10"/>
+        <path d="M12.0355339,10.6213203 L14.863961,7.79289322 C15.2544853,7.40236893 15.8876503,7.40236893 16.2781746,7.79289322 C16.6686989,8.18341751 16.6686989,8.81658249 16.2781746,9.20710678 L13.4497475,12.0355339 L16.2781746,14.863961 C16.6686989,15.2544853 16.6686989,15.8876503 16.2781746,16.2781746 C15.8876503,16.6686989 15.2544853,16.6686989 14.863961,16.2781746 L12.0355339,13.4497475 L9.20710678,16.2781746 C8.81658249,16.6686989 8.18341751,16.6686989 7.79289322,16.2781746 C7.40236893,15.8876503 7.40236893,15.2544853 7.79289322,14.863961 L10.6213203,12.0355339 L7.79289322,9.20710678 C7.40236893,8.81658249 7.40236893,8.18341751 7.79289322,7.79289322 C8.18341751,7.40236893 8.81658249,7.40236893 9.20710678,7.79289322 L12.0355339,10.6213203 Z" fill="#000000"/>
+    </g>
+</svg><!--end::Svg Icon--></span>
+                                    </a>
+                                    <input type="hidden" id="title_{{obj.id}}" value="{{obj.title}}" />
+                                    <input type="hidden" id="featured_image_{{obj.id}}" value="{{obj.featured_image.url}}" />
+                                    <input type="hidden" id="second_featured_image_{{obj.id}}"
+                                           value="{% if obj.second_featured_image %}{{obj.second_featured_image.url}}{% endif %}" />
+                                    <input type="hidden" id="video_{{obj.id}}" value="{{obj.video_link}}" />
+                                    <input type="hidden" id="author_{{obj.id}}" value="{{obj.author}}" />
+                                    <input type="hidden" id="author_profile_pic_{{obj.id}}" value="{{obj.author_profile_pic.url}}" />
+                                    <input type="hidden" id="short_description_{{obj.id}}" value="{{obj.short_description}}" />
+                                    <input type="hidden" id="details_{{obj.id}}" value="{{obj.details}}" />
+                                    <input type="hidden" id="category_{{obj.id}}" value="{{obj.category.id}}" />
+                                </td>
+
+
+
+                            </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div aria-hidden="true" aria-labelledby="editBlog" class="modal fade" data-backdrop="static"
+     id="editBlog"
+     role="dialog" tabindex="-1">
+    <div class="modal-dialog  modal-dialog-centered modal-xl" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="">Update New Blog</h5>
+            </div>
+            <div class="modal-body">
+
+                <form class="form fv-plugins-bootstrap fv-plugins-framework" id="kt_login_signup_form" method="POST"
+                      enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <input type="hidden" name="id" value="{{obj.id}}" id="identity"/>
+                    <div class="row">
+                        <div class="col-6">
+                            <div class="form-group row">
+                                <label class="col-2 col-form-label">Title</label>
+                                <div class="col-10">
+                                    <input class="form-control" type="text" placeholder="Type Full Name" name="title"
+                                           id="title"
+                                           required>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="col-6">
+                            <div class="form-group row">
+                                <label class="col-2 col-form-label">Short Description</label>
+                                <div class="col-10">
+                                    <input class="form-control" type="text" placeholder="Type Short Description"
+                                           name="tagline"
+                                           id="short_description"
+                                           required>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-6">
+                            <div class="form-group row">
+                                <label class="col-2 col-form-label">Author Name</label>
+                                <div class="col-10">
+                                    <input class="form-control" type="text" placeholder="Type Author Name" name="author_name"
+                                           id="author_name" required>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="col-6">
+                            <div class="form-group row">
+                                <label class="col-2 col-form-label">Select Category</label>
+                                <div class="col-10">
+                                    <select class="form-control form-control-lg" required name="category" id="category">
+                                        {% for cate in categories %}
+                                        <option value="{{ cate.id }}" >{{ cate.name }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-6">
+                            <div class="form-group row">
+                                <label class="col-2 col-form-label">Featured Image</label>
+                                <div class="col-10">
+                                    <div class="image-input image-input-outline image-input-changed" id="kt_image_6">
+                                        <div class="image-input-wrapper" id="featured_image"></div>
+                                        <label class="btn btn-xs btn-icon btn-circle btn-white btn-hover-text-primary btn-shadow"
+                                               data-action="change" data-toggle="tooltip" title=""
+                                               data-original-title="Change avatar">
+                                            <i class="fa fa-pen icon-sm text-muted"></i>
+                                            <input type="file" name="featured_image" accept=".png, .jpg, .jpeg"
+                                                   >
+                                            <input type="hidden" name="featured_image_remove">
+                                        </label>
+                                        <span class="btn btn-xs btn-icon btn-circle btn-white btn-hover-text-primary btn-shadow"
+                                              data-action="cancel" data-toggle="tooltip" title=""
+                                              data-original-title="Cancel avatar">
+															<i class="ki ki-bold-close icon-xs text-muted"></i>
+														</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="col-6">
+                            <div class="form-group row">
+                                <label class="col-2 col-form-label">Author Img</label>
+                                <div class="col-10">
+                                    <div class="image-input image-input-outline image-input-changed" id="kt_image_5">
+                                        <div class="image-input-wrapper" id="author_profile_pic"></div>
+                                        <label class="btn btn-xs btn-icon btn-circle btn-white btn-hover-text-primary btn-shadow"
+                                               data-action="change" data-toggle="tooltip" title=""
+                                               data-original-title="Change avatar">
+                                            <i class="fa fa-pen icon-sm text-muted"></i>
+                                            <input type="file" name="author_image" accept=".png, .jpg, .jpeg"
+                                                   >
+                                            <input type="hidden" name="author_image_remove">
+                                        </label>
+                                        <span class="btn btn-xs btn-icon btn-circle btn-white btn-hover-text-primary btn-shadow"
+                                              data-action="cancel" data-toggle="tooltip" title=""
+                                              data-original-title="Cancel avatar">
+															<i class="ki ki-bold-close icon-xs text-muted"></i>
+														</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="col-6">
+                            <div class="form-group row">
+                                <label class="col-2 col-form-label">Second Featured Image</label>
+                                <div class="col-10">
+                                    <div class="image-input image-input-outline image-input-changed" id="kt_image_4">
+                                        <div class="image-input-wrapper" id="second_featured_image"></div>
+                                        <label class="btn btn-xs btn-icon btn-circle btn-white btn-hover-text-primary btn-shadow"
+                                               data-action="change" data-toggle="tooltip" title=""
+                                               data-original-title="Change avatar">
+                                            <i class="fa fa-pen icon-sm text-muted"></i>
+                                            <input type="file" name="second_featured_image" accept=".png, .jpg, .jpeg"
+                                                   >
+                                            <input type="hidden" name="second_featured_image_remove">
+                                            <input type="hidden" id="second_featured_image_value" name="second_featured_image_value" value="">
+                                        </label>
+                                        <span class="btn btn-xs btn-icon btn-circle btn-white btn-hover-text-primary btn-shadow"
+                                              onclick="changeSecondImg();"
+                                              data-action="cancel" data-toggle="tooltip" title=""
+                                              data-original-title="Cancel avatar">
+															<i class="ki ki-bold-close icon-xs text-muted" onclick="changeSecondImg();"></i>
+														</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="col-6">
+                            <div class="form-group row">
+                                <label class="col-2 col-form-label">Video Link</label>
+                                <div class="col-10">
+                                    <input class="form-control" type="text" placeholder="Type video embedded link" name="video"
+                                           id="video"
+                                           >
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="col-6">
+                             <div class="form-group row">
+                                <label class="col-2 col-form-label">Type Detail</label>
+                                <div class="col-10">
+                                    <textarea class="form-control" id="details" rows="3" name="details" required>{{obj.details}}</textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button class="btn btn-light-primary font-weight-bold" data-dismiss="modal" type="button">Close
+                    </button>
+                    <button class="btn btn-primary font-weight-bold" type="submit">Save changes
+                    </button>
+                </form>
+
+
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<div aria-hidden="true" aria-labelledby="addNewUser" class="modal fade" data-backdrop="static"
+     id="addNewUser"
+     role="dialog" tabindex="-1">
+    <div class="modal-dialog  modal-dialog-centered modal-xl" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Add New Blog</h5>
+            </div>
+            <div class="modal-body">
+
+                <form class="form fv-plugins-bootstrap fv-plugins-framework" id="kt_login_signup_form" method="POST"
+                      enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="row">
+                        <div class="col-6">
+                            <div class="form-group row">
+                                <label class="col-2 col-form-label">Title</label>
+                                <div class="col-10">
+                                    <input class="form-control" type="text" placeholder="Type Full Name" name="title"
+                                            required>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="col-6">
+                            <div class="form-group row">
+                                <label class="col-2 col-form-label">Short Description</label>
+                                <div class="col-10">
+                                    <input class="form-control" type="text" placeholder="Type Short Description"
+                                           name="tagline"
+                                        required>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-6">
+                            <div class="form-group row">
+                                <label class="col-2 col-form-label">Author Name</label>
+                                <div class="col-10">
+                                    <input class="form-control" type="text" placeholder="Type Author Name" name="author_name"
+                                            required>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="col-6">
+                            <div class="form-group row">
+                                <label class="col-2 col-form-label">Select Category</label>
+                                <div class="col-10">
+                                    <select class="form-control form-control-lg"  required name="category">
+                                        {% for cate in categories %}
+                                        <option value="{{ cate.id }}">{{ cate.name }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-6">
+                            <div class="form-group row">
+                                <label class="col-2 col-form-label">Featured Image</label>
+                                <div class="col-10">
+                                    <div class="image-input image-input-outline image-input-changed" id="kt_image_1">
+                                        <div class="image-input-wrapper"></div>
+                                        <label class="btn btn-xs btn-icon btn-circle btn-white btn-hover-text-primary btn-shadow"
+                                               data-action="change" data-toggle="tooltip" title=""
+                                               data-original-title="Change avatar">
+                                            <i class="fa fa-pen icon-sm text-muted"></i>
+                                            <input type="file" name="featured_image" accept=".png, .jpg, .jpeg"
+                                                   required>
+                                            <input type="hidden" name="featured_image_remove">
+                                        </label>
+                                        <span class="btn btn-xs btn-icon btn-circle btn-white btn-hover-text-primary btn-shadow"
+                                              data-action="cancel" data-toggle="tooltip" title=""
+                                              data-original-title="Cancel avatar">
+															<i class="ki ki-bold-close icon-xs text-muted"></i>
+														</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="col-6">
+                            <div class="form-group row">
+                                <label class="col-2 col-form-label">Author Img</label>
+                                <div class="col-10">
+                                    <div class="image-input image-input-outline image-input-changed" id="kt_image_2">
+                                        <div class="image-input-wrapper"></div>
+                                        <label class="btn btn-xs btn-icon btn-circle btn-white btn-hover-text-primary btn-shadow"
+                                               data-action="change" data-toggle="tooltip" title=""
+                                               data-original-title="Change avatar">
+                                            <i class="fa fa-pen icon-sm text-muted"></i>
+                                            <input type="file" name="author_image" accept=".png, .jpg, .jpeg"
+                                                   required>
+                                            <input type="hidden" name="author_image_remove">
+                                        </label>
+                                        <span class="btn btn-xs btn-icon btn-circle btn-white btn-hover-text-primary btn-shadow"
+                                              data-action="cancel" data-toggle="tooltip" title=""
+                                              data-original-title="Cancel avatar">
+															<i class="ki ki-bold-close icon-xs text-muted"></i>
+														</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div class="col-6">
+                            <div class="form-group row">
+                                <label class="col-2 col-form-label">Second Featured Image</label>
+                                <div class="col-10">
+                                    <div class="image-input image-input-outline image-input-changed" id="kt_image_3">
+                                        <div class="image-input-wrapper"></div>
+                                        <label class="btn btn-xs btn-icon btn-circle btn-white btn-hover-text-primary btn-shadow"
+                                               data-action="change" data-toggle="tooltip" title=""
+                                               data-original-title="Change avatar">
+                                            <i class="fa fa-pen icon-sm text-muted"></i>
+                                            <input type="file" name="second_featured_image" accept=".png, .jpg, .jpeg"
+                                                   >
+                                            <input type="hidden" name="second_featured_image_remove">
+                                        </label>
+                                        <span class="btn btn-xs btn-icon btn-circle btn-white btn-hover-text-primary btn-shadow"
+                                              data-action="cancel" data-toggle="tooltip" title=""
+                                              data-original-title="Cancel avatar">
+															<i class="ki ki-bold-close icon-xs text-muted"></i>
+														</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                         <div class="col-6">
+                            <div class="form-group row">
+                                <label class="col-2 col-form-label">Video Link</label>
+                                <div class="col-10">
+                                    <input class="form-control" type="text" placeholder="Type video embedded link" name="video"
+                                           >
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="col-6">
+                             <div class="form-group row">
+                                <label class="col-2 col-form-label">Type Detail</label>
+                                <div class="col-10">
+                                    <textarea class="form-control" id="exampleTextarea" style="display: none;" rows="3" name="details" required></textarea>
+                                    <span onclick="bold()"><i  class="fa fa-bold"> </i></span>
+                                    <span onclick="itlic()"><i style="margin-left: 10px;" class="fa fa-italic" ></i></span>
+                                    <!-- <span onclick="highlight()"><i style="color: yellow; margin-left: 10px;" class="fa fa-highlighter" ></i></span> -->
+                                    <span onclick="color()"><i style="margin-left: 10px;" class="fa fa-palette" ></i></span>
+                                    <span onclick="fontSize()"><i style="margin-left: 10px;" class="fa fa-text-height" ></i></span>
+                                    <span onclick="link()"><i style="margin-left: 10px;" class="fa fa-link" ></i></span>
+                                    <span onclick="unlink()"><i style="margin-left: 10px;" class="fa fa-unlink" ></i></span>
+
+
+                                    <!-- <button type="button" onclick="itlic()"> <i>I</i></button>
+                                    <button type="button" onclick="underline()"> <u>U</u> </button>
+                                    <button type="button" onclick="highlight()"> highlight </button>
+                                    <button type="button" onclick="color()"> color </button> -->
+                                    <!-- <button type="button" onclick="fontSize()"> fontSize </button> -->
+                                    <!-- <button type="button" onclick="link()"> link </button>
+                                    <button type="button" onclick="unlink()"> unlink </button> -->
+                                
+                                    <iframe name="editor" class="form-control" id="editor" style="width: 400px; height: 200px;"></iframe>
+                                    <button type="button" class="btn btn-success" id="submit" onclick="formSubmit()">Save Text</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button class="btn btn-light-primary font-weight-bold" data-dismiss="modal" type="button">Close
+                    </button>
+                    <button class="btn btn-primary font-weight-bold" type="submit">Save changes
+                    </button>
+                </form>
+
+
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    function delete_blog(id){
+        $.ajax({
+            type: "POST",
+            url: "/superadmin/delete_blog",
+            headers:{
+                "X-CSRFToken": '{{ csrf_token }}'
+            },
+            contentType: "application/json; charset=utf-8",
+            data: JSON.stringify({id: id}),
+            dataType: "json",
+            success: function(data){
+                location.reload();
+            },
+            error: function(errMsg) {
+            }
+        });
+  };
+
+
+  function change_activeness_blog(identity, id){
+    $.ajax({
+        type: "POST",
+        url: "/superadmin/change_activeness_blog",
+        headers:{
+            "X-CSRFToken": '{{ csrf_token }}'
+        },
+        contentType: "application/json; charset=utf-8",
+        data: JSON.stringify({id: id, check: identity.checked}),
+        dataType: "json",
+        success: function(data){
+            console.log('yes');
+        },
+        error: function(errMsg) {
+        }
+    });
+  };
+
+  function changeSecondImg(){
+    $('#second_featured_image_value').val('');
+  }
+
+  function editBlog(id){
+    title = '#title_' + id;
+    featured_image = '#featured_image_' + id;
+    video = '#video_' + id;
+    author = '#author_' + id;
+    second_featured_image = '#second_featured_image_' + id;
+    author_profile_pic = '#author_profile_pic_' + id;
+    short_description = '#short_description_' + id;
+    details = '#details_' + id;
+    category = '#category_' + id;
+
+    title = $(title).val();
+    featured_image = $(featured_image).val();
+    second_featured_image = $(second_featured_image).val();
+    video = $(video).val();
+    author = $(author).val();
+    author_profile_pic = $(author_profile_pic).val();
+    short_description = $(short_description).val();
+    details = $(details).val();
+    category = $(category).val();
+
+    $('#second_featured_image_value').val(second_featured_image);
+
+    $('#identity').val(id);
+    $('#title').val(title);
+    $('#author_name').val(author);
+    $('#short_description').val(short_description);
+    $('#details').val("");
+    $('#category').val(category);
+
+    $('#featured_image').css('background-image', 'url(' + featured_image + ')');
+    $('#second_featured_image').css('background-image', 'url(' + second_featured_image + ')');
+    $('#video').val(video);
+    $('#author_profile_pic').css('background-image', 'url(' + author_profile_pic + ')');
+
+    $('#editBlog').modal('toggle');
+  }
+
+
+  iframe();
+
+  function iframe(){
+			editor.document.designMode = 'on';
+		}
+		
+		function bold(){
+			editor.document.execCommand('bold',false, null);
+		}
+		function itlic(){
+			editor.document.execCommand('italic',false, null);
+		}
+		function underline(){
+			editor.document.execCommand('underline',false, null);
+		}
+		function highlight(){
+			editor.document.execCommand('backcolor',false, "yellow");
+		}
+		function color(){
+			var colorName = prompt("Color Name or Hexadecimal value", "");
+			editor.document.execCommand('forecolor',false, colorName);
+		}
+
+
+		function fontSize(){
+			var size = prompt("Enter size 1-7", "");
+			editor.document.execCommand('fontsize',false, size);
+		}
+		function link(){
+			var link = prompt("Enter URL", "http://");			
+			editor.document.execCommand('createlink',false, link);
+		}
+		function unlink(){
+			editor.document.execCommand('unlink',false, null);
+		}
+
+		function formSubmit(){
+		document.getElementById('exampleTextarea').value = window.frames['editor'].document.body.innerHTML;
+       textt = document.getElementById('exampleTextarea').value;
+        alert("Text format saved");
+		}
+
+
+</script>
+
+
+{% endblock %}
+
+{% block javascript %}
+<script src="{% static 'js/pages/crud/file-upload/image-input.js' %}"></script>
+
+{% endblock %}

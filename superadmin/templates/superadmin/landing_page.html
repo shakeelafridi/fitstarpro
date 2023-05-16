@@ -1,0 +1,253 @@
+{% extends 'superadmin/structure_layout/base.html' %}
+
+{% load static %}
+
+{% block title %}Landing Page{% endblock %}
+
+
+{% block content %}
+
+<div class="content d-flex flex-column flex-column-fluid" id="kt_content">
+    <div class="d-flex flex-column-fluid">
+        <!--begin::Container-->
+        <div class="container">
+            <div class="row">
+                <!--begin::Card-->
+                <div class="card card-custom gutter-b" style="width: 100%">
+                    <div class="card-header flex-wrap py-3">
+                        <div class="card-title">
+                            <h3 class="card-label">Landing Page Details
+                            </h3>
+                        </div>
+
+                    </div>
+                    <div class="card-body">
+
+
+                <form class="form fv-plugins-bootstrap fv-plugins-framework" id="kt_login_signup_form" method="POST"
+                      enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="row">
+                        <div class="col-6">
+                            <div class="form-group row">
+                                
+                                <div class="col-12">
+                                    <label class="col-form-label">Banner Title</label>
+                                    <input class="form-control" type="text" placeholder="Type Banner Heading" name="banner_text"
+                                           id="name" value="{{landing_page.banner_text}}" required>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="col-6">
+                            <div class="form-group row">
+                                
+                                <div class="col-12">
+                                    <label class="col-form-label">About Us Main Heading</label>
+                                    <input class="form-control" type="text" placeholder="Type About Us Main Heading"
+                                           name="main_heading"
+                                            value="{{landing_page.main_heading}}"
+                                           id="tagline" required>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-6">
+                            <div class="form-group row">
+                                <div class="col-12">
+                                    <label class="col-form-label">About Us Sub Heading</label>
+                                    <input class="form-control" type="text" placeholder="Type About Us Sub Heading" name="sub_heading"
+                                            value="{{landing_page.sub_heading}}"
+                                           id="author_name" required>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="col-6">
+                            <div class="form-group row">
+                                
+                                <div class="col-12">
+                                    <label class="col-form-label">About Us Text Details</label>
+                                    <textarea class="form-control" id="about_us_text" rows="3" name="about_us_text" required>{{landing_page.about_us_text}}</textarea>
+
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-6">
+                            <div class="form-group row">
+                                <div class="col-12">
+                                    <label class="col-form-label">Footer About Us Details</label>
+                                    <textarea class="form-control" id="footer_about_us_text" rows="3" name="footer_about_section" required>{{landing_page.footer_about_section}}</textarea>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="form-group row">
+                                
+                                <div class="col-12">
+                                    <label class="col-form-label">Footer Ph#</label>
+                                    <input class="form-control" type="text" placeholder="Footer Phone No" name="footer_phone_no"
+                                    value="{{landing_page.footer_phone_no}}" required
+                                            >
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="form-group row">
+                                
+                                <div class="col-12">
+                                    <label class="col-form-label">Instagram</label>
+                                    <input class="form-control" type="text" placeholder="Instagram link" name="instagram"
+                                    value="{{landing_page.instagram}}"
+                                            >
+                                </div>
+                            </div>
+                        </div>
+                            <div class="col-lg-6">
+                            <div class="form-group row">
+                                
+                                <div class="col-12">
+                                    <label class="col-form-label">Facebook</label>
+                                    <input class="form-control" type="text" placeholder="Facbeook link" name="facebook"
+                                           value="{{landing_page.facebook}}"
+                                            >
+                                </div>
+                            </div>
+                        </div>
+                            <div class="col-lg-6">
+                            <div class="form-group row">
+                                <div class="col-12">
+                                    <label class="col-form-label">Youtube</label>
+                                    <input class="form-control" type="text" placeholder="Youtube link" name="youtube"
+                                    value="{{landing_page.youtube}}"
+                                            >
+                                </div>
+                            </div>
+                        </div>
+                            <div class="col-lg-6">
+                            <div class="form-group row">
+                                <div class="col-12">
+                                    <label class="col-form-label">Twitter</label>
+                                    <input class="form-control" type="text" placeholder="Twitter link" name="twitter"
+                                    value="{{landing_page.twitter}}"
+                                            >
+                                </div>
+                            </div>
+
+                            
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="form-group row">
+                                
+                                <div class="col-12">
+                                    <label class="col-form-label">Linkedin Link</label>
+                                    <input class="form-control" type="text" placeholder="Linkedin link" name="linkedin"
+                                    value="{{landing_page.linkedin}}"
+                                            >
+                                </div>
+                            </div>
+
+                            
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="form-group row">
+                                <div class="col-12">
+                                    <label class="col-form-label">Privacy Policy Details</label>
+                                    <textarea class="form-control" id="privacy_policy" rows="10" required
+                                    name="privacy_policy" required>{{landing_page.privacy_policy}}</textarea>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="col-12">
+                            <div class="form-group row">
+                                <div class="col-12">
+                                    <label class="col-form-label">Terms & Conditions Details</label>
+                                    <textarea class="form-control" id="terms_and_conditionss" rows="10" required
+                                     name="terms_and_conditionss" required>{{landing_page.terms_and_conditionss}}</textarea>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-6">
+                            <div class="form-group row">
+                                <label class="col-2 col-form-label">Banner Image</label>
+                                <div class="col-10">
+                                    <div class="image-input image-input-outline image-input-changed" id="kt_image_1">
+                                        <div class="image-input-wrapper" style="background-image: url('{% if landing_page.banner %}{{landing_page.banner.url}}{% endif %}')"></div>
+                                        <label class="btn btn-xs btn-icon btn-circle btn-white btn-hover-text-primary btn-shadow"
+                                               data-action="change" data-toggle="tooltip" title=""
+                                               data-original-title="Change avatar">
+                                            <i class="fa fa-pen icon-sm text-muted"></i>
+                                            <input type="file" name="banner" accept=".png, .jpg, .jpeg"
+                                                   >
+                                            <input type="hidden" name="featured_image_remove">
+                                        </label>
+                                        <span class="btn btn-xs btn-icon btn-circle btn-white btn-hover-text-primary btn-shadow"
+                                              data-action="cancel" data-toggle="tooltip" title=""
+                                              data-original-title="Cancel avatar">
+															<i class="ki ki-bold-close icon-xs text-muted"></i>
+														</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="col-6">
+                            <div class="form-group row">
+                                <label class="col-2 col-form-label">About Us Banner Image</label>
+                                <div class="col-10">
+                                    <div class="image-input image-input-outline image-input-changed" id="kt_image_2">
+                                        <div class="image-input-wrapper" style="background-image: url('{% if landing_page.about_us_landing %}{{landing_page.about_us_landing.url}}{% endif %}"></div>
+                                        <label class="btn btn-xs btn-icon btn-circle btn-white btn-hover-text-primary btn-shadow"
+                                               data-action="change" data-toggle="tooltip" title=""
+                                               data-original-title="Change avatar">
+                                            <i class="fa fa-pen icon-sm text-muted"></i>
+                                            <input type="file" name="about_us_landing" accept=".png, .jpg, .jpeg"
+                                                   >
+                                            <input type="hidden" name="author_image_remove">
+                                        </label>
+                                        <span class="btn btn-xs btn-icon btn-circle btn-white btn-hover-text-primary btn-shadow"
+                                              data-action="cancel" data-toggle="tooltip" title=""
+                                              data-original-title="Cancel avatar">
+															<i class="ki ki-bold-close icon-xs text-muted"></i>
+														</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <button class="btn btn-light-primary font-weight-bold" data-dismiss="modal" type="button">Close
+                    </button>
+                    <button class="btn btn-primary font-weight-bold" type="submit">Save changes
+                    </button>
+                </form>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}
+
+{% block javascript %}
+<script src="{% static 'js/pages/crud/file-upload/image-input.js' %}"></script>
+
+{% endblock %}

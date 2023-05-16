@@ -1,0 +1,36 @@
+{% load static %}
+
+<html>
+
+<head>
+    <title>{% block title %}{% endblock title %}</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/accounts/main.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/accounts/responsive.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    {% block css %}
+
+    {% endblock css %}
+
+</head>
+
+<body>
+{% if messages %}
+<div class="msg-box">
+    {% for msg in messages %}
+    <div class="msg {{ msg.tags }}">
+        <p>{{ msg }}</p>
+
+    </div>
+    {% endfor %}
+</div>
+{% endif %}
+
+<div style="margin-top: 5%"></div>
+{% block body %}
+
+{% endblock body %}
+
+
+</body>
+
+</html>
